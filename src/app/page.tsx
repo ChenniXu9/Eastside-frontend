@@ -1,9 +1,10 @@
-export default function Home() {
+
+type Props = {}
+
+const Dashboard = (props: Props) => {
   return (
-    <div className=''>
-      <div className="">
-        dashboard
-      </div>
-    </div>
-  );
+    <div>Dashboard</div>
+  )
 }
+
+export default Dashboard

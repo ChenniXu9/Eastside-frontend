@@ -16,7 +16,7 @@ const Groups = () => {
                         alt="" 
                         width={40}
                         height={40}
-                        className="w-10 h-10 rounded-full object-cover"
+                        className="w-5 h-5 rounded-full object-cover"
                     />
                     <span className="font-semibold text-xs">BondHub</span>
                 </div>
@@ -30,7 +30,7 @@ const Groups = () => {
                         alt="" 
                         width={40}
                         height={40}
-                        className="w-10 h-10 rounded-full object-cover"
+                        className="w-5 h-5 rounded-full object-cover"
                     />
                     <span className="font-semibold text-xs">VoiceNet</span>
                 </div>
@@ -45,7 +45,7 @@ const Groups = () => {
                         alt="" 
                         width={40}
                         height={40}
-                        className="w-10 h-10 rounded-full object-cover"
+                        className="w-5 h-5 rounded-full object-cover"
                     />
                     <span className="font-semibold text-xs">Inspire</span>
                 </div>
