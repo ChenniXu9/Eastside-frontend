@@ -54,14 +54,7 @@ const Comments = () => {
                                 <span className="text-gray-500">16 Likes</span>
                             </div>
                             <div className="">
-                                {/* <Image src="/like.png" 
-                                    alt="" 
-                                    width={12} 
-                                    height={12} 
-                                    className="cursor-pointer"
-                                />
-                                <span className="text-gray-300">|</span>
-                                <span className="text-gray-500">123 Likes</span> */}Reply
+                                Reply
                             </div>
                         </div>
                     </div>
