@@ -18,8 +18,8 @@ const LeftMenu = () => {
                 <Link href="" className="flex items-center gap-4 p-2 rounded-lg hover:bg-slate-100">
                     <Image src="/resourceLogo.png" 
                         alt="" 
-                        width={30} 
-                        height={30} 
+                        width={20} 
+                        height={20} 
                         />
                     <span>Resource Libarary</span>
                 </Link>
@@ -36,8 +36,8 @@ const LeftMenu = () => {
                 <Link href="" className="flex items-center gap-4 p-2 rounded-lg hover:bg-slate-100">
                     <Image src="/notificationLogo.png" 
                         alt="" 
-                        width={40} 
-                        height={40} 
+                        width={20} 
+                        height={20} 
                         />
                     <span>Notification</span>
                 </Link>
