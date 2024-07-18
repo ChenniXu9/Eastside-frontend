@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import FileUpload from '../../components/FileUpload';
-import FileList from '../../components/FileList';
+import FileUpload from '../../../../components/resources/FileUpload';
+import FileList from '../../../../components/resources/FileList';
 
 interface FileItem {
   name: string;
