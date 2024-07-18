@@ -14,7 +14,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ courseCode, courseName, semeste
   const router = useRouter();
 
   const handleFilesClick = () => {
-    router.push(`/resources/${encodeURIComponent(courseCode)}`);
+    router.push(`resources/${encodeURIComponent(courseCode)}`);
   };
 
   return (
