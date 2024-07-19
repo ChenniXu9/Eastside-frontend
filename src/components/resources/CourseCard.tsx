@@ -8,13 +8,18 @@ interface CourseCardProps {
   courseName: string;
   semester: string;
   courseFrontpage: string;
+  onEditCourse: (courseCode: string) => void;
 }
 
-const CourseCard: React.FC<CourseCardProps> = ({ courseCode, courseName, semester, courseFrontpage }) => {
+const CourseCard: React.FC<CourseCardProps> = ({ courseCode, courseName, semester, courseFrontpage, onEditCourse }) => {
   const router = useRouter();
 
   const handleFilesClick = () => {
     router.push(`resources/${encodeURIComponent(courseCode)}`);
+  };
+
+  const handleEditClick = () => {
+    onEditCourse(courseCode);
   };
 
   return (
@@ -27,6 +32,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ courseCode, courseName, semeste
       </div>
       <div className="flex justify-around p-4 border-t border-gray-200 bg-gray-50">
         <span onClick={handleFilesClick} className="text-blue-800 cursor-pointer">📄 Files</span>
+        <span onClick={handleEditClick} className="text-blue-800 cursor-pointer">✏️ Edit</span> 
       </div>
     </div>
   );
