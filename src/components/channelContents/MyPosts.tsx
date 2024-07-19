@@ -7,7 +7,7 @@ const MyPosts = () => {
              {/* Top */}
              <div className="flex justify-between items-center font-medium">
                 <span className="text-gray-500">My Posts</span>
-                <Link href="/" className="text-blue-500 text-sm">See all</Link>
+                <Link href="/dashboard/channels/posts_detail/123" className="text-blue-500 text-sm">See all</Link>
             </div>
             {/* Bottom  */}
             <div className="flex flex-col mt-4 gap-4">

@@ -7,7 +7,7 @@ const Groups = () => {
             {/* Top */}
             <div className="flex justify-between items-center font-medium">
                 <span className="text-gray-500">Groups</span>
-                <Link href="/" className="text-blue-500 text-sm">See all</Link>
+                <Link href="/dashboard/channels/groups/123" className="text-blue-500 text-sm">See all</Link>
             </div>
             {/* Groups */}
             <div className="flex items-center justify-between">
