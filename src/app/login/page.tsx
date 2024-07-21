@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useSignIn, useAuth } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -11,6 +14,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { isSignedIn } = useAuth();
 
   useEffect(() => {
@@ -33,17 +37,18 @@ const Login = () => {
 
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
-        router.push('/dashboard'); // Redirect to home page after successful login
+        router.push('/dashboard/channels');
       } else {
-        console.error("Sign in failed", result);
+        toast.error('Sign in failed. Please check your email and password and try again.');
       }
     } catch (err: any) {
-      console.error("Error during sign in:", err.message);
+      toast.error('Sign in failed. Please check your email and password and try again.');
     }
   };
 
   return (
     <div className="flex h-screen">
+      <ToastContainer />
       <div className="w-full sm:w-1/2 bg-[#215473] text-white flex flex-col justify-center">
         <div className="my-8 mx-4 flex flex-col w-full max-w-[400px] self-center">
           <h1 className="text-2xl sm:text-3xl mb-3 self-start">Sign In</h1>
@@ -69,19 +74,27 @@ const Login = () => {
                 autoFocus
               />
             </div>
-            <div className="mb-4">
+            <div className="mb-4 relative">
               <label htmlFor="password" className="block mb-1">
                 Password
               </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-2 rounded bg-white text-black"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full p-2 rounded bg-white text-black"
+                  required
+                />
+                <span
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-3 cursor-pointer text-black"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
             </div>
             <div className="flex justify-between items-center mt-4 mb-4">
               <label className="flex items-center">

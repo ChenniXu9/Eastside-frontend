@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useSignUp, useAuth } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -13,6 +16,8 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { isSignedIn } = useAuth();
 
   useEffect(() => {
@@ -28,7 +33,7 @@ const Signup = () => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Passwords don't match");
+      toast.error("Passwords don't match");
       return;
     }
 
@@ -44,14 +49,15 @@ const Signup = () => {
       // change the UI to our pending section.
       setPendingVerification(true);
     } catch (err: any) {
-      console.error(JSON.stringify(err, null, 2));
+      const errorMessage = err.errors?.[0]?.message || "Sign up failed. Please try again.";
+      toast.error(errorMessage);
     }
   };
 
   const onPressVerify = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!code) {
-      alert("Please enter a verification code");
+      toast.error("Please enter a verification code");
       return;
     }
 
@@ -60,19 +66,22 @@ const Signup = () => {
         code,
       });
       if (completeSignUp.status !== "complete") {
-        console.log(JSON.stringify(completeSignUp, null, 2));
+        const errorMessage = completeSignUp.errors?.[0]?.message || "Verification failed. Please try again.";
+        toast.error(errorMessage);
       }
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
         router.push("/dashboard/channels");
       }
     } catch (err: any) {
-      console.error(JSON.stringify(err, null, 2));
+      const errorMessage = err.errors?.[0]?.message || "Verification failed. Please try again.";
+      toast.error(errorMessage);
     }
   };
 
   return (
     <div className="flex h-screen">
+      <ToastContainer />
       <div className="w-full sm:w-1/2 bg-[#215473] text-white flex flex-col justify-center p-4">
         <div className="flex flex-col items-center px-4 sm:px-8 w-full">
           <div className="w-full max-w-[400px]">
@@ -100,33 +109,49 @@ const Signup = () => {
                     autoFocus
                   />
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 relative">
                   <label htmlFor="password" className="block mb-1">
                     Password
                   </label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full p-2 rounded bg-white text-black"
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      id="password"
+                      name="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full p-2 rounded bg-white text-black"
+                      required
+                    />
+                    <span
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-3 cursor-pointer text-black"
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </span>
+                  </div>
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 relative">
                   <label htmlFor="confirmPassword" className="block mb-1">
                     Confirm Password
                   </label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full p-2 rounded bg-white text-black"
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="w-full p-2 rounded bg-white text-black"
+                      required
+                    />
+                    <span
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-3 cursor-pointer text-black"
+                    >
+                      {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                    </span>
+                  </div>
                 </div>
                 <button
                   type="submit"
