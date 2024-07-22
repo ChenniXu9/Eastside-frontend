@@ -14,6 +14,8 @@ interface MenuLinkProps {
     item: Item;
 }
 
+// Component for the Sidebar
+// Allows the sidebar to be server side component while still having interactability with links
 const MenuLink: React.FC<MenuLinkProps> = ({ item }) => {
     const pathname = usePathname();
 

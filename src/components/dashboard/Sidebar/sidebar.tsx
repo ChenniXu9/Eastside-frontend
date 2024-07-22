@@ -11,6 +11,7 @@ import {
 import MenuLink from "../menuLink/menuLink";
 import styles from "./sidebar.module.css";
 
+// Sidebar item lists
 const menuItems = [
     {
         title: "Pages",
@@ -54,6 +55,7 @@ const menuItems = [
     },
 ];
 
+// Sidebar component for the dashboard
 const Sidebar = () => {
     const user = {
         img: "/noavatar.png",
@@ -87,6 +89,7 @@ const Sidebar = () => {
                     ))}
                 </ul>
             </div>
+            {/* BOTTOM */}
             <div className="md:flex h-[10%] text-md justify-between flex-col">
                 <form
                 // action={async () => {

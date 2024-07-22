@@ -7,6 +7,7 @@ import { useState } from "react";
 const MobileMenu = () => {
     const [open, setOpen] = useState(false);
 
+    // Links for mobile popout
     const links = [
         { url: "/dashboard", title: "Dashboard" },
         { url: "/dashboard/resources", title: "Resources" },
@@ -14,6 +15,7 @@ const MobileMenu = () => {
         { url: "/dashboard/channels", title: "Channels" },
     ];
 
+    // Animation styles for the framer motion
     const topVariants = {
         closed: {
             rotate: 0,
