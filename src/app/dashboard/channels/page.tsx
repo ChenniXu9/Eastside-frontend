@@ -1,9 +1,9 @@
 import AddPost from "@/components/channelContents/AddPosts";
 import ChannelRightMenu from "@/components/channelContents/ChannelRightMenu";
 import Feed from "@/components/channelContents/Feed";
-import Stories from "@/components/channelContents/Stories";
 import LeftMenu from "@/components/LeftMenu";
 import ChannelNavbar from "@/components/channelContents/ChannelNavbar";
+import GroupHeader from "@/components/channelContents/GroupHeader";
 
 
 type Props = {}
@@ -16,7 +16,7 @@ const Channels = (props: Props) => {
         <div className="hidden xl:block w-[20%]"><LeftMenu/></div>
         <div className="w-full lg:w-[70%] xl:w-[50%]">
           <div className="flex flex-col gap-6">
-            <Stories/>
+            <GroupHeader/>
             <AddPost/>
             <Feed/>
           </div>
