@@ -1,22 +1,74 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSignUp, useAuth } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const Signup = () => {
+  const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [pendingVerification, setPendingVerification] = useState(false);
+  const [code, setCode] = useState('');
+  const { isSignedIn } = useAuth();
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      router.push('/dashboard/channels');
+    }
+  }, [isLoaded, isSignedIn, router]);
+
+  if (!isLoaded) {
+    return null;
+  }
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add your signup logic here
-    console.log('Signup attempted');
-    // After successful signup, you might want to redirect to login or home page
-    // router.push('/login');
+    if (password !== confirmPassword) {
+      alert("Passwords don't match");
+      return;
+    }
+
+    try {
+      await signUp.create({
+        emailAddress: email,
+        password,
+      });
+
+      // send the email.
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+
+      // change the UI to our pending section.
+      setPendingVerification(true);
+    } catch (err: any) {
+      console.error(JSON.stringify(err, null, 2));
+    }
+  };
+
+  const onPressVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!code) {
+      alert("Please enter a verification code");
+      return;
+    }
+
+    try {
+      const completeSignUp = await signUp.attemptEmailAddressVerification({
+        code,
+      });
+      if (completeSignUp.status !== "complete") {
+        console.log(JSON.stringify(completeSignUp, null, 2));
+      }
+      if (completeSignUp.status === "complete") {
+        await setActive({ session: completeSignUp.createdSessionId });
+        router.push("/dashboard/channels");
+      }
+    } catch (err: any) {
+      console.error(JSON.stringify(err, null, 2));
+    }
   };
 
   return (
@@ -31,71 +83,82 @@ const Signup = () => {
                 Sign In
               </Link>
             </p>
-            <form onSubmit={handleSignup} className="w-full">
-              <div className="mb-4">
-                <label htmlFor="email" className="block mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full p-2 rounded bg-white text-black"
-                  required
-                  autoFocus
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="username" className="block mb-1">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="w-full p-2 rounded bg-white text-black"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="password" className="block mb-1">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-2 rounded bg-white text-black"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="confirmPassword" className="block mb-1">
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full p-2 rounded bg-white text-black"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full mt-6 mb-2 bg-[#5799cb] text-white p-2 rounded"
-              >
-                Sign Up
-              </button>
-            </form>
+            {!pendingVerification ? (
+              <form onSubmit={handleSignup} className="w-full">
+                <div className="mb-4">
+                  <label htmlFor="email" className="block mb-1">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full p-2 rounded bg-white text-black"
+                    required
+                    autoFocus
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="password" className="block mb-1">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full p-2 rounded bg-white text-black"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="confirmPassword" className="block mb-1">
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full p-2 rounded bg-white text-black"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full mt-6 mb-2 bg-[#5799cb] text-white p-2 rounded"
+                >
+                  Sign Up
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={onPressVerify} className="w-full">
+                <div className="mb-4">
+                  <label htmlFor="code" className="block mb-1">
+                    Verification Code
+                  </label>
+                  <input
+                    type="text"
+                    id="code"
+                    name="code"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    className="w-full p-2 rounded bg-white text-black"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full mt-6 mb-2 bg-[#5799cb] text-white p-2 rounded"
+                >
+                  Verify Email
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>

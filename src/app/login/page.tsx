@@ -1,21 +1,45 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSignIn, useAuth } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const Login = () => {
+  const { isLoaded, signIn, setActive } = useSignIn();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const { isSignedIn } = useAuth();
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      router.push('/dashboard/channels');
+    }
+  }, [isLoaded, isSignedIn, router]);
+
+  if (!isLoaded) {
+    return null;
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add your login logic here
-    console.log('Login attempted');
-    // After successful login, you might want to redirect to home page
-    // router.push('/');
+    try {
+      const result = await signIn.create({
+        identifier: email,
+        password,
+      });
+
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+        router.push('/dashboard'); // Redirect to home page after successful login
+      } else {
+        console.error("Sign in failed", result);
+      }
+    } catch (err: any) {
+      console.error("Error during sign in:", err.message);
+    }
   };
 
   return (
