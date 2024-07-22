@@ -1,7 +1,13 @@
-type Props = {};
+
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+type Props = {}
 
 const Dashboard = (props: Props) => {
-    return <div>Homepage</div>;
-};
+  const { userId } = auth();
+  return (
+    <div>Dashboard</div>
+  )
+}
 
 export default Dashboard;
