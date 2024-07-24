@@ -31,8 +31,8 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Files for Course: {courseCode}</h1>
-      <FileUpload onFileUpload={handleFileUpload} />
       <FileList files={files} />
+      <FileUpload onFileUpload={handleFileUpload} />
     </div>
   );
 };
