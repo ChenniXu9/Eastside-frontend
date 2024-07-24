@@ -22,7 +22,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      router.push('/dashboard/channels');
+      router.push('/dashboard');
     }
   }, [isLoaded, isSignedIn, router]);
 
@@ -71,7 +71,7 @@ const Signup = () => {
       }
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
-        router.push("/dashboard/channels");
+        router.push("/dashboard");
       }
     } catch (err: any) {
       const errorMessage = err.errors?.[0]?.message || "Verification failed. Please try again.";

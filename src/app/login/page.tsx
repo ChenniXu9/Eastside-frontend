@@ -19,7 +19,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      router.push('/dashboard/channels');
+      router.push('/dashboard');
     }
   }, [isLoaded, isSignedIn, router]);
 
@@ -37,7 +37,7 @@ const Login = () => {
 
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
-        router.push('/dashboard/channels');
+        router.push('/dashboard');
       } else {
         toast.error('Sign in failed. Please check your email and password and try again.');
       }
@@ -106,7 +106,7 @@ const Login = () => {
                 />
                 Keep me logged in
               </label>
-              <Link href="/forgot-password" className="text-white underline">
+              <Link href="/reset-password" className="text-white underline">
                 Forgot Password?
               </Link>
             </div>
