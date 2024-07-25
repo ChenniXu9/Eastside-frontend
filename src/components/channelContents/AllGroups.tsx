@@ -19,7 +19,7 @@ const AllGroups= ( { userId }: { userId?: String }  ) => {
                     <span className="mx-2">Bondhub</span>
                 </div>
                 <div className="flex justify-between items-center font-medium">
-                    <span className="text-gray-500">All Groups</span>
+                    <span className="text-gray-500">All Channels</span>
                     <div className='flex p-2 bg-slate-100 items-center rounded-xl'>
                         <input type="text" placeholder="search..." className="bg-transparent outline-none text-sm"/>
                         <Image src="/search.png" alt="" width={14} height={14}/>

@@ -6,7 +6,7 @@ const Groups = () => {
         <div className='p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-4'>
             {/* Top */}
             <div className="flex justify-between items-center font-medium">
-                <span className="text-gray-500">Groups</span>
+                <span className="text-gray-500">Channels</span>
                 <Link href="/dashboard/channels/groups/123" className="text-blue-500 text-sm">See all</Link>
             </div>
             {/* Groups */}
