@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth, useSignIn } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,7 +34,7 @@ const ResetPassword = () => {
   const create = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-        const result = await signIn.create({
+      const result = await signIn.create({
         strategy: 'reset_password_email_code',
         identifier: email,
       });
@@ -68,11 +70,17 @@ const ResetPassword = () => {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       <ToastContainer />
-      <div className="w-full sm:w-1/2 bg-[#215473] text-white flex flex-col justify-center">
+      <div className="w-full sm:w-1/3 bg-[#224c6b] text-white flex flex-col justify-center relative z-10">
         <div className="my-8 mx-4 flex flex-col w-full max-w-[400px] self-center">
           <h1 className="text-2xl sm:text-3xl mb-3 self-start">Reset Password</h1>
+          <div className="mb-3 text-lg flex justify-between">
+            <span>Reset your password</span>
+            <Link href="/login" className="text-white underline">
+              Back to Sign In
+            </Link>
+          </div>
           <form onSubmit={!successfulCreation ? create : reset} className="w-full">
             {!successfulCreation ? (
               <>
@@ -87,11 +95,12 @@ const ResetPassword = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full p-2 rounded bg-white text-black"
                     required
+                    autoFocus
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full mt-3 mb-2 bg-[#5799cb] text-white p-2 rounded"
+                  className="w-full mt-3 mb-2 bg-[#146c94] text-white p-2 rounded"
                 >
                   Send Reset Code
                 </button>
@@ -134,7 +143,7 @@ const ResetPassword = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full mt-3 mb-2 bg-[#5799cb] text-white p-2 rounded"
+                  className="w-full mt-3 mb-2 bg-[#146c94] text-white p-2 rounded"
                 >
                   Reset Password
                 </button>
@@ -144,10 +153,19 @@ const ResetPassword = () => {
           {secondFactor && <p className="mt-4">2FA is required, but this UI does not handle that</p>}
         </div>
       </div>
-      <div className="hidden sm:block sm:w-1/2 bg-white relative">
-        <div className="absolute top-0 right-0 p-4">
-          <img src="/logo.png" alt="Logo" className="w-[150px] sm:w-[200px] md:w-[250px] h-auto" />
+      <div className="hidden sm:block sm:w-2/3 relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#224c6b] to-transparent w-1/4 z-20"></div>
+        <div className="absolute inset-0 z-10">
+          <Image
+            src="/forgetpassword.jpg"
+            alt="Reset Password"
+            layout="fill"
+            objectFit="cover"
+          />
         </div>
+        <svg className="absolute inset-y-0 left-0 h-full w-48 text-[#224c6b] z-30" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M0 0C40 0 60 100 100 100H0V0Z" />
+        </svg>
       </div>
     </div>
   );
