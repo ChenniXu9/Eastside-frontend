@@ -1,3 +1,4 @@
+'use client';
 import Image from "next/image";
 import {
     MdDashboard,
@@ -10,6 +11,8 @@ import {
 } from "react-icons/md";
 import MenuLink from "../menuLink/menuLink";
 import styles from "./sidebar.module.css";
+import { useClerk } from "@clerk/nextjs";
+import { useRouter } from 'next/navigation';
 
 // Sidebar item lists
 const menuItems = [
@@ -57,6 +60,14 @@ const menuItems = [
 
 // Sidebar component for the dashboard
 const Sidebar = () => {
+    const { signOut } = useClerk();
+    const router = useRouter();
+
+    const handleSignOut = async () => {
+        await signOut();
+        router.push('/login');
+    };
+
     const user = {
         img: "/noavatar.png",
         username: "testing",
@@ -91,17 +102,14 @@ const Sidebar = () => {
             </div>
             {/* BOTTOM */}
             <div className="md:flex h-[10%] text-md justify-between flex-col">
-                <form
-                // action={async () => {
-                //     "use server";
-                //     await signOut();
-                // }}
-                >
-                    <button className={styles.logout}>
-                        <MdLogout />
-                        Logout
-                    </button>
-                </form>
+            <button
+                type="button"
+                onClick={handleSignOut}
+                className={styles.logout}
+            >
+                <MdLogout />
+                Logout
+            </button>
             </div>
         </div>
     );
