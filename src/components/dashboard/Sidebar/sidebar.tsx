@@ -31,12 +31,12 @@ const menuItems = [
             },
             {
                 title: "Channels",
-                path: "dashboard/channels",
+                path: "/dashboard/channels",
                 icon: <MdShoppingBag />,
             },
             {
                 title: "Notifications",
-                path: "dashboard/notifications",
+                path: "/dashboard/notifications",
                 icon: <MdDoorbell />,
             },
         ],
@@ -46,7 +46,7 @@ const menuItems = [
         list: [
             {
                 title: "My Profile",
-                path: "/dashboard/help",
+                path: "/dashboard/profile/1",
                 icon: <MdPerson2 />,
             },
             {
