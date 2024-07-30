@@ -39,3 +39,4 @@ const CourseCard: React.FC<CourseCardProps> = ({ courseCode, courseName, semeste
 };
 
 export default CourseCard;
+
