@@ -2,7 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 
-const AddCourse: React.FC<{ onAddCourse: (course) => void, nextCourseCode: string }> = ({ onAddCourse, nextCourseCode }) => {
+interface AddCourseProps {
+  onAddCourse: (course) => void;
+  nextCourseCode: string;
+  onCancel: () => void
+}
+
+const AddCourse: React.FC<AddCourseProps> = ({ onAddCourse, nextCourseCode, onCancel }) => {
   const [courseCode, setCourseCode] = useState('');
 
   useEffect(() => {
@@ -63,6 +69,13 @@ const AddCourse: React.FC<{ onAddCourse: (course) => void, nextCourseCode: strin
           />
         </div>
         <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={onCancel} 
+            className="bg-gray-500 text-white py-2 px-4 rounded-full mr-2"
+          >
+            Cancel
+          </button>
           <button
             type="submit"
             className="bg-blue-500 text-white py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-blue-600 transform hover:-translate-y-1"

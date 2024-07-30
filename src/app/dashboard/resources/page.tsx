@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -52,6 +52,7 @@ const ResourcePageContent: React.FC = () => {
   const [editingCourse, setEditingCourse] = useState(null);
   const [isArchiving, setIsArchiving] = useState(false);
   const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
+  const [viewMode, setViewMode] = useState<'card' | 'list'>('card'); // 新增
   const router = useRouter();
 
   const handleAddCourse = (newCourse) => {
@@ -80,13 +81,21 @@ const ResourcePageContent: React.FC = () => {
     setIsEditingCourse(false);
   };
 
+  const handleCancelAddCourse = () => {
+    setIsAddingCourse(false);
+  };
+
+  const handleCancelEditCourse = () => {
+    setIsEditingCourse(false);
+  };
+
   const handleArchive = () => {
     setIsArchiving(true);
   };
 
   const handleArchiveConfirm = (selectedCourses: string[]) => {
     setCourses(courses.map(course => 
-      selectedCourses.includes(course.courseCode) ? { ...course, archived: true } : { ...course, archived: false }
+      selectedCourses.includes(course.courseCode) ? { ...course, archived: true } : course
     ));
     setSelectedCourses(selectedCourses);
     setIsArchiving(false);
@@ -96,20 +105,57 @@ const ResourcePageContent: React.FC = () => {
     setIsArchiving(false);
   };
 
+  const toggleViewMode = () => {
+    setViewMode(prevMode => (prevMode === 'card' ? 'list' : 'card'));
+  };
+
   return (
-    <div className="flex flex-wrap justify-center gap-4 p-4 bg-white">
-      {courses.map((course, index) => (
-        !course.archived && (
-          <CourseCard
-            key={index}
-            courseCode={course.courseCode}
-            courseName={course.courseName}
-            semester={course.semester}
-            courseFrontpage={course.courseFrontpage}
-            onEditCourse={handleEditCourse} 
-          />
-        )
-      ))}
+    <div className="p-4 bg-white">
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={toggleViewMode}
+          className="bg-gray-500 text-white py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-gray-600 transform hover:-translate-y-1"
+        >
+          {viewMode === 'card' ? 'Switch to List View' : 'Switch to Card View'}
+        </button>
+      </div>
+      <div className={`flex ${viewMode === 'card' ? 'flex-wrap justify-center gap-4' : 'flex-col'} p-4`}>
+        {courses.map((course, index) => (
+          !course.archived && (
+            viewMode === 'card' ? (
+              <CourseCard
+                key={index}
+                courseCode={course.courseCode}
+                courseName={course.courseName}
+                semester={course.semester}
+                courseFrontpage={course.courseFrontpage}
+                onEditCourse={handleEditCourse} 
+              />
+            ) : (
+              <div key={index} className="border p-4 rounded w-full max-w-3xl mb-2 flex justify-between items-center">
+                <div>
+                  <h2 className="text-lg font-bold">{course.courseName}</h2>
+                  <p>{course.semester}</p>
+                </div>
+                <div className="flex space-x-4">
+                  <button
+                    onClick={() => router.push(`resources/${encodeURIComponent(course.courseCode)}`)}
+                    className="text-blue-800 underline"
+                  >
+                    Files
+                  </button>
+                  <button
+                    onClick={() => handleEditCourse(course.courseCode)}
+                    className="text-blue-800 underline"
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
+            )
+          )
+        ))}
+      </div>
       <div className="w-full flex justify-center mt-8">
         <button
           onClick={handleArchive}
@@ -126,7 +172,7 @@ const ResourcePageContent: React.FC = () => {
       </div>
       {isAddingCourse && (
         <div>
-          <AddCourse onAddCourse={handleAddCourse} nextCourseCode={getNextCourseCode()}/>
+          <AddCourse onAddCourse={handleAddCourse} nextCourseCode={getNextCourseCode()} onCancel={handleCancelAddCourse} />
         </div>
       )}
       {isEditingCourse && editingCourse && (
@@ -137,6 +183,7 @@ const ResourcePageContent: React.FC = () => {
             semester={editingCourse.semester}
             courseFrontpage={editingCourse.courseFrontpage}
             onSaveCourse={handleSaveCourse}
+            onCancel={handleCancelEditCourse}
           />
         </div>
       )}
@@ -153,3 +200,4 @@ const ResourcePageContent: React.FC = () => {
 };
 
 export default ResourcePageContent;
+
