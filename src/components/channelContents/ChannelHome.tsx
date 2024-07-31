@@ -1,54 +1,20 @@
-"use client";
-
-import React from 'react';
-import { useEffect, useState } from 'react';
+"use client"
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from 'react';
+import HomeNav from "./HomeNav";
 
-type User = {
-    id: string;
-    username: string;
-    profile_image: string | null;
-    first_name: string | null;
-    last_name: string | null;
-    description: string | null;
-    city: string | null;
-    createdAt: Date;
-  };
-  
 type Channel = {
     id: number;
     channel_name: string;
     channel_image: string | null;
     channel_description: string | null;
-    users: {
-      user: User;
-    }[];
-    posts: {
-      id: number;
-      desc: string;
-      img: string;
-      user: User;
-    }[];
 };
 
-interface AllGroupsProps {
-    channel: Channel;
-    currentUser: User;
-}
-
-type AllChannel = {
-    id: number;
-    channel_name: string;
-    channel_image: string | null;
-    channel_description: string | null;
-};
-
-const AllGroups: React.FC<AllGroupsProps> = ({ channel, currentUser }) => {
-    const userId = currentUser.id;
+const ChannelHome = ( { userId }: {userId: string}  ) => {
     const [username, setUsername] = useState<string | null>(null);
-    const [joinedChannels, setJoinedChannels] = useState<AllChannel[]>([]);
-    const [notJoinedChannels, setNotJoinedChannels] = useState<AllChannel[]>([]);
+    const [joinedChannels, setJoinedChannels] = useState<Channel[]>([]);
+    const [notJoinedChannels, setNotJoinedChannels] = useState<Channel[]>([]);
 
     useEffect(() => {
         const fetchChannels = async () => {
@@ -76,13 +42,12 @@ const AllGroups: React.FC<AllGroupsProps> = ({ channel, currentUser }) => {
         fetchChannels();
       }, [userId]);
 
-    const combinedChannels = joinedChannels.concat(notJoinedChannels);
-
     return (
         <div className="flex flex-col gap-6">
-            <div className='p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4'>   
+            <HomeNav username={username}></HomeNav>
+            <div className='p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4'>
                 <div className="">
-                    <Link href={`/dashboard/channels/currentChannel/${channel.id}/${userId}`}>
+                    <Link href="/">
                         <button>
                             <Image src="/backArrow.png" 
                                 alt="back" 
@@ -91,15 +56,15 @@ const AllGroups: React.FC<AllGroupsProps> = ({ channel, currentUser }) => {
                             />
                         </button>
                     </Link>
-                    <span className="mx-2">{channel.channel_name}</span>
-                </div>
+                    <span className="mx-2">Homepage</span>
+                </div>   
                 <div className="flex justify-between items-center font-medium">
-                    <span className="text-gray-500">All Channels</span>
+                    <span className="px-4 text-gray-500">All Channels</span>
                     <div className='flex p-2 bg-slate-100 items-center rounded-xl'>
                         <input type="text" placeholder="search..." className="bg-transparent outline-none text-sm"/>
                         <Image src="/search.png" alt="" width={14} height={14}/>
                     </div>
-                </div>                  
+                </div>     
             </div>
             <div className='p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4'>
                 <ul className='px-2 text-lg flex flex-col gap-4'>
@@ -151,4 +116,4 @@ const AllGroups: React.FC<AllGroupsProps> = ({ channel, currentUser }) => {
     )
 }
 
-export default AllGroups;
+export default ChannelHome;

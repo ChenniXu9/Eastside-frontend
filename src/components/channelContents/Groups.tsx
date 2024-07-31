@@ -1,58 +1,110 @@
+"use client";
+
+import React from 'react';
+import { useEffect, useState } from 'react';
+
 import Link from "next/link";
 import Image from "next/image";
 
-const Groups = () => {
+type User = {
+    id: string;
+    username: string;
+    profile_image: string | null;
+    first_name: string | null;
+    last_name: string | null;
+    description: string | null;
+    city: string | null;
+    createdAt: Date;
+};
+  
+type Channel = {
+    id: number;
+    channel_name: string;
+    channel_image: string | null;
+    channel_description: string | null;
+    users: {
+      user: User;
+    }[];
+    posts: {
+      id: number;
+      desc: string;
+      img: string;
+      user: User;
+    }[];
+};
+
+interface GroupsProps {
+    channel: Channel;
+    currentUser: User;
+}
+
+type AllChannel = {
+    id: number;
+    channel_name: string;
+    channel_image: string | null;
+    channel_description: string | null;
+};
+
+
+const Groups: React.FC<GroupsProps> = ({ channel, currentUser }) => {
+    const userId = currentUser.id;
+    const [username, setUsername] = useState<string | null>(null);
+    const [joinedChannels, setJoinedChannels] = useState<AllChannel[]>([]);
+    const [notJoinedChannels, setNotJoinedChannels] = useState<AllChannel[]>([]);
+
+    useEffect(() => {
+        const fetchChannels = async () => {
+          try {
+            console.log("Fetching channels for user:", userId);
+    
+            const response = await fetch(`/api/channel/fetchChannels?userId=${userId}`);
+            if (!response.ok) {
+              throw new Error('Failed to fetch channels');
+            }
+    
+            const data = await response.json();
+    
+            setUsername(data.username);
+            setJoinedChannels(data.joinedChannels);
+            setNotJoinedChannels(data.notJoinedChannels);
+    
+            console.log("User Channels:", data.joinedChannels);
+            console.log("Not Joined Channels:", data.notJoinedChannels);
+          } catch (error) {
+            console.error("Error fetching channels:", error);
+          }
+        };
+    
+        fetchChannels();
+      }, [userId]);
+
+      const combinedChannels = joinedChannels.concat(notJoinedChannels);
+
     return (
         <div className='p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-4'>
             {/* Top */}
             <div className="flex justify-between items-center font-medium">
                 <span className="text-gray-500">Channels</span>
-                <Link href="/dashboard/channels/groups/123" className="text-blue-500 text-sm">See all</Link>
+                <Link href={`/dashboard/channels/groups/${channel.id}/${userId}`} className="text-blue-500 text-sm">See all</Link>
             </div>
             {/* Groups */}
-            <div className="flex items-center justify-between">
+            {combinedChannels.slice(0, 3).map((channel) => (
+                <div key={channel.id} className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <Image src="https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                        alt="" 
-                        width={40}
-                        height={40}
-                        className="w-5 h-5 rounded-full object-cover"
+                    <Image
+                    src={channel.channel_image || "/noavatar.png"}
+                    alt={channel.channel_name}
+                    width={40}
+                    height={40}
+                    className="w-5 h-5 rounded-full object-cover"
                     />
-                    <span className="font-semibold text-xs">BondHub</span>
+                    <span className="font-semibold text-xs">{channel.channel_name}</span>
                 </div>
-                <div className="flex gap-3 justify-end">
+                <Link href={`/dashboard/channels/currentChannel/${channel.id}/${userId}`} className="flex gap-3 justify-end">
                     <button className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md">Enter</button>
+                </Link>
                 </div>
-            </div>
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <Image src="https://images.pexels.com/photos/1000445/pexels-photo-1000445.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                        alt="" 
-                        width={40}
-                        height={40}
-                        className="w-5 h-5 rounded-full object-cover"
-                    />
-                    <span className="font-semibold text-xs">VoiceNet</span>
-                </div>
-                <div className="flex gap-3 justify-end">
-                    <button className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md">Enter</button>
-                </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <Image src="https://images.pexels.com/photos/1701001/pexels-photo-1701001.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                        alt="" 
-                        width={40}
-                        height={40}
-                        className="w-5 h-5 rounded-full object-cover"
-                    />
-                    <span className="font-semibold text-xs">Inspire</span>
-                </div>
-                <div className="flex gap-3 justify-end">
-                    <button className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md">Enter</button>
-                </div>
-            </div>
+            ))}
         </div>
     )
 }

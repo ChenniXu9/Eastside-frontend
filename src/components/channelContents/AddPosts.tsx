@@ -1,19 +1,50 @@
+"use client";
+
+import React from 'react';
+
+import Link from "next/link";
 import Image from "next/image";
 
-const AddPost = () => {
-    const testAction = async (formData: FormData) => {
-        const desc = formData.get("desc") as string;
-        try {
-        // 
-        }catch (err) {
-            console.log(err);
-        }
-    };
+type User = {
+    id: string;
+    username: string;
+    profile_image: string | null;
+    first_name: string | null;
+    last_name: string | null;
+    description: string | null;
+    city: string | null;
+    createdAt: Date;
+  };
+  
+type Channel = {
+    id: number;
+    channel_name: string;
+    channel_image: string | null;
+    channel_description: string | null;
+    users: {
+      user: User;
+    }[];
+    posts: {
+      id: number;
+      desc: string;
+      img: string;
+      user: User;
+    }[];
+};
+
+interface AddPostProps {
+    channel: Channel;
+    currentUser: User;
+}
+
+
+const AddPost: React.FC<AddPostProps> = ({ channel, currentUser }) => {
+    // const {userId} = auth();
 
     return (
         <div className='p-4 bg-white shadow-md rounded-lg flex gap-4 justify-between text-sm'>
             {/* Avatar */}
-            <Image src="https://images.pexels.com/photos/27033599/pexels-photo-27033599/free-photo-of-coffee.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" 
+            <Image src={currentUser.profile_image || "/noavatar.png"}
                 alt="" 
                 width={48} 
                 height={48} 
@@ -22,7 +53,7 @@ const AddPost = () => {
             {/* Post */}
             <div className="flex-1">
                 {/* Text input */}
-                <form className="flex gap-4">
+                <form  action="" className="flex gap-4">
                     <textarea placeholder="What's on your mind?" 
                         className="flex-1 bg-slate-100 rounded-lg p-2" 
                         name="desc"
