@@ -8,9 +8,10 @@ interface EditCourseProps {
   semester: string;
   courseFrontpage: string;
   onSaveCourse: (updatedCourse: any) => void;
+  onCancel: () => void;
 }
 
-const EditCourse: React.FC<EditCourseProps> = ({ courseCode, courseName, semester, courseFrontpage, onSaveCourse }) => {
+const EditCourse: React.FC<EditCourseProps> = ({ courseCode, courseName, semester, courseFrontpage, onSaveCourse, onCancel }) => {
   const [editedCourseName, setEditedCourseName] = useState(courseName);
   const [editedSemester, setEditedSemester] = useState(semester);
   const [editedCourseFrontpage, setEditedCourseFrontpage] = useState(courseFrontpage);
@@ -66,7 +67,14 @@ const EditCourse: React.FC<EditCourseProps> = ({ courseCode, courseName, semeste
             required
           />
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end space-x-2">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="bg-gray-500 text-white py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-gray-600 transform hover:-translate-y-1"
+          >
+            Cancel
+          </button>
           <button
             type="submit"
             className="bg-blue-500 text-white py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-blue-600 transform hover:-translate-y-1"
@@ -80,3 +88,4 @@ const EditCourse: React.FC<EditCourseProps> = ({ courseCode, courseName, semeste
 };
 
 export default EditCourse;
+
