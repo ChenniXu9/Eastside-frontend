@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from 'react';
 
-
 type User = {
     id: string;
     username: string;
@@ -16,6 +15,21 @@ type User = {
     city: string | null;
     createdAt: Date;
   };
+
+type Comment = {
+    id: number;
+    desc: string;
+    userId: string;
+    postId: number;
+};
+
+type Post = {
+    id: number;
+    desc: string;
+    img: string;
+    user: User;
+    comments: Comment[];
+  };
   
 type Channel = {
     id: number;
@@ -25,12 +39,7 @@ type Channel = {
     users: {
       user: User;
     }[];
-    posts: {
-      id: number;
-      desc: string;
-      img: string;
-      user: User;
-    }[];
+    posts: Post[];
 };
 
 interface ChannelNavProps {

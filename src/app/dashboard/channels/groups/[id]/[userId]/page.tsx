@@ -17,6 +17,21 @@ type User = {
   createdAt: Date;
 };
 
+type Comment = {
+  id: number;
+  desc: string;
+  userId: string;
+  postId: number;
+};
+
+type Post = {
+  id: number;
+  desc: string;
+  img: string;
+  user: User;
+  comments: Comment[];
+};
+
 type Channel = {
   id: number;
   channel_name: string;
@@ -25,12 +40,7 @@ type Channel = {
   users: {
     user: User;
   }[];
-  posts: {
-    id: number;
-    desc: string;
-    img: string;
-    user: User;
-  }[];
+  posts: Post[];
 };
 
 const Groups = ()=> {

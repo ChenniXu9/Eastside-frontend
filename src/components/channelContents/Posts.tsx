@@ -18,6 +18,21 @@ type User = {
     createdAt: Date;
   };
   
+  type Comment = {
+    id: number;
+    desc: string;
+    userId: string;
+    postId: number;
+};
+
+type Post = {
+    id: number;
+    desc: string;
+    img: string;
+    user: User;
+    comments: Comment[];
+  };
+  
 type Channel = {
     id: number;
     channel_name: string;
@@ -26,12 +41,7 @@ type Channel = {
     users: {
       user: User;
     }[];
-    posts: {
-      id: number;
-      desc: string;
-      img: string;
-      user: User;
-    }[];
+    posts: Post[];
 };
 
 interface PostProps {
@@ -43,7 +53,7 @@ const Posts: React.FC<PostProps> = ({ channel, currentUser }) => {
     return (
       <div className='flex flex-col gap-4'>
         {channel.posts.map(post => (
-          <div key={post.id} className='flex flex-col gap-4'>
+          <div key={post.id} className='flex flex-col gap-4 py-3'>
             {/* User */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -64,7 +74,6 @@ const Posts: React.FC<PostProps> = ({ channel, currentUser }) => {
             </div>
             {/* Contents */}
             <div className="flex flex-col gap-4">
-                
                 {post.img && (
                     <div className="w-full min-h-96 relative">
                         <Image 
@@ -126,6 +135,7 @@ const Posts: React.FC<PostProps> = ({ channel, currentUser }) => {
             </div>
             {/* Comments */}
             <Comments />
+            <hr className="border-t-1 border-gray-50 w-36 self-center"/>
           </div>
         ))}
       </div>
