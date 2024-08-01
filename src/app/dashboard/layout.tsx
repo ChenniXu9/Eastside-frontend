@@ -23,6 +23,7 @@
 import Navbar from "@/components/dashboard/navbar/navbar";
 import Sidebar from "@/components/dashboard/Sidebar/sidebar";
 import styles from "../../components/dashboard/dashboard.module.css";
+
 export default function DashboardLayout({
     children,
 }: {
