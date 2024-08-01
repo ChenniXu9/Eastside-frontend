@@ -64,7 +64,7 @@ const Posts: React.FC<PostProps> = ({ channel, currentUser }) => {
             </div>
             {/* Contents */}
             <div className="flex flex-col gap-4">
-                <p>{post.desc}</p>
+                
                 {post.img && (
                     <div className="w-full min-h-96 relative">
                         <Image 
@@ -75,7 +75,8 @@ const Posts: React.FC<PostProps> = ({ channel, currentUser }) => {
                         />
                     
                     </div>
-                )}              
+                )}  
+                <p>{post.desc}</p>            
             </div>
             {/* Interaction */}
             <div className="flex items-center justify-between text-sm my-4">

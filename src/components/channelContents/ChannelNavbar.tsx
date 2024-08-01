@@ -40,26 +40,26 @@ interface ChannelNavProps {
 
 const ChannelNavbar: React.FC<ChannelNavProps> = ({ channel, currentUser }) => {
     // Fix the Channel intro while scrolling down
-    const [showOnScroll, setShowOnScroll] = useState(false);
+    // const [showOnScroll, setShowOnScroll] = useState(false);
 
-    useEffect(() => {
-        const handleScroll = () => {
-        if (window.scrollY > 500) { // Adjust this value as needed
-            setShowOnScroll(true);
-        } else {
-            setShowOnScroll(false);
-        }
-        };
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //     if (window.scrollY > 1) { // Adjust this value as needed
+    //         setShowOnScroll(true);
+    //     } else {
+    //         setShowOnScroll(false);
+    //     }
+    //     };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-        window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+    //     window.addEventListener('scroll', handleScroll);
+    //     return () => {
+    //     window.removeEventListener('scroll', handleScroll);
+    //     };
+    // }, []);
 
     return (
-        <div>
-            <div className='p-4 w-full bg-white  flex flex-row justify-between'>
+        <div className='bg-gray-50  '>
+            <div className='p-4 w-full  flex flex-row justify-between'>
                 {/* Left */}
                 <div className="px-4 flex flex-col">
                     <div className="text-xl">Channels</div>
@@ -77,7 +77,7 @@ const ChannelNavbar: React.FC<ChannelNavProps> = ({ channel, currentUser }) => {
                     />
                 </div>
             </div>
-            <div className={`fixed z-50 top-0 p-1 w-[52.3%] bg-white flex flex-row shadow-md transition-transform duration-1500 ease-in-out ${showOnScroll ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
+            {/* <div className={`fixed z-50 top-0 p-1 w-full bg-white flex flex-row shadow-md transition-transform duration-1500 ease-in-out ${showOnScroll ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
                     <div className="px-4 flex items-center gap-3 justify-start">
                         <Image src={channel.channel_image || "/noavatar.png"} 
                             alt="" 
@@ -87,7 +87,7 @@ const ChannelNavbar: React.FC<ChannelNavProps> = ({ channel, currentUser }) => {
                         />
                         <span className="font-semibold text-sm">{channel.channel_name}</span>
                     </div>
-                </div>
+                </div> */}
             
 
         </div>

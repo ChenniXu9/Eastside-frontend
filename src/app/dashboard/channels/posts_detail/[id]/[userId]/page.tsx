@@ -5,7 +5,6 @@ import LeftMenu from "@/components/LeftMenu";
 import ChannelNavbar from "@/components/channelContents/ChannelNavbar";
 import MyPostsRightbar from "@/components/channelContents/MyPostsRightbar";
 import Posts from "@/components/channelContents/PostsDetail";
-import prisma from "@/lib/client";
 
 type User = {
   id: string;
@@ -74,9 +73,9 @@ const PostsDetail = () => {
       <div><ChannelNavbar channel={channel} currentUser={currentUser}/></div>
       <div className="flex gap-6 pt-6">
         <div className="w-full lg:w-[70%] xl:w-[70%]">
-          <Posts />
+          <Posts channel={channel} currentUser={currentUser}/>
         </div>
-        <div className="hidden lg:block w-[30%]"><MyPostsRightbar/></div>
+        <div className="hidden lg:block w-[30%]"><MyPostsRightbar channel={channel} currentUser={currentUser}/></div>
       </div>
     </div>
   )

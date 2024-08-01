@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkLoaded, ClerkLoading, ClerkProvider, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
-import Link from "next/link";
+import { ClerkProvider } from '@clerk/nextjs';
 import localFont from 'next/font/local';
 
 const inter = Inter({ subsets: ['latin'] });

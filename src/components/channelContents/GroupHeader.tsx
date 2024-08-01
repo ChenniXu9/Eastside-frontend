@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Link from "next/link";
 import Image from "next/image";
@@ -40,7 +40,28 @@ interface GroupHeaderProps {
 const GroupHeader: React.FC<GroupHeaderProps> = ({ channel, currentUser }) => {
     const hasJoined = channel.users.some(user => user.user.id === currentUser.id);
 
+    // Fix the Channel intro while scrolling down
+    const [showOnScroll, setShowOnScroll] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+        if (window.scrollY > 500) { // Adjust this value as needed
+            setShowOnScroll(true);
+        } else {
+            setShowOnScroll(false);
+        }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+        window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+
+
     return (
+      <div>
         <div className='p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4'>
             <div className="flex justify-between">
                 <div className="flex items-center gap-4">
@@ -64,6 +85,18 @@ const GroupHeader: React.FC<GroupHeaderProps> = ({ channel, currentUser }) => {
             </div>
             <p className="text-xs">{channel.channel_description}</p>
         </div>
+        <div className={`fixed z-50 top-0 p-1 w-full bg-white flex flex-row shadow-md transition-transform duration-1500 ease-in-out ${showOnScroll ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
+            <div className="px-4 flex items-center gap-3 justify-start">
+                        <Image src={channel.channel_image || "/noavatar.png"} 
+                            alt="" 
+                            width={40}
+                            height={40}
+                            className="w-7 h-7 object-cover"
+                        />
+                        <span className="font-semibold text-sm">{channel.channel_name}</span>
+                    </div>
+                </div>
+      </div>
     )
 }
 

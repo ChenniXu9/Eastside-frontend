@@ -10,18 +10,20 @@ import ChannelHome from "@/components/channelContents/ChannelHome";
 
 
 const Channels = async() => {
-  // Fetch user id
-  const {userId} = auth();
+  // This is for test, you can comment it out.
+  // Once you got a user id, could send it to `<ChannelHome userId={user.id}/>`
 
-  if (!userId) return null;
+  // const {userId} = auth();
 
-  const user = await prisma.user.findFirst({
-    where:{
-      id: userId
-    },
-  });
+  // if (!userId) return null;
+
+  // const user = await prisma.user.findFirst({
+  //   where:{
+  //     id: userId
+  //   },
+  // });
   
-  console.log(user)
+  // console.log(user)
   if (!user) return null;
 
   return (

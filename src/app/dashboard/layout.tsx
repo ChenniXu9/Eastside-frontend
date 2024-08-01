@@ -35,7 +35,7 @@ export default function DashboardLayout({
             </div>
             <div className="flex-1 ml-64 min-h-screen bg-white p-5">
                 <Navbar />
-                <div className="h-screen overflow-auto">{children}</div>
+                <div className="h-full overflow-hidden">{children}</div>
             </div>
         </div>
     );

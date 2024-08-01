@@ -8,8 +8,8 @@ type HomeNavProps = {
 const HomeNav = ({ username }: HomeNavProps) => {
     
     return (
-        <div>
-            <div className='p-4 w-full bg-white  flex flex-row justify-between'>
+        <div className='p-4 bg-gray-50 rounded-lg shadow-md text-lg flex flex-col gap-4'>
+            <div className='p-4 w-full  flex flex-row justify-between'>
                 {/* Left */}
                 <div className="px-4 flex flex-col">
                     <div className="text-xl">Channels</div>
