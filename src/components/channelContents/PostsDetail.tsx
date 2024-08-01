@@ -19,8 +19,8 @@ type User = {
   type Comment = {
     id: number;
     desc: string;
-    userId: string;
-    postId: number;
+    user: User;
+    post: Post;
   };
   
   type Post = {

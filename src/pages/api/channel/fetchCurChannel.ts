@@ -20,7 +20,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         posts: {
           include: {
             user: true,
-            comments: true,
+            comments: {
+              include: {
+                user: true,
+              },
+            },
           },
         },
       },

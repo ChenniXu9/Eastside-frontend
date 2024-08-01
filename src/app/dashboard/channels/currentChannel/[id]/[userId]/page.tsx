@@ -22,8 +22,8 @@ type User = {
 type Comment = {
   id: number;
   desc: string;
-  userId: string;
-  postId: number;
+  user: User;
+  post: Post;
 };
 
 type Post = {
@@ -84,11 +84,14 @@ const CurrentChannel = () => {
       <div className="flex gap-6 pt-6">
         <div className="w-full lg:w-[70%] xl:w-[70%]">
           <div className="flex flex-col gap-6">
-            <GroupHeader channel={channel} currentUser={currentUser}/>
-    
-              <AddPost channel={channel} currentUser={currentUser}/>
-              <Feed channel={channel} currentUser={currentUser}/>
-                    
+            <GroupHeader channel={channel} currentUser={currentUser}/>    
+            {
+              hasJoined &&
+              <AddPost channel={channel} currentUser={currentUser}/>               
+            } 
+            {hasJoined &&
+            <Feed channel={channel} currentUser={currentUser}/>
+            }                  
           </div>
         </div>
         <div className="hidden lg:block w-[30%]"><ChannelRightMenu channel={channel} currentUser={currentUser} /></div>

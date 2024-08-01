@@ -21,8 +21,8 @@ type User = {
   type Comment = {
     id: number;
     desc: string;
-    userId: string;
-    postId: number;
+    user: User;
+    post: Post;
 };
 
 type Post = {
@@ -90,7 +90,7 @@ const Posts: React.FC<PostProps> = ({ channel, currentUser }) => {
             {/* Interaction */}
             <div className="flex items-center justify-between text-sm my-4">
               <div className="flex gap-8">
-                <div className="flex items-center gap-4 bg-slate-50 p-2 rounded-xl">
+                {/* <div className="flex items-center gap-4 bg-slate-50 p-2 rounded-xl">
                   <Image 
                     src="/like.png" 
                     alt="Like" 
@@ -102,7 +102,7 @@ const Posts: React.FC<PostProps> = ({ channel, currentUser }) => {
                   <span className="text-gray-500">123
                     <span className="hidden md:inline xl:hidden"> Likes</span>
                   </span>
-                </div>
+                </div> */}
                 <div className="flex items-center gap-4 bg-slate-50 p-2 rounded-xl">
                   <Image 
                     src="/comment.png" 
@@ -112,12 +112,12 @@ const Posts: React.FC<PostProps> = ({ channel, currentUser }) => {
                     className="cursor-pointer"
                   />
                   <span className="text-gray-300">|</span>
-                  <span className="text-gray-500">67
-                    <span className="hidden md:inline xl:hidden"> Comments</span>
+                  <span className="text-gray-500">{post.comments.length}
+                    <span className="hidden md:inline xl:inline"> Comments</span>
                   </span>
                 </div>
               </div>
-              <div className="">
+              {/* <div className="">
                 <div className="flex items-center gap-4 bg-slate-50 p-2 rounded-xl">
                   <Image 
                     src="/share.png" 
@@ -131,10 +131,10 @@ const Posts: React.FC<PostProps> = ({ channel, currentUser }) => {
                     <span className="hidden md:inline xl:hidden"> Shares</span>
                   </span>
                 </div>
-              </div>    
+              </div>     */}
             </div>
             {/* Comments */}
-            <Comments />
+            <Comments postId={post.id} channel={channel} currentUser={currentUser}/>
             <hr className="border-t-1 border-gray-50 w-36 self-center"/>
           </div>
         ))}
