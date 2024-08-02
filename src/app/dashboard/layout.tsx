@@ -22,6 +22,7 @@
 // }
 import Navbar from "@/components/dashboard/navbar/navbar";
 import Sidebar from "@/components/dashboard/Sidebar/sidebar";
+import styles from "../../components/dashboard/dashboard.module.css";
 
 export default function DashboardLayout({
     children,
@@ -35,7 +36,7 @@ export default function DashboardLayout({
             </div>
             <div className="flex-1 ml-64 min-h-screen bg-white p-5">
                 <Navbar />
-                <div className="h-screen overflow-auto">{children}</div>
+                <div className="h-full overflow-hidden">{children}</div>
             </div>
         </div>
     );
