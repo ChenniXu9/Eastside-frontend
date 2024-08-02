@@ -82,7 +82,7 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
                                 fill
                                 className="rounded-md object-cover"
                             />
-                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
                                 <Image
                                     src={user.avatar || "/noAvatar.png"}
                                     alt=""
@@ -95,14 +95,14 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
                                         ? user.name + " " + user.surname
                                         : user.username}
                                 </h1>
-                                <div className="flex items-center justify-center gap-12">
-                                    <div className="flex flex-col items-center">
+                                <div className="flex items-center justify-center gap-14">
+                                    <div className="flex flex-col items-center flex-1">
                                         <span className="font-medium">
                                             {user._count.posts}
                                         </span>
                                         <span className="text-sm">Posts</span>
                                     </div>
-                                    <div className="flex flex-col items-center">
+                                    <div className="flex flex-col items-center flex-1">
                                         <span className="font-medium">
                                             {user._count.followers}
                                         </span>
@@ -110,7 +110,7 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
                                             Followers
                                         </span>
                                     </div>
-                                    <div className="flex flex-col items-center">
+                                    <div className="flex flex-col items-center flex-1">
                                         <span className="font-medium">
                                             {user._count.followings}
                                         </span>
@@ -122,7 +122,6 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
                             </div>
                         </div>
                     </div>
-                    {/* <ProfileAboutMe user={user} /> */}
                     <div className="flex flex-row justify-center">
                         <ProfileAboutMe user={user} />
                         <ProfileAboutMe user={user} />

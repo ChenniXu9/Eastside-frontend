@@ -1,18 +1,17 @@
-'use client';
+"use client";
+import { useClerk } from "@clerk/nextjs";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
     MdDashboard,
     MdDoorbell,
     MdLogout,
-    MdOutlineSettings,
     MdPerson2,
     MdShoppingBag,
     MdSupervisedUserCircle,
 } from "react-icons/md";
 import MenuLink from "../menuLink/menuLink";
 import styles from "./sidebar.module.css";
-import { useClerk } from "@clerk/nextjs";
-import { useRouter } from 'next/navigation';
 
 // Sidebar item lists
 const menuItems = [
@@ -46,14 +45,14 @@ const menuItems = [
         list: [
             {
                 title: "My Profile",
-                path: "/dashboard/profile/1",
+                path: "/dashboard/profile",
                 icon: <MdPerson2 />,
             },
-            {
-                title: "Settings",
-                path: "/dashboard/settings",
-                icon: <MdOutlineSettings />,
-            },
+            // {
+            //     title: "Settings",
+            //     path: "/dashboard/settings",
+            //     icon: <MdOutlineSettings />,
+            // },
         ],
     },
 ];
@@ -65,7 +64,7 @@ const Sidebar = () => {
 
     const handleSignOut = async () => {
         await signOut();
-        router.push('/login');
+        router.push("/login");
     };
 
     const user = {
@@ -80,7 +79,7 @@ const Sidebar = () => {
                     alt=""
                     sizes="100vw"
                     style={{
-                        width: "80%",
+                        width: "100%",
                         height: "auto",
                     }}
                     width={400}
@@ -102,14 +101,14 @@ const Sidebar = () => {
             </div>
             {/* BOTTOM */}
             <div className="md:flex h-[10%] text-md justify-between flex-col">
-            <button
-                type="button"
-                onClick={handleSignOut}
-                className={styles.logout}
-            >
-                <MdLogout />
-                Logout
-            </button>
+                <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className={styles.logout}
+                >
+                    <MdLogout />
+                    Logout
+                </button>
             </div>
         </div>
     );

@@ -17,8 +17,8 @@ const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
         <div className="flex flex-col gap-4 text-gray-500 w-[40%]">
             <div className="flex items-center gap-2">
                 <span className="text-xl text-black">
-                    {user.name && user.surname
-                        ? user.name + " " + user.surname
+                    {user.name && user.lastname
+                        ? user.name + " " + user.lastname
                         : user.username}
                 </span>
                 <span className="text-sm">@{user.username}</span>

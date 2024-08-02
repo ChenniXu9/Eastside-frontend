@@ -1,4 +1,3 @@
-// import Navbar from "@/components/dashboard/navbar/navbar";
 // import Sidebar from "@/components/dashboard/sidebar/sidebar";
 // import styles from "../../components/dashboard/dashboard.module.css";
 // export default function DashboardLayout({
@@ -30,12 +29,14 @@ export default function DashboardLayout({
 }) {
     return (
         <div className="relative flex">
-            <div className="fixed top-0 left-0 w-64 h-full bg-slate-300 p-5 ">
+            <div className="fixed top-0 left-0 w-[15%] h-full bg-slate-300 p-5 ">
                 <Sidebar />
             </div>
             <div className="flex-1 ml-64 min-h-screen bg-white p-5">
-                <Navbar />
-                <div className="h-screen overflow-auto">{children}</div>
+                <div className="h-full overflow-hidden">
+                    <Navbar />
+                    <div className="mt-3">{children}</div>
+                </div>
             </div>
         </div>
     );

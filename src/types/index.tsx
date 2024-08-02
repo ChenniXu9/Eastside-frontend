@@ -5,7 +5,7 @@ export interface FileItem {
     uploadTime?: string;
 }
 
-interface User {
+export interface User {
     id: number;
     name?: string;
     lastname?: string;
