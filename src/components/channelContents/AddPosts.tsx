@@ -1,10 +1,60 @@
+"use client";
+
+import React from 'react';
+
+import Link from "next/link";
 import Image from "next/image";
 
-const AddPost = () => {
+type User = {
+    id: string;
+    username: string;
+    profile_image: string | null;
+    first_name: string | null;
+    last_name: string | null;
+    description: string | null;
+    city: string | null;
+    createdAt: Date;
+  };
+
+type Comment = {
+    id: number;
+    desc: string;
+    user: User;
+    post: Post;
+};
+
+type Post = {
+    id: number;
+    desc: string;
+    img: string;
+    user: User;
+    comments: Comment[];
+  };
+  
+type Channel = {
+    id: number;
+    channel_name: string;
+    channel_image: string | null;
+    channel_description: string | null;
+    users: {
+      user: User;
+    }[];
+    posts: Post[];
+};
+
+interface AddPostProps {
+    channel: Channel;
+    currentUser: User;
+}
+
+
+const AddPost: React.FC<AddPostProps> = ({ channel, currentUser }) => {
+    // const {userId} = auth();
+
     return (
         <div className='p-4 bg-white shadow-md rounded-lg flex gap-4 justify-between text-sm'>
             {/* Avatar */}
-            <Image src="https://images.pexels.com/photos/27033599/pexels-photo-27033599/free-photo-of-coffee.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" 
+            <Image src={currentUser.profile_image || "/noavatar.png"}
                 alt="" 
                 width={48} 
                 height={48} 
@@ -13,9 +63,10 @@ const AddPost = () => {
             {/* Post */}
             <div className="flex-1">
                 {/* Text input */}
-                <div className="flex gap-4">
+                <form  action="" className="flex gap-4">
                     <textarea placeholder="What's on your mind?" 
-                        className="flex-1 bg-slate-100 rounded-lg p-2"
+                        className="flex-1 bg-slate-100 rounded-lg p-2" 
+                        name="desc"
                     >
                     </textarea>
                     <Image src="/emoji.png" 
@@ -24,7 +75,8 @@ const AddPost = () => {
                         height={20} 
                         className="w-5 h-5 cursor-pointer self-end"
                     />
-                </div>
+                    <button className="bg-blue-500 p-2 mt-8 rounded-md text-white disabled:bg-blue-300 disabled:cursor-not-allowed">Send</button>
+                </form>
                 {/* Post options */}
                 <div className="flex items-center gap-4 mt-4 text-gray-400 flex-wrap">
                     <div className="flex items-center gap-2 cursor-pointer">

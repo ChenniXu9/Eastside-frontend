@@ -33,10 +33,8 @@ export default function DashboardLayout({
                 <Sidebar />
             </div>
             <div className="flex-1 ml-64 min-h-screen bg-white p-5">
-                <div className="h-full overflow-hidden">
-                    <Navbar />
-                    <div className="mt-3">{children}</div>
-                </div>
+                <Navbar />
+                <div className="h-full overflow-hidden">{children}</div>
             </div>
         </div>
     );
