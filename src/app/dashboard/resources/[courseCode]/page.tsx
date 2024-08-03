@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { createFolder, onSubmit, deleteObject } from './actions';
 
 interface FileItem {
   name: string;
@@ -9,6 +10,7 @@ interface FileItem {
   url?: string;
   title?: string;
   downloadable?: boolean;
+  key?: string;
   children?: FileItem[];
 }
 
@@ -42,9 +44,21 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
   const [newFileUrl, setNewFileUrl] = useState<string>('');
   const [newFileTitle, setNewFileTitle] = useState<string>('');
   const [newFileDownloadable, setNewFileDownloadable] = useState<boolean>(true);
+  const [showUpdateSection, setShowUpdateSection] = useState<boolean>(false);
 
-  const handleFileUpload = () => {
-    if (!selectedFolder) return;
+  const handleFileUpload = async () => {
+    if (!selectedFolder || (!newFile && !newFileUrl)) return;
+
+    const formData = new FormData();
+    if (newFile) {
+      formData.append('file', newFile);
+    } else if (newFileUrl) {
+      formData.append('url', newFileUrl);
+    }
+
+    const key = await onSubmit(formData, selectedFolder);
+
+    if (!key) return;
 
     let newFileItem: FileItem;
     if (newFile) {
@@ -54,6 +68,7 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
         url: URL.createObjectURL(newFile),
         title: newFileTitle || newFile.name,
         downloadable: newFileDownloadable,
+        key: key
       };
     } else if (newFileUrl) {
       newFileItem = {
@@ -62,6 +77,7 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
         url: newFileUrl,
         title: newFileTitle || newFileUrl,
         downloadable: false, // URL links are not downloadable
+        key: key
       };
     } else {
       return;
@@ -88,16 +104,25 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
     setSelectedFolder('');
   };
 
-  const handleDelete = (folderIndex: number, fileIndex: number) => {
+  const handleDelete = async (key: string) => {
+    console.log(`Deleting file with key: ${key}`);  // 添加调试信息
+    await deleteObject(key);
+
     setFiles(prevFiles => {
-      const updatedFiles = [...prevFiles];
-      updatedFiles[folderIndex].children?.splice(fileIndex, 1);
+      const updatedFiles = prevFiles.map(folder => {
+        return {
+          ...folder,
+          children: folder.children?.filter(file => file.key !== key) || []
+        };
+      });
       return updatedFiles;
     });
   };
 
-  const createNewFolder = () => {
+  const createNewFolder = async () => {
     if (newFolderName.trim() === '') return;
+
+    await createFolder(newFolderName);
 
     const newFolder: FileItem = {
       name: newFolderName,
@@ -153,7 +178,7 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
                           )}
                           <a href={childFile.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">View</a>
                           <button 
-                            onClick={() => handleDelete(folderIndex, fileIndex)} 
+                            onClick={() => handleDelete(childFile.key || '')} 
                             className="text-red-500 underline"
                           >
                             Delete
@@ -175,7 +200,7 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
                   )}
                   <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">View</a>
                   <button 
-                    onClick={() => handleDelete(folderIndex, -1)} 
+                    onClick={() => handleDelete(file.key || '')} 
                     className="text-red-500 underline"
                   >
                     Delete
@@ -185,91 +210,106 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
             )}
           </div>
         ))}
-      </div>
-
-      <div className="flex justify-center mt-10">
-        <input 
-          type="text" 
-          placeholder="New Folder Name" 
-          value={newFolderName} 
-          onChange={(e) => setNewFolderName(e.target.value)} 
-          className="border p-2 mr-2"
-        />
-        <button onClick={createNewFolder} className="p-2 bg-blue-500 text-white rounded">Create Folder</button>
-      </div>
-
-      <form className="space-y-4 w-2/3 mx-auto mt-4 mb-4">
-        <div className="mb-4">
-          <select 
-            value={selectedFolder} 
-            onChange={(e) => setSelectedFolder(e.target.value)} 
-            className="border p-2 w-full"
-          >
-            <option value="" disabled>Select Folder to Upload</option>
-            {files.map((file, index) => (
-              file.type === 'directory' && <option key={index} value={file.name}>{file.name}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <input 
-            type="text" 
-            placeholder="File Title" 
-            value={newFileTitle} 
-            onChange={(e) => setNewFileTitle(e.target.value)} 
-            className="border p-2 w-full"
-          />
-        </div>
-
-        <div className="mb-4">
-          <input 
-            type="file" 
-            onChange={(e) => {
-              setNewFileUrl('');
-              if (e.target.files) setNewFile(e.target.files[0]);
-            }} 
-            className="border p-2 w-full"
-          />
-          <input 
-            type="url" 
-            placeholder="or add URL link" 
-            value={newFileUrl} 
-            onChange={(e) => {
-              setNewFile(null);
-              setNewFileUrl(e.target.value);
-            }} 
-            className="border p-2 w-full mt-2"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="flex items-center">
-            <input 
-              type="checkbox" 
-              checked={newFileDownloadable} 
-              onChange={(e) => setNewFileDownloadable(e.target.checked)} 
-              className="mr-2"
-              disabled={!!newFileUrl} // Disable the checkbox if it's a URL
-            />
-            Downloadable (only for files)
-          </label>
-        </div>
-
-        <div className="mb-4">
+        <div className="flex justify-center mt-4">
           <button 
-            type="button" 
-            onClick={handleFileUpload} 
-            className="p-2 bg-blue-500 text-white rounded w-full"
+            onClick={() => setShowUpdateSection(prev => !prev)} 
+            className="border border-blue-500 text-blue-500 py-2 px-4 rounded-full bg-white hover:bg-blue-100"
           >
-            Upload
+            {showUpdateSection ? 'Hide' : 'Update Files'}
           </button>
         </div>
-      </form>
+      </div>
+
+      {showUpdateSection && (
+        <>
+          <div className="flex justify-center">
+            <input 
+              type="text" 
+              placeholder="New Folder Name" 
+              value={newFolderName} 
+              onChange={(e) => setNewFolderName(e.target.value)} 
+              className="border p-2 mr-2"
+            />
+            <button onClick={createNewFolder} className="p-2 bg-blue-500 text-white rounded">Create Folder</button>
+          </div>
+
+          <form 
+            className="space-y-4 w-2/3 mx-auto mt-4 mb-4"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              await handleFileUpload();
+            }}
+          >
+            <div className="mb-4">
+              <select 
+                value={selectedFolder} 
+                onChange={(e) => setSelectedFolder(e.target.value)} 
+                className="border p-2 w-full"
+              >
+                <option value="" disabled>Select Folder to Upload</option>
+                {files.map((file, index) => (
+                  file.type === 'directory' && <option key={index} value={file.name}>{file.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="mb-4">
+              <input 
+                type="text" 
+                placeholder="File Title" 
+                value={newFileTitle} 
+                onChange={(e) => setNewFileTitle(e.target.value)} 
+                className="border p-2 w-full"
+              />
+            </div>
+
+            <div className="mb-4">
+              <input 
+                type="file" 
+                onChange={(e) => {
+                  setNewFileUrl('');
+                  if (e.target.files) setNewFile(e.target.files[0]);
+                }} 
+                className="border p-2 w-full"
+              />
+              <input 
+                type="url" 
+                placeholder="or add URL link" 
+                value={newFileUrl} 
+                onChange={(e) => {
+                  setNewFile(null);
+                  setNewFileUrl(e.target.value);
+                }} 
+                className="border p-2 w-full mt-2"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="flex items-center">
+                <input 
+                  type="checkbox" 
+                  checked={newFileDownloadable} 
+                  onChange={(e) => setNewFileDownloadable(e.target.checked)} 
+                  className="mr-2"
+                  disabled={!!newFileUrl} // Disable the checkbox if it's a URL
+                />
+                Downloadable (only for files)
+              </label>
+            </div>
+
+            <div className="mb-4">
+              <button 
+                type="submit" 
+                className="p-2 bg-blue-500 text-white rounded w-full"
+              >
+                Upload
+              </button>
+            </div>
+          </form>
+        </>
+      )}
     </div>
   );
 };
 
 export default FilesPage;
-
-
