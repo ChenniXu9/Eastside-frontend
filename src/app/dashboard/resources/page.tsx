@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import CourseCard from '../../../components/resources/CourseCard';
 import AddCourse from '../../../components/resources/AddCourse';
 import EditCourse from '../../../components/resources/EditCourse';
-import ArchiveCourses from '../../../components/resources/ArchiveCourse';
+import ArchiveCourse from '../../../components/resources/ArchiveCourse';
 
 const initialCourses = [
   {
@@ -90,12 +90,13 @@ const ResourcePageContent: React.FC = () => {
   };
 
   const handleArchive = () => {
+    setSelectedCourses(courses.filter(course => course.archived).map(course => course.courseCode));
     setIsArchiving(true);
   };
-
+  
   const handleArchiveConfirm = (selectedCourses: string[]) => {
     setCourses(courses.map(course => 
-      selectedCourses.includes(course.courseCode) ? { ...course, archived: true } : course
+      selectedCourses.includes(course.courseCode) ? { ...course, archived: true } : { ...course, archived: false }
     ));
     setSelectedCourses(selectedCourses);
     setIsArchiving(false);
@@ -188,7 +189,7 @@ const ResourcePageContent: React.FC = () => {
         </div>
       )}
       {isArchiving && (
-        <ArchiveCourses
+        <ArchiveCourse
           courses={courses}
           selectedCourses={selectedCourses}
           onArchive={handleArchiveConfirm}
