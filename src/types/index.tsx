@@ -7,14 +7,17 @@ export interface FileItem {
 
 export interface User {
     id: number;
-    name?: string;
-    lastname?: string;
     username: string;
-    description?: string;
-    city?: string;
-    school?: string;
-    work?: string;
-    website?: string;
+    firstname: string;
+    lastname: string;
+    organization: string;
+    title: string;
+    phone: string;
+    phone_is_visible: boolean;
+    email_personal: string;
+    email_work: string;
+    graduation_year: string;
+    desc: string;
     profile_image?: string;
     cover_image?: string;
     password: string;

@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
     MdDashboard,
-    MdDoorbell,
     MdLogout,
     MdPerson2,
     MdShoppingBag,
@@ -32,11 +31,6 @@ const menuItems = [
                 title: "Channels",
                 path: "/dashboard/channels",
                 icon: <MdShoppingBag />,
-            },
-            {
-                title: "Notifications",
-                path: "/dashboard/notifications",
-                icon: <MdDoorbell />,
             },
         ],
     },
@@ -72,7 +66,7 @@ const Sidebar = () => {
         username: "testing",
     };
     return (
-        <div className="h-full flex justify-between flex-col">
+        <div className="h-full flex justify-between flex-col ">
             <div className="md:flex flex items-center gap-5 h-[10%]">
                 <Image
                     src={"/companyLogo.png"}

@@ -9,6 +9,6 @@
   
   .container:hover,
   .active {
-    background-color: #2e374a;
-    color:white
+    background-color: white;
+    color:#224c6b
   }

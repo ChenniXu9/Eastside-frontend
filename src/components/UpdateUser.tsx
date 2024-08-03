@@ -2,36 +2,18 @@
 
 // import { User } from "@prisma/client";
 import { updateProfile } from "@/lib/actions";
+import { User } from "@/types";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import UpdateButton from "./rightMenu/UpdateButton";
 
-interface User {
-    id: number;
-    name?: string;
-    lastname?: string;
-    username: string;
-    description?: string;
-    city?: string;
-    school?: string;
-    work?: string;
-    website?: string;
-    profile_image?: string;
-    cover_image?: string;
-    password: string;
-}
-
 const UpdateUser = ({ user }: { user: User }) => {
     const [open, setOpen] = useState(false);
     const [profile, setProfile] = useState<any>(false);
     const [cover, setCover] = useState<any>(false);
     const [showPassword, setShowPassword] = useState(false);
-
-    const toggleShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
 
     // const [state, formAction] = useActionState(updateProfile, {
     //     success: false,
@@ -47,12 +29,12 @@ const UpdateUser = ({ user }: { user: User }) => {
     };
 
     return (
-        <div className="">
+        <div className="p-2 border-2 rounded-full">
             <span
-                className="text-blue-500 text-xs cursor-pointer"
+                className="text-blue-500 text-xl cursor-pointer"
                 onClick={() => setOpen(true)}
             >
-                Update
+                Update your Information
             </span>
             {open && (
                 <div className="absolute w-screen h-screen top-0 left-0 bg-black bg-opacity-65 flex items-center justify-center z-50 ">
@@ -76,7 +58,7 @@ const UpdateUser = ({ user }: { user: User }) => {
                             {/* Profile Picture upload */}
                             <CldUploadWidget
                                 uploadPreset="eastside"
-                                onSuccess={(result) => setCover(result.info)}
+                                onSuccess={(result) => setProfile(result.info)}
                             >
                                 {({ open }) => {
                                     return (
@@ -123,7 +105,7 @@ const UpdateUser = ({ user }: { user: User }) => {
                                             <div className="flex items-center gap-2 cursor-pointer">
                                                 <Image
                                                     src={
-                                                        user.cover ||
+                                                        user.cover_image ||
                                                         "/noCover.png"
                                                     }
                                                     alt=""
@@ -155,7 +137,7 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     type="text"
                                     placeholder={user.name || "John"}
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="name"
+                                    name="firstname"
                                 />
                             </div>
                             <div className="flex flex-col gap-4">
@@ -169,7 +151,7 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     type="text"
                                     placeholder={user.lastname || "Doe"}
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="surname"
+                                    name="lastname"
                                 />
                             </div>
                             {/* INPUT */}
@@ -196,13 +178,13 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     htmlFor=""
                                     className="text-xs text-gray-500"
                                 >
-                                    City
+                                    Organization
                                 </label>
                                 <input
                                     type="text"
                                     placeholder={user.city || "New York"}
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="city"
+                                    name="organization"
                                 />
                             </div>
                             {/* INPUT */}
@@ -212,13 +194,13 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     htmlFor=""
                                     className="text-xs text-gray-500"
                                 >
-                                    School
+                                    Title
                                 </label>
                                 <input
                                     type="text"
                                     placeholder={user.school || "MIT"}
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="school"
+                                    name="title"
                                 />
                             </div>
                             {/* INPUT */}
@@ -228,15 +210,16 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     htmlFor=""
                                     className="text-xs text-gray-500"
                                 >
-                                    Work
+                                    Phone Number
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder={user.work || "Apple Inc."}
+                                    placeholder={user.phone || "1123342131"}
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="work"
+                                    name="phonenumber"
                                 />
                             </div>
+
                             {/* INPUT */}
 
                             <div className="flex flex-col gap-4">
@@ -244,13 +227,15 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     htmlFor=""
                                     className="text-xs text-gray-500"
                                 >
-                                    Website
+                                    Graduation year
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder={user.website || "lama.dev"}
+                                    placeholder={
+                                        user.graduation_year || "1123342131"
+                                    }
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="website"
+                                    name="graduation"
                                 />
                             </div>
                         </div>
@@ -285,7 +270,7 @@ const UpdateUser = ({ user }: { user: User }) => {
                                         placeholder="Confirm your password" // Placeholder is optional
                                         className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
                                         name="confirm password"
-                                        id="confirm password"
+                                        id="confirm-password"
                                     />
                                 </div>
                             </div>

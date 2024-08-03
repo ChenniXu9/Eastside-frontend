@@ -14,7 +14,15 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       fontFamily: {
-        custom: ['var(--font-custom)'],
+        avenir: ['Avenir', 'sans-serif'],
+        glaical: ['GlaicalIndifference', 'sans-serif'],
+      },
+      fontWeight: {
+        black: '900',
+        book: '400',
+        roman: '500',
+        bold: 'bold',
+        regular: 'normal',
       },
     },
   },

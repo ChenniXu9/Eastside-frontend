@@ -29,10 +29,10 @@ export default function DashboardLayout({
 }) {
     return (
         <div className="relative flex">
-            <div className="fixed top-0 left-0 w-[15%] h-full bg-slate-300 p-5 ">
+            <div className="fixed top-0 left-0 w-[15%] h-full p-5 hidden md:block bg-[#9ad0e3]">
                 <Sidebar />
             </div>
-            <div className="flex-1 ml-64 min-h-screen bg-white p-5">
+            <div className="flex-1 md:ml-64 min-h-screen bg-white p-5">
                 <Navbar />
                 <div className="h-full overflow-hidden">{children}</div>
             </div>

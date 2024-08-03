@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* styles/globals.css */
+@font-face {
+  font-family: 'Avenir';
+  src: url('/fonts/AvenirLTStd-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('/fonts/Avenir-Book.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('/fonts/Avenir-Roman.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GlaicalIndifference';
+  src: url('/fonts/GlacialIndifference-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'GlaicalIndifference';
+  src: url('/fonts/GlacialIndifference-Regular.otf') format('opentype');
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }

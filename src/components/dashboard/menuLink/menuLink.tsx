@@ -22,12 +22,12 @@ const MenuLink: React.FC<MenuLinkProps> = ({ item }) => {
     return (
         <Link
             href={item.path}
-            className={`${styles.container} ${
+            className={`font-avenir ${styles.container} ${
                 pathname === item.path && styles.active
             }`}
         >
             {item.icon}
-            {item.title}
+            <h1 className="font-avenir text-xl">{item.title}</h1>
         </Link>
     );
 };

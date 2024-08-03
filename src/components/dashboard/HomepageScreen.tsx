@@ -46,7 +46,7 @@ const HompageScreen = (props: Props) => {
                 <h1 className="text-3xl font-bold mb-5">
                     Application Description
                 </h1>
-                <h3>
+                <h3 className="text-xl">
                     The aim of this application is to create a all-in-one
                     application for leadership Eastside student to use where
                     they can connect with fellow alumni and student, share
