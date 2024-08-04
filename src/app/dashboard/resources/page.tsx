@@ -104,6 +104,26 @@ const ResourcePageContent: React.FC = () => {
     };
 
     const handleArchive = () => {
+        setSelectedCourses(
+            courses
+                .filter((course) => course.archived)
+                .map((course) => course.courseCode)
+        );
+        setIsArchiving(true);
+    };
+
+    const handleArchiveConfirm = (selectedCourses: string[]) => {
+        setCourses(
+            courses.map((course) =>
+                selectedCourses.includes(course.courseCode)
+                    ? { ...course, archived: true }
+                    : { ...course, archived: false }
+            )
+        );
+        setSelectedCourses(selectedCourses);
+        setIsArchiving(false);
+    };
+    const handleArchive = () => {
         setIsArchiving(true);
     };
 
