@@ -201,6 +201,5 @@ const AllGroups: React.FC<AllGroupsProps> = ({ channel, currentUser }) => {
     )
 }
 
-export default AllGroups;
 
 export default AllGroups;
