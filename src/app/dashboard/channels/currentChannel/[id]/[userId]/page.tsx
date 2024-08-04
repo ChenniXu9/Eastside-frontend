@@ -102,7 +102,7 @@ const CurrentChannel = () => {
         loadPosts();
     }, [channel?.id]);
 
-    if (!channel || !currentUser) return <div>Loading...</div>;
+  if (!channel || !currentUser) return <div>Loading...</div>;
 
     const handlePostAdded = (newPost: Post) => {
         setPosts((prevPosts) => [newPost, ...prevPosts]); // Add the new post to the top of the list
