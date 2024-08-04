@@ -527,3 +527,4 @@ export const addComment = async (desc: string, postId: number) => {
     throw new Error("Something went wrong!");
   }
 };
+
