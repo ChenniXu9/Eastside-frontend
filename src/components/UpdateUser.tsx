@@ -31,9 +31,9 @@ const UpdateUser = ({ user }: { user: User }) => {
     console.log("profile", profile);
 
     return (
-        <div className="p-2 border-2 rounded-full">
+        <div className="p-3 bg-[#438bb4] rounded-full hover:bg-[#224c6b]">
             <span
-                className="text-blue-500 text-xl cursor-pointer"
+                className="text-md cursor-pointer text-white"
                 onClick={() => setOpen(true)}
             >
                 Update your Information
@@ -59,7 +59,7 @@ const UpdateUser = ({ user }: { user: User }) => {
                         className="p-12 bg-white rounded-lg shadow-md flex flex-col gap-2 w-full md:w-1/2 xl:w-1/3 relative text-center"
                     >
                         {/* TITLE */}
-                        <h1>Update Profile</h1>
+                        <h1 className="text-xl">Update Profile</h1>
                         <div className="flex flex-row justify-evenly">
                             {/* Profile Picture upload */}
                             <CldUploadWidget
@@ -175,24 +175,6 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     htmlFor=""
                                     className="text-xs text-gray-500"
                                 >
-                                    Description
-                                </label>
-                                <textarea
-                                    placeholder={
-                                        user.description ||
-                                        "Life is beautiful..."
-                                    }
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="description"
-                                />
-                            </div>
-
-                            {/* INPUT */}
-                            <div className="flex flex-col gap-4">
-                                <label
-                                    htmlFor=""
-                                    className="text-xs text-gray-500"
-                                >
                                     Organization
                                 </label>
                                 <input
@@ -288,6 +270,25 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     }
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
                                     name="personal_email"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            {/* INPUT */}
+                            <div className="flex flex-col gap-4">
+                                <label
+                                    htmlFor=""
+                                    className="text-xs text-gray-500"
+                                >
+                                    Description
+                                </label>
+                                <textarea
+                                    placeholder={
+                                        user.description ||
+                                        "Life is beautiful..."
+                                    }
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    name="description"
                                 />
                             </div>
                         </div>

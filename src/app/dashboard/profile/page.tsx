@@ -1,5 +1,6 @@
 // import Feed from "@/components/feed/Feed";
 // import LeftMenu from "@/components/leftMenu/LeftMenu";
+import ProfilePosts from "@/components/dashboard/profile/ProfilePosts";
 import ProfileAboutMe from "@/components/dashboard/profile/singleUser/ProfileAboutMe";
 import prisma from "@/lib/client";
 import Image from "next/image";
@@ -7,34 +8,6 @@ import { notFound } from "next/navigation";
 
 const ProfilePage = async ({ params }: { params: { username: string } }) => {
     const username = params.username || "truont2";
-    // const user = {
-    //     img: "/noavatar.png",
-    //     id: 0,
-    //     firstname: "takara",
-    //     lastname: "truong",
-    //     organization: "Norhteastern",
-    //     title: "idfk",
-    //     cover: null,
-    //     avatar: null,
-    //     phone: "10101010",
-    //     phone_is_visible: true,
-    //     email_work: "testing@email",
-    //     email_personal: "testing#ikkd",
-    //     address: "testing address",
-    //     _count: {
-    //         followers: 20,
-    //         posts: 10,
-    //         followings: 10,
-    //     },
-    //     username: "truont2",
-    //     current_job: "nothing",
-    //     country: "america",
-    //     isAdmin: false,
-    //     isActive: false,
-    //     work: "work",
-    //     graduation_year: "022312",
-    //     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi aspernatur fugiat rerum omnis inventore facere saepe voluptatem et, temporibus dolores nam ipsa. Amet repudiandae fuga numquam minima repellat maxime rerum!",
-    // };
 
     const user = await prisma.user.findFirst({
         where: {
@@ -47,22 +20,18 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
     if (!user) return notFound();
 
     return (
-        // <div>
-        //     {user.first_name}
-        //     <ProfileAboutMe user={user} />
-        // </div>
         <div className="flex gap-6 pt-6 w-full">
-            <div className="w-full">
+            <div className="w-full md:mx-24">
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col items-center justify-center">
-                        <div className="w-full h-96 relative text-black">
+                        <div className="w-full h-96 relative ">
                             <Image
                                 src={user.cover_image || "/noCover.png"}
                                 alt=""
                                 fill
                                 className="rounded-md object-cover"
                             />
-                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center rounded-lg bg-white p-6 text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white border-2 border-[#224c6b]">
                                 <Image
                                     src={user.profile_image || "/noAvatar.png"}
                                     alt=""
@@ -98,6 +67,7 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
                         <ProfileAboutMe user={user} />
                     </div>
                     {/* <Feed username={user.username} /> */}
+                    <ProfilePosts />
                 </div>
             </div>
         </div>
@@ -111,7 +81,7 @@ export default ProfilePage;
             <div className="w-full">
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col items-center justify-center">
-                        <div className="w-full h-96 relative text-black">
+                        <div className="w-full h-96 relative ">
                             <Image
                                 src={user.cover_image || "/noCover.png"}
                                 alt=""

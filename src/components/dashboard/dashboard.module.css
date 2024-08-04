@@ -1,22 +1,25 @@
 .container {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .container {
-      display: flex;
-  }
+  display: flex;
 }
 
 .menu {
+  display: flex;
   flex: 1;
-  background-color: var(--bgSoft);
+  background-color: #9ad0e3;
   padding: 20px;
   min-height: 100vh;
 }
 
+/* Menu hidden on smaller screens */
+@media (max-width: 768px) {
+  .menu {
+      display: none;
+  }
+}
+
+
 .content {
-  flex: 4;
+  flex: 6;
   padding: 20px;
 }
 

@@ -24,7 +24,7 @@ const Navbar = () => {
         <div className="flex flex-col justify-between">
             <div className="h-24 flex items-center justify-between">
                 {/* LEFT LOGO*/}
-                <div className="md:hidden lg:block w-[80%] md:w-[20%] flex">
+                <div className="flex w-[80%]">
                     <Link
                         href="/"
                         className="font-glaical text-3xl md:text-5xl font-regular"

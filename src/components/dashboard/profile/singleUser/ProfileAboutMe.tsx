@@ -17,13 +17,11 @@ const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
     const currentUserId = userId;
     return (
         <div className="mx-5 w-full">
-            <div className="flex md:flex-row ">
-                <div className="flex flex-row w-full">
-                    <div className="flex flex-col gap-4 text-black flex-1">
+            <div className="flex flex-col md:flex-row">
+                <div className="flex flex-col w-full md:rounded-lg md:text-surface md:shadow-secondary-1 dark:bg-surface-dark dark:text-white">
+                    <div className="flex flex-col gap-4 flex-1">
                         <div className="flex items-center gap-2">
-                            <span className="text-3xl text-black">
-                                About Me
-                            </span>
+                            <span className="text-3xl ">About Me</span>
                             <span className="text-sm">@{user.username}</span>
                         </div>
                         {user.description && <p>{user.description}</p>}
@@ -55,7 +53,7 @@ const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
                         )}
 
                         {user.graduation_year && (
-                            <div className="flex gap-1 items-center text-black">
+                            <div className="flex gap-1 items-center ">
                                 <Image
                                     src="/mail.png"
                                     alt="Email icon"
@@ -73,9 +71,9 @@ const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
 
                 {/* Social */}
                 <div className="flex flex-row w-full">
-                    <div className="flex flex-col gap-4 text-black flex-1">
+                    <div className="flex flex-col gap-4  flex-1">
                         <div className="flex items-center gap-2">
-                            <span className="text-3xl text-black">Contact</span>
+                            <span className="text-3xl ">Contact</span>
                         </div>
                         {user.phone && (
                             <div className="flex gap-1 items-center">
@@ -107,14 +105,14 @@ const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
                                 />
                                 <Link
                                     href={`mailto:${user.personal_email}`}
-                                    className="text-black font-medium"
+                                    className=" font-medium"
                                 >
                                     Personal Email: {user.personal_email}
                                 </Link>
                             </div>
                         )}
                         {user.work_email && (
-                            <div className="flex gap-1 items-center text-black">
+                            <div className="flex gap-1 items-center ">
                                 <Image
                                     src="/mail.png"
                                     alt="Email icon"
@@ -123,7 +121,7 @@ const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
                                 />
                                 <Link
                                     href={`mailto:${user.work_email}`}
-                                    className="text-black font-medium"
+                                    className=" font-medium"
                                 >
                                     Work Email: {user.work_email}
                                 </Link>

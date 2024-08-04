@@ -58,7 +58,7 @@ const HompageScreen = (props: Props) => {
                 </h3>
             </div>
 
-            <div className="w-full border-b-2 border-gray-300 mt-2 mb-5"></div>
+            <div className="w-full border-b-2 border-gray-300 my-5"></div>
 
             <div>
                 {/* Create a contact us form for people to send information to */}

@@ -64,8 +64,8 @@ body {
 }
 
 body {
-  /* background-color: var(--bg); */
-  /* color: var(--text); */
+  background-color: #fff; 
+  color: #224c6b;
 }
 
 a {
