@@ -14,11 +14,8 @@
     "@clerk/clerk-sdk-node": "^5.0.16",
     "@clerk/nextjs": "^5.2.4",
     "@prisma/client": "^5.17.0",
-<<<<<<< HEAD
     "aws-sdk": "^2.1667.0",
-=======
     "axios": "^1.7.3",
->>>>>>> f8fd8fe (dump clerk id into prisma)
     "framer-motion": "^11.3.8",
     "install": "^0.13.0",
     "nanoid": "^5.0.7",
