@@ -1,5 +1,4 @@
 import ChannelHome from "@/components/channelContents/ChannelHome";
-import prisma from "@/lib/client";
 import { auth } from "@clerk/nextjs/server";
 
 const Channels = async () => {
@@ -7,21 +6,22 @@ const Channels = async () => {
     // Once you got a user id, could send it to `<ChannelHome userId={user.id}/>`
 
     const { userId } = auth();
+    console.log(userId);
 
-    if (!userId) return null;
+    // if (!userId) return null;
 
-    const user = await prisma.user.findFirst({
-        where: {
-            id: userId,
-        },
-    });
+    // const user = await prisma.user.findFirst({
+    //     where: {
+    //         id: userId,
+    //     },
+    // });
 
-    console.log(user);
-    if (!user) return null;
+    // console.log(user);
+    // if (!user) return null;
 
     return (
         <div>
-            <ChannelHome userId={user.id} />
+            <ChannelHome userId={userId} />
         </div>
     );
 };
