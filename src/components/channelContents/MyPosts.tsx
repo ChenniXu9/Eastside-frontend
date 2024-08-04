@@ -19,16 +19,22 @@ type User = {
   type Comment = {
     id: number;
     desc: string;
+    userId: string;
+    postId: number;
     user: User;
-    post: Post;
 };
 
 type Post = {
-    id: number;
-    desc: string;
-    img: string;
-    user: User;
-    comments: Comment[];
+  id: number;
+  desc: string;
+  img: string | null;
+  video: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  channelId: number;
+  user: User;
+  comments: Comment[];
   };
   
 type Channel = {
@@ -102,13 +108,15 @@ const MyPosts: React.FC<MyPostsProps> = ({ channel, currentUser })=> {
             {/* Bottom  */}
             {firstPost && 
                 <div className="flex flex-col mt-4 gap-4">
-                    <div className="relative w-full h-24">
-                        <Image src={firstPost.img} 
-                            alt={firstPost.desc} 
-                            fill
-                            className="rounded-lg object-cover"
-                        />
-                    </div>
+                    {firstPost.img && 
+                      <div className="relative w-full h-24">
+                      <Image src={firstPost.img} 
+                          alt={firstPost.desc} 
+                          fill
+                          className="rounded-lg object-cover"
+                      />
+                  </div>
+                    }
                     <div className="flex items-center gap-4">
                         <Image src={currentUser.profile_image || "/noavatar.png"} 
                             alt="" 

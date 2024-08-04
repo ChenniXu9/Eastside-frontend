@@ -7,6 +7,7 @@ import ChannelRightMenu from "@/components/channelContents/ChannelRightMenu";
 import AddPost from "@/components/channelContents/AddPosts";
 import Feed from "@/components/channelContents/Feed";
 import GroupHeader from "@/components/channelContents/GroupHeader";
+import { fetchPosts } from '@/lib/actions';
 
 type User = {
   id: string;
@@ -22,14 +23,20 @@ type User = {
 type Comment = {
   id: number;
   desc: string;
+  userId: string;
+  postId: number;
   user: User;
-  post: Post;
 };
 
 type Post = {
   id: number;
   desc: string;
-  img: string;
+  img: string | null;
+  video: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  channelId: number;
   user: User;
   comments: Comment[];
 };
@@ -53,6 +60,8 @@ const CurrentChannel = () => {
   const [channel, setChannel] = useState<Channel | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
+  const [posts, setPosts] = useState<Post[]>([]);
+
   useEffect(() => {
     if (id && userId) {
       const fetchData = async () => {
@@ -73,10 +82,28 @@ const CurrentChannel = () => {
     }
   }, [id, userId]);
 
+
+  useEffect(() => {
+    const loadPosts = async () => {
+      if (channel?.id) {
+        const fetchedPosts = await fetchPosts(channel.id); // Fetch initial posts
+        setPosts(fetchedPosts);
+      }
+    };
+
+    loadPosts();
+  }, [channel?.id]);
+  
+
   if (!channel || !currentUser) return <div>Loading...</div>;
 
-  const hasJoined = channel.users.some(user => user.user.id === currentUser.id);
+  const handlePostAdded = (newPost: Post) => {
+    setPosts(prevPosts => [newPost, ...prevPosts]); // Add the new post to the top of the list
+  };
 
+  channel.posts = posts;
+
+  const hasJoined = channel.users.some(user => user.user.id === currentUser.id);
 
   return (
     <div>
@@ -87,7 +114,7 @@ const CurrentChannel = () => {
             <GroupHeader channel={channel} currentUser={currentUser}/>    
             {
               hasJoined &&
-              <AddPost channel={channel} currentUser={currentUser}/>               
+              <AddPost channel={channel} currentUser={currentUser} onPostAdded={handlePostAdded}/>               
             } 
             {hasJoined &&
             <Feed channel={channel} currentUser={currentUser}/>

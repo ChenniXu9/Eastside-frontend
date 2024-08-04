@@ -20,16 +20,22 @@ type User = {
   type Comment = {
     id: number;
     desc: string;
+    userId: string;
+    postId: number;
     user: User;
-    post: Post;
 };
 
 type Post = {
-    id: number;
-    desc: string;
-    img: string;
-    user: User;
-    comments: Comment[];
+  id: number;
+  desc: string;
+  img: string | null;
+  video: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  channelId: number;
+  user: User;
+  comments: Comment[];
   };
   
 type Channel = {
