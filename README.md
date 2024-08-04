@@ -35,3 +35,9 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 # Eastside-frontend
+
+## Setup MySQL using Docker with dummy test data
+* Install Docker Desktop to your local laptop.
+* Make sure you run `npm install` to get prisma installed beforehand.
+* Simply run `./tools/setup.sh` to spin up a MySQL container and test data generated for you.
+* Run `.tools/cleanup.sh` to remove MySQL container if needed.
