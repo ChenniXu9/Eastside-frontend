@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSignUp, useAuth } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -59,6 +60,19 @@ const Signup = () => {
     }
   };
 
+  const createUserInDatabase = async (userId: string) => {
+    if (!userId) {
+      toast.error('Failed to complete registration. Please contact support.');
+      return;
+    }
+    try {
+      await axios.post('/api/createUser', { userId });
+    } catch (error) {
+      console.error('Failed to create user in database:', error);
+      toast.error('Failed to complete registration. Please contact support.');
+    }
+  };
+
   const onPressVerify = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!code) {
@@ -75,8 +89,14 @@ const Signup = () => {
         toast.error(errorMessage);
       }
       if (completeSignUp.status === "complete") {
-        await setActive({ session: completeSignUp.createdSessionId });
-        router.push("/dashboard");
+        try {
+          await setActive({ session: completeSignUp.createdSessionId });
+          await createUserInDatabase(completeSignUp.createdUserId);
+          router.push("/dashboard");
+        } catch (error) {
+          console.error("Error in completion process:", error);
+          toast.error("An error occurred during registration completion. Please try again.");
+        }
       }
     } catch (err: any) {
       const errorMessage = err.errors?.[0]?.message || "Verification failed. Please try again.";

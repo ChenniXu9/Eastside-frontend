@@ -20,7 +20,7 @@ const Channels = async () => {
 
     return (
         <div>
-            <ChannelHome userId={userId} />
+            <ChannelHome userId={userId!} />
         </div>
     );
 };
