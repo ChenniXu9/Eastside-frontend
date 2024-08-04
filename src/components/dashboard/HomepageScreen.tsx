@@ -41,7 +41,7 @@ const HompageScreen = (props: Props) => {
         },
     ];
     return (
-        <div className="p-10">
+        <div className="md:m-10 m-2">
             <div className="" id="app-description ">
                 <h1 className="text-3xl font-bold mb-5">
                     Application Description

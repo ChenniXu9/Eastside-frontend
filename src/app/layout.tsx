@@ -1,35 +1,33 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
-import { ClerkProvider } from '@clerk/nextjs';
-import localFont from 'next/font/local';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
-const customFont = localFont({ 
-  src: '../../public/fonts/AvenirLTStd-Roman.otf',
-  variable: '--font-custom',
+const customFont = localFont({
+    src: "../../public/fonts/AvenirLTStd-Roman.otf",
+    variable: "--font-custom",
 });
 
 export const metadata: Metadata = {
-  title: "Eastside Connect",
-  description: "Platform to connect eastsiders!",
+    title: "Eastside Connect",
+    description: "Platform to connect eastsiders!",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" className={`${inter.className} ${customFont.variable}`}>
-      <ClerkProvider>
-        <body className={`${inter.className} ${customFont.variable}`}>
-          <div className="bg-slate-100 font-custom">
-            {children}
-          </div>
-        </body>
-      </ClerkProvider>
-    </html>
-  );
+    return (
+        <html lang="en" className={`${inter.className} ${customFont.variable}`}>
+            <ClerkProvider>
+                <body className={`${inter.className} ${customFont.variable}`}>
+                    {children}
+                </body>
+            </ClerkProvider>
+        </html>
+    );
 }

@@ -6,7 +6,6 @@ const Channels = async () => {
     // Once you got a user id, could send it to `<ChannelHome userId={user.id}/>`
 
     const { userId } = auth();
-    console.log(userId);
 
     // if (!userId) return null;
 

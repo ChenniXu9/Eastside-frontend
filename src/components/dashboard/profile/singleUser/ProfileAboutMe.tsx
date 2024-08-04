@@ -14,110 +14,122 @@ interface ProfileAboutMeProps {
 const { userId } = auth();
 
 const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
-    const currentUserId = 0;
-    console.log(userId);
+    const currentUserId = userId;
     return (
-        <div className="mx-5">
-            <div className="flex flex-row w-full">
-                <div className="flex flex-col gap-4 text-black flex-1">
-                    <div className="flex items-center gap-2">
-                        {userId}
-                        <span className="text-3xl text-black">
-                            {user.firstname && user.lastname
-                                ? user.firstname + " " + user.lastname
-                                : user.username}
-                        </span>
-                        <span className="text-sm">@{user.username}</span>
+        <div className="mx-5 w-full">
+            <div className="flex md:flex-row ">
+                <div className="flex flex-row w-full">
+                    <div className="flex flex-col gap-4 text-black flex-1">
+                        <div className="flex items-center gap-2">
+                            <span className="text-3xl text-black">
+                                About Me
+                            </span>
+                            <span className="text-sm">@{user.username}</span>
+                        </div>
+                        {user.description && <p>{user.description}</p>}
+                        {user.organization && (
+                            <div className="flex items-center gap-2">
+                                <Image
+                                    src="/school.png"
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                />
+                                <span>
+                                    Organization: <b>{user.organization}</b>
+                                </span>
+                            </div>
+                        )}
+                        {user.title && (
+                            <div className="flex items-center gap-2">
+                                <Image
+                                    src="/work.png"
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                />
+                                <span>
+                                    Title: <b>{user.title}</b>
+                                </span>
+                            </div>
+                        )}
+
+                        {user.graduation_year && (
+                            <div className="flex gap-1 items-center text-black">
+                                <Image
+                                    src="/mail.png"
+                                    alt="Email icon"
+                                    width={16}
+                                    height={16}
+                                />
+                                <span>
+                                    Graduation Year:{" "}
+                                    <b>{user.graduation_year}</b>
+                                </span>
+                            </div>
+                        )}
                     </div>
-                    {user.desc && <p>{user.desc}</p>}
-                    {user.organization && (
+                </div>
+
+                {/* Social */}
+                <div className="flex flex-row w-full">
+                    <div className="flex flex-col gap-4 text-black flex-1">
                         <div className="flex items-center gap-2">
-                            <Image
-                                src="/school.png"
-                                alt=""
-                                width={16}
-                                height={16}
-                            />
-                            <span>
-                                Organization: <b>{user.organization}</b>
-                            </span>
+                            <span className="text-3xl text-black">Contact</span>
                         </div>
-                    )}
-                    {user.title && (
-                        <div className="flex items-center gap-2">
-                            <Image
-                                src="/work.png"
-                                alt=""
-                                width={16}
-                                height={16}
-                            />
-                            <span>
-                                Title: <b>{user.title}</b>
-                            </span>
-                        </div>
-                    )}
-                    {user.phone && (
-                        <div className="flex gap-1 items-center">
-                            <Image
-                                src="/mail.png"
-                                alt=""
-                                width={16}
-                                height={16}
-                            />
-                            {user.phone_is_visible ? (
+                        {user.phone && (
+                            <div className="flex gap-1 items-center">
+                                <Image
+                                    src="/mail.png"
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                />
+                                <span>
+                                    Phone Number: <b>{user.phone}</b>
+                                </span>
+                                {/* {user.phone_is_visible ? (
                                 <span>
                                     Phone Number: <b>{user.phone}</b>
                                 </span>
                             ) : (
                                 ""
-                            )}
-                        </div>
-                    )}
-                    {user.email_personal && (
-                        <div className="flex gap-1 items-center">
-                            <Image
-                                src="/mail.png"
-                                alt=""
-                                width={16}
-                                height={16}
-                            />
-                            <Link
-                                href={`mailto:${user.email_personal}`}
-                                className="text-black font-medium"
-                            >
-                                Personal Email: {user.email_personal}
-                            </Link>
-                        </div>
-                    )}
-                    {user.email_work && (
-                        <div className="flex gap-1 items-center text-black">
-                            <Image
-                                src="/mail.png"
-                                alt="Email icon"
-                                width={16}
-                                height={16}
-                            />
-                            <Link
-                                href={`mailto:${user.email_work}`}
-                                className="text-black font-medium"
-                            >
-                                Work Email: {user.email_work}
-                            </Link>
-                        </div>
-                    )}
-                    {user.graduation_year && (
-                        <div className="flex gap-1 items-center text-black">
-                            <Image
-                                src="/mail.png"
-                                alt="Email icon"
-                                width={16}
-                                height={16}
-                            />
-                            <span>
-                                Graduation Year: <b>{user.graduation_year}</b>
-                            </span>
-                        </div>
-                    )}
+                            )} */}
+                            </div>
+                        )}
+                        {user.personal_email && (
+                            <div className="flex gap-1 items-center">
+                                <Image
+                                    src="/mail.png"
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                />
+                                <Link
+                                    href={`mailto:${user.personal_email}`}
+                                    className="text-black font-medium"
+                                >
+                                    Personal Email: {user.personal_email}
+                                </Link>
+                            </div>
+                        )}
+                        {user.work_email && (
+                            <div className="flex gap-1 items-center text-black">
+                                <Image
+                                    src="/mail.png"
+                                    alt="Email icon"
+                                    width={16}
+                                    height={16}
+                                />
+                                <Link
+                                    href={`mailto:${user.work_email}`}
+                                    className="text-black font-medium"
+                                >
+                                    Work Email: {user.work_email}
+                                </Link>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
             <div className="flex justify-between items-center font-medium mt-5">

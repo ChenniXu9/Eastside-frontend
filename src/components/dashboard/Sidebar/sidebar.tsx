@@ -66,7 +66,7 @@ const Sidebar = () => {
         username: "testing",
     };
     return (
-        <div className="h-full flex justify-between flex-col ">
+        <div className={styles.container}>
             <div className="md:flex flex items-center gap-5 h-[10%]">
                 <Image
                     src={"/companyLogo.png"}
@@ -81,7 +81,7 @@ const Sidebar = () => {
                 />
             </div>
             {/* CENTER */}
-            <div className="md:flex h-[70%] text-sm justify-between flex-col">
+            <div className="md:flex h-[70%] text-sm justify-between flex-col mt-20">
                 <ul className={styles.list}>
                     {menuItems.map((cat) => (
                         <li key={cat.title}>

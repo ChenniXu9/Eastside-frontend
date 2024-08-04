@@ -24,9 +24,11 @@ const UpdateUser = ({ user }: { user: User }) => {
 
     const handleClose = () => {
         setOpen(false);
-        // state.success && router.refresh();
         router.refresh();
     };
+
+    console.log("cover", cover);
+    console.log("profile", profile);
 
     return (
         <div className="p-2 border-2 rounded-full">
@@ -48,7 +50,11 @@ const UpdateUser = ({ user }: { user: User }) => {
                         //     })
                         // }
                         action={(formData) =>
-                            updateProfile(formData, cover?.secure_url)
+                            updateProfile(
+                                formData,
+                                cover?.secure_url,
+                                profile?.secure_url
+                            )
                         }
                         className="p-12 bg-white rounded-lg shadow-md flex flex-col gap-2 w-full md:w-1/2 xl:w-1/3 relative text-center"
                     >
@@ -58,7 +64,10 @@ const UpdateUser = ({ user }: { user: User }) => {
                             {/* Profile Picture upload */}
                             <CldUploadWidget
                                 uploadPreset="eastside"
-                                onSuccess={(result) => setProfile(result.info)}
+                                onSuccess={(result) => {
+                                    console.log("resilt", result);
+                                    setProfile(result.info);
+                                }}
                             >
                                 {({ open }) => {
                                     return (
@@ -91,7 +100,10 @@ const UpdateUser = ({ user }: { user: User }) => {
                             {/* COVER PIC UPLOAD */}
                             <CldUploadWidget
                                 uploadPreset="eastside"
-                                onSuccess={(result) => setCover(result.info)}
+                                onSuccess={(result) => {
+                                    console.log("resilt", result);
+                                    setCover(result.info);
+                                }}
                             >
                                 {({ open }) => {
                                     return (
@@ -135,11 +147,13 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder={user.name || "John"}
+                                    placeholder={user.first_name || "John"}
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="firstname"
+                                    name="first_name"
                                 />
                             </div>
+
+                            {/* INPUT */}
                             <div className="flex flex-col gap-4">
                                 <label
                                     htmlFor=""
@@ -149,11 +163,12 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder={user.lastname || "Doe"}
+                                    placeholder={user.last_name || "Doe"}
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="lastname"
+                                    name="last_name"
                                 />
                             </div>
+
                             {/* INPUT */}
                             <div className="flex flex-col gap-4">
                                 <label
@@ -162,8 +177,7 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 >
                                     Description
                                 </label>
-                                <input
-                                    type="text"
+                                <textarea
                                     placeholder={
                                         user.description ||
                                         "Life is beautiful..."
@@ -172,6 +186,7 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     name="description"
                                 />
                             </div>
+
                             {/* INPUT */}
                             <div className="flex flex-col gap-4">
                                 <label
@@ -182,13 +197,15 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder={user.city || "New York"}
+                                    placeholder={
+                                        user.organization || "New York"
+                                    }
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
                                     name="organization"
                                 />
                             </div>
-                            {/* INPUT */}
 
+                            {/* INPUT */}
                             <div className="flex flex-col gap-4">
                                 <label
                                     htmlFor=""
@@ -198,13 +215,13 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder={user.school || "MIT"}
+                                    placeholder={user.title || "MIT"}
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
                                     name="title"
                                 />
                             </div>
-                            {/* INPUT */}
 
+                            {/* INPUT */}
                             <div className="flex flex-col gap-4">
                                 <label
                                     htmlFor=""
@@ -216,12 +233,11 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     type="text"
                                     placeholder={user.phone || "1123342131"}
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="phonenumber"
+                                    name="phone"
                                 />
                             </div>
 
                             {/* INPUT */}
-
                             <div className="flex flex-col gap-4">
                                 <label
                                     htmlFor=""
@@ -235,7 +251,43 @@ const UpdateUser = ({ user }: { user: User }) => {
                                         user.graduation_year || "1123342131"
                                     }
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="graduation"
+                                    name="graduation_year"
+                                />
+                            </div>
+
+                            {/* INPUT */}
+                            <div className="flex flex-col gap-4">
+                                <label
+                                    htmlFor=""
+                                    className="text-xs text-gray-500"
+                                >
+                                    Work Email
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder={
+                                        user.work_email || "1123342131"
+                                    }
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    name="work_email"
+                                />
+                            </div>
+
+                            {/* INPUT */}
+                            <div className="flex flex-col gap-4">
+                                <label
+                                    htmlFor=""
+                                    className="text-xs text-gray-500"
+                                >
+                                    Personal Email
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder={
+                                        user.personal_email || "1123342131"
+                                    }
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    name="personal_email"
                                 />
                             </div>
                         </div>

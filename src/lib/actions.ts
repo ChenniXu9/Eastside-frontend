@@ -352,7 +352,8 @@ export const deletePost = async (postId: number) => {
 };
 
 
-export const updateProfile = async(formData: FormData, cover: string) => {
+export const updateProfile = async(formData: FormData, cover: string, profile: string) => {
+  console.log(cover, profile)
   const fields = Object.fromEntries(formData);
   
   const filteredFields = Object.fromEntries(
@@ -360,18 +361,21 @@ export const updateProfile = async(formData: FormData, cover: string) => {
   );
 
   const Profile = z.object({
-    cover: z.string().optional(),
-    profile_picture: z.string().optional(),
-    firstname: z.string().max(60).optional(),
-    lastname: z.string().max(60).optional(),
+    cover_image: z.string().optional(),
+    profile_image: z.string().optional(),
+    first_name: z.string().max(60).optional(),
+    last_name: z.string().max(60).optional(),
     description: z.string().max(255).optional(),
-    city: z.string().max(60).optional(),
-    school: z.string().max(60).optional(),
-    work: z.string().max(60).optional(),
-    website: z.string().max(60).optional(),
+    organization: z.string().max(60).optional(),
+    title: z.string().max(60).optional(),
+    phone: z.string().max(60).optional(),
+    personal_email: z.string().max(60).optional(),
+    work_email: z.string().max(60).optional(),
+    graduation_year: z.string().max(60).optional(),
+    password: z.string().max(60).optional(),
   });
 
-  const validatedFields = Profile.safeParse({ cover, ...filteredFields });
+  const validatedFields = Profile.safeParse({ cover_image: cover,profile_image: profile, ...filteredFields });
 
     if (!validatedFields.success) {
     console.log(validatedFields.error.flatten().fieldErrors);
@@ -391,9 +395,9 @@ export const updateProfile = async(formData: FormData, cover: string) => {
       },
       data: validatedFields.data,
     });
-    return "{ success: true, error: false }";
+    // return "{ success: true, error: false }";
   } catch (err) {
     console.log(err);
-    return "{ success: false, error: true }";
+    // return "{ success: false, error: true }";
   }
 }
