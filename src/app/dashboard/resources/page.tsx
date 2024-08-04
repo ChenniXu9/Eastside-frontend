@@ -123,21 +123,6 @@ const ResourcePageContent: React.FC = () => {
         setSelectedCourses(selectedCourses);
         setIsArchiving(false);
     };
-    const handleArchive = () => {
-        setIsArchiving(true);
-    };
-
-    const handleArchiveConfirm = (selectedCourses: string[]) => {
-        setCourses(
-            courses.map((course) =>
-                selectedCourses.includes(course.courseCode)
-                    ? { ...course, archived: true }
-                    : course
-            )
-        );
-        setSelectedCourses(selectedCourses);
-        setIsArchiving(false);
-    };
 
     const handleArchiveCancel = () => {
         setIsArchiving(false);

@@ -27,7 +27,7 @@ model User {
   password      String?
   personal_email String?
   graduation_year String?
-  work_email    String
+  work_email    String?
   createdAt     DateTime @default(now())
   channels      UserToChannel[]
   posts         Post[]
