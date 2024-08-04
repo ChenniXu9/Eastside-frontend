@@ -9,12 +9,16 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
     const user = {
         img: "/noavatar.png",
         id: 0,
-        name: "takara",
-        surname: "truong",
+        firstname: "takara",
+        lastname: "truong",
+        organization: "Norhteastern",
+        title: "idfk",
         cover: null,
         avatar: null,
         phone: "10101010",
-        email: "testing@email",
+        phone_is_visible: true,
+        email_work: "testing@email",
+        email_personal: "testing#ikkd",
         address: "testing address",
         _count: {
             followers: 20,
@@ -27,11 +31,8 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
         isAdmin: false,
         isActive: false,
         work: "work",
-        description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi aspernatur fugiat rerum omnis inventore facere saepe voluptatem et, temporibus dolores nam ipsa. Amet repudiandae fuga numquam minima repellat maxime rerum!",
-        school: "school",
-        city: "lynwood",
-        website: "test@test.com",
+        graduation_year: "022312",
+        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi aspernatur fugiat rerum omnis inventore facere saepe voluptatem et, temporibus dolores nam ipsa. Amet repudiandae fuga numquam minima repellat maxime rerum!",
     };
 
     // const user = await prisma.user.findFirst({
@@ -75,14 +76,14 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
             <div className="w-full">
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col items-center justify-center">
-                        <div className="w-full h-96 relative text-white">
+                        <div className="w-full h-96 relative text-black">
                             <Image
                                 src={user.cover || "/noCover.png"}
                                 alt=""
                                 fill
                                 className="rounded-md object-cover"
                             />
-                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
                                 <Image
                                     src={user.avatar || "/noAvatar.png"}
                                     alt=""
@@ -91,48 +92,35 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
                                     className="w-32 h-32 rounded-full ring-4 ring-white object-cover"
                                 />
                                 <h1 className="mt-4 mb-4 text-2xl font-medium">
-                                    {user.name && user.surname
-                                        ? user.name + " " + user.surname
+                                    {user.firstname && user.lastname
+                                        ? user.firstname + " " + user.lastname
                                         : user.username}
                                 </h1>
-                                <div className="flex items-center justify-center gap-12">
-                                    <div className="flex flex-col items-center">
+                                <div className="flex items-center justify-center gap-14">
+                                    <div className="flex flex-col items-center flex-1">
                                         <span className="font-medium">
                                             {user._count.posts}
                                         </span>
                                         <span className="text-sm">Posts</span>
                                     </div>
-                                    <div className="flex flex-col items-center">
-                                        <span className="font-medium">
-                                            {user._count.followers}
-                                        </span>
-                                        <span className="text-sm">
-                                            Followers
-                                        </span>
-                                    </div>
-                                    <div className="flex flex-col items-center">
+                                    <div className="flex flex-col items-center flex-1">
                                         <span className="font-medium">
                                             {user._count.followings}
                                         </span>
-                                        <span className="text-sm">
-                                            Following
+                                        <span className="text-sm text-center">
+                                            Channels Joined
                                         </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {/* <ProfileAboutMe user={user} /> */}
                     <div className="flex flex-row justify-center">
-                        <ProfileAboutMe user={user} />
                         <ProfileAboutMe user={user} />
                     </div>
                     {/* <Feed username={user.username} /> */}
                 </div>
             </div>
-            {/* <div className="hidden lg:block w-[30%]">
-                <RightMenu userId="test" />
-            </div> */}
         </div>
     );
 };

@@ -2,7 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-.scrollbar-hide::-webkit-scrollbar {
+/* styles/globals.css */
+@font-face {
+  font-family: 'Avenir';
+  src: url('/fonts/AvenirLTStd-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('/fonts/AvenirLTStd-Book.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('/fonts/AvenirLTStd-Roman.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GlaicalIndifference';
+  src: url('/fonts/GlacialIndifference-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'GlaicalIndifference';
+  src: url('/fonts/GlacialIndifference-Regular.otf') format('opentype');
+}
+
+/* .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
@@ -16,4 +48,27 @@
 
 body {
   font-family: var(--font-custom);
+} */
+
+:root {
+  --bg: #151c2c;
+  --bgSoft: #182237;
+  --text: white;
+  --textSoft: #b7bac1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fff; 
+  color: #224c6b;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }

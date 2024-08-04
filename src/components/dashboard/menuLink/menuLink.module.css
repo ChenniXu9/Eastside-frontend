@@ -5,10 +5,11 @@
     gap: 10px;
     margin: 5px 0px;
     border-radius: 10px;
+    color: #224c6b
   }
   
   .container:hover,
   .active {
-    background-color: #2e374a;
-    color:white
+    background-color: white;
+    color:#224c6b
   }

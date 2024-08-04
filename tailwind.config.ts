@@ -8,13 +8,27 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        "primary-color": "var(--bg)",
+        "primary-soft": "var(--bg)",
+        "primary-text": "var(--bg)",
+        "textSoft": "var(--bg)",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       fontFamily: {
-        custom: ['var(--font-custom)'],
+        avenir: ['Avenir', 'sans-serif'],
+        glaical: ['GlaicalIndifference', 'sans-serif'],
+      },
+      fontWeight: {
+        black: '900',
+        book: '400',
+        roman: '500',
+        bold: 'bold',
+        regular: 'normal',
       },
     },
   },

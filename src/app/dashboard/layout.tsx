@@ -1,4 +1,3 @@
-// import Navbar from "@/components/dashboard/navbar/navbar";
 // import Sidebar from "@/components/dashboard/sidebar/sidebar";
 // import styles from "../../components/dashboard/dashboard.module.css";
 // export default function DashboardLayout({
@@ -30,13 +29,13 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="relative flex">
-            <div className="fixed top-0 left-0 w-64 h-full bg-slate-300 p-5 ">
+        <div className={styles.container}>
+            <div className={styles.menu}>
                 <Sidebar />
             </div>
-            <div className="flex-1 ml-64 min-h-screen bg-white p-5">
+            <div className={styles.content}>
                 <Navbar />
-                <div className="h-full overflow-hidden">{children}</div>
+                {children}
             </div>
         </div>
     );

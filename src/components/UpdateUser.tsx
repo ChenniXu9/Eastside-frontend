@@ -2,36 +2,18 @@
 
 // import { User } from "@prisma/client";
 import { updateProfile } from "@/lib/actions";
+import { User } from "@/types";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import UpdateButton from "./rightMenu/UpdateButton";
 
-interface User {
-    id: number;
-    name?: string;
-    lastname?: string;
-    username: string;
-    description?: string;
-    city?: string;
-    school?: string;
-    work?: string;
-    website?: string;
-    profile_image?: string;
-    cover_image?: string;
-    password: string;
-}
-
 const UpdateUser = ({ user }: { user: User }) => {
     const [open, setOpen] = useState(false);
     const [profile, setProfile] = useState<any>(false);
     const [cover, setCover] = useState<any>(false);
     const [showPassword, setShowPassword] = useState(false);
-
-    const toggleShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
 
     // const [state, formAction] = useActionState(updateProfile, {
     //     success: false,
@@ -42,17 +24,19 @@ const UpdateUser = ({ user }: { user: User }) => {
 
     const handleClose = () => {
         setOpen(false);
-        // state.success && router.refresh();
         router.refresh();
     };
 
+    console.log("cover", cover);
+    console.log("profile", profile);
+
     return (
-        <div className="">
+        <div className="p-3 bg-[#438bb4] rounded-full hover:bg-[#224c6b]">
             <span
-                className="text-blue-500 text-xs cursor-pointer"
+                className="text-md cursor-pointer text-white"
                 onClick={() => setOpen(true)}
             >
-                Update
+                Update your Information
             </span>
             {open && (
                 <div className="absolute w-screen h-screen top-0 left-0 bg-black bg-opacity-65 flex items-center justify-center z-50 ">
@@ -66,17 +50,24 @@ const UpdateUser = ({ user }: { user: User }) => {
                         //     })
                         // }
                         action={(formData) =>
-                            updateProfile(formData, cover?.secure_url)
+                            updateProfile(
+                                formData,
+                                cover?.secure_url,
+                                profile?.secure_url
+                            )
                         }
                         className="p-12 bg-white rounded-lg shadow-md flex flex-col gap-2 w-full md:w-1/2 xl:w-1/3 relative text-center"
                     >
                         {/* TITLE */}
-                        <h1>Update Profile</h1>
+                        <h1 className="text-xl">Update Profile</h1>
                         <div className="flex flex-row justify-evenly">
                             {/* Profile Picture upload */}
                             <CldUploadWidget
                                 uploadPreset="eastside"
-                                onSuccess={(result) => setCover(result.info)}
+                                onSuccess={(result) => {
+                                    console.log("resilt", result);
+                                    setProfile(result.info);
+                                }}
                             >
                                 {({ open }) => {
                                     return (
@@ -109,7 +100,10 @@ const UpdateUser = ({ user }: { user: User }) => {
                             {/* COVER PIC UPLOAD */}
                             <CldUploadWidget
                                 uploadPreset="eastside"
-                                onSuccess={(result) => setCover(result.info)}
+                                onSuccess={(result) => {
+                                    console.log("resilt", result);
+                                    setCover(result.info);
+                                }}
                             >
                                 {({ open }) => {
                                     return (
@@ -123,7 +117,7 @@ const UpdateUser = ({ user }: { user: User }) => {
                                             <div className="flex items-center gap-2 cursor-pointer">
                                                 <Image
                                                     src={
-                                                        user.cover ||
+                                                        user.cover_image ||
                                                         "/noCover.png"
                                                     }
                                                     alt=""
@@ -153,11 +147,13 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder={user.name || "John"}
+                                    placeholder={user.first_name || "John"}
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="name"
+                                    name="first_name"
                                 />
                             </div>
+
+                            {/* INPUT */}
                             <div className="flex flex-col gap-4">
                                 <label
                                     htmlFor=""
@@ -167,11 +163,117 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder={user.lastname || "Doe"}
+                                    placeholder={user.last_name || "Doe"}
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="surname"
+                                    name="last_name"
                                 />
                             </div>
+
+                            {/* INPUT */}
+                            <div className="flex flex-col gap-4">
+                                <label
+                                    htmlFor=""
+                                    className="text-xs text-gray-500"
+                                >
+                                    Organization
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder={
+                                        user.organization || "New York"
+                                    }
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    name="organization"
+                                />
+                            </div>
+
+                            {/* INPUT */}
+                            <div className="flex flex-col gap-4">
+                                <label
+                                    htmlFor=""
+                                    className="text-xs text-gray-500"
+                                >
+                                    Title
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder={user.title || "MIT"}
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    name="title"
+                                />
+                            </div>
+
+                            {/* INPUT */}
+                            <div className="flex flex-col gap-4">
+                                <label
+                                    htmlFor=""
+                                    className="text-xs text-gray-500"
+                                >
+                                    Phone Number
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder={user.phone || "1123342131"}
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    name="phone"
+                                />
+                            </div>
+
+                            {/* INPUT */}
+                            <div className="flex flex-col gap-4">
+                                <label
+                                    htmlFor=""
+                                    className="text-xs text-gray-500"
+                                >
+                                    Graduation year
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder={
+                                        user.graduation_year || "1123342131"
+                                    }
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    name="graduation_year"
+                                />
+                            </div>
+
+                            {/* INPUT */}
+                            <div className="flex flex-col gap-4">
+                                <label
+                                    htmlFor=""
+                                    className="text-xs text-gray-500"
+                                >
+                                    Work Email
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder={
+                                        user.work_email || "1123342131"
+                                    }
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    name="work_email"
+                                />
+                            </div>
+
+                            {/* INPUT */}
+                            <div className="flex flex-col gap-4">
+                                <label
+                                    htmlFor=""
+                                    className="text-xs text-gray-500"
+                                >
+                                    Personal Email
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder={
+                                        user.personal_email || "1123342131"
+                                    }
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    name="personal_email"
+                                />
+                            </div>
+                        </div>
+                        <div>
                             {/* INPUT */}
                             <div className="flex flex-col gap-4">
                                 <label
@@ -180,77 +282,13 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 >
                                     Description
                                 </label>
-                                <input
-                                    type="text"
+                                <textarea
                                     placeholder={
                                         user.description ||
                                         "Life is beautiful..."
                                     }
                                     className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
                                     name="description"
-                                />
-                            </div>
-                            {/* INPUT */}
-                            <div className="flex flex-col gap-4">
-                                <label
-                                    htmlFor=""
-                                    className="text-xs text-gray-500"
-                                >
-                                    City
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder={user.city || "New York"}
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="city"
-                                />
-                            </div>
-                            {/* INPUT */}
-
-                            <div className="flex flex-col gap-4">
-                                <label
-                                    htmlFor=""
-                                    className="text-xs text-gray-500"
-                                >
-                                    School
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder={user.school || "MIT"}
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="school"
-                                />
-                            </div>
-                            {/* INPUT */}
-
-                            <div className="flex flex-col gap-4">
-                                <label
-                                    htmlFor=""
-                                    className="text-xs text-gray-500"
-                                >
-                                    Work
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder={user.work || "Apple Inc."}
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="work"
-                                />
-                            </div>
-                            {/* INPUT */}
-
-                            <div className="flex flex-col gap-4">
-                                <label
-                                    htmlFor=""
-                                    className="text-xs text-gray-500"
-                                >
-                                    Website
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder={user.website || "lama.dev"}
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
-                                    name="website"
                                 />
                             </div>
                         </div>
@@ -285,7 +323,7 @@ const UpdateUser = ({ user }: { user: User }) => {
                                         placeholder="Confirm your password" // Placeholder is optional
                                         className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
                                         name="confirm password"
-                                        id="confirm password"
+                                        id="confirm-password"
                                     />
                                 </div>
                             </div>

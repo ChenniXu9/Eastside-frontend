@@ -14,6 +14,7 @@
     "@clerk/clerk-sdk-node": "^5.0.16",
     "@clerk/nextjs": "^5.2.4",
     "@prisma/client": "^5.17.0",
+    "@types/nodemailer": "^6.4.15",
     "aws-sdk": "^2.1667.0",
     "axios": "^1.7.3",
     "framer-motion": "^11.3.8",
@@ -21,12 +22,15 @@
     "nanoid": "^5.0.7",
     "next": "14.2.5",
     "next-cloudinary": "^6.6.2",
+    "nodemailer": "^6.9.14",
     "npm": "^10.8.2",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.52.2",
     "react-icons": "^5.2.1",
     "react-toastify": "^10.0.5",
-    "svix": "^1.25.0"
+    "svix": "^1.25.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
