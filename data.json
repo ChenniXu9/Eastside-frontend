@@ -1,0 +1,360 @@
+{
+  "users": [
+    {
+      "id": "1684",
+      "username": "anushka",
+      "profile_image": "https://images.pexels.com/photos/58997/pexels-photo-58997.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "cover_image": null,
+      "first_name": null,
+      "last_name": null,
+      "organization": null,
+      "title": null,
+      "phone": null,
+      "description": null,
+      "password": null,
+      "personal_email": null,
+      "graduation_year": null,
+      "work_email": null,
+      "createdAt": "2024-08-01T03:34:27.276Z"
+    },
+    {
+      "id": "5641",
+      "username": "krystal",
+      "profile_image": "https://images.pexels.com/photos/6731324/pexels-photo-6731324.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "cover_image": null,
+      "first_name": null,
+      "last_name": null,
+      "organization": null,
+      "title": null,
+      "phone": null,
+      "description": null,
+      "password": null,
+      "personal_email": null,
+      "graduation_year": null,
+      "work_email": null,
+      "createdAt": "2024-08-01T03:34:13.687Z"
+    },
+    {
+      "id": "7513",
+      "username": "takara",
+      "profile_image": "https://images.pexels.com/photos/2129796/pexels-photo-2129796.png?auto=compress&cs=tinysrgb&w=400",
+      "cover_image": null,
+      "first_name": null,
+      "last_name": null,
+      "organization": null,
+      "title": null,
+      "phone": null,
+      "description": null,
+      "password": null,
+      "personal_email": null,
+      "graduation_year": null,
+      "work_email": null,
+      "createdAt": "2024-08-01T03:35:31.238Z"
+    },
+    {
+      "id": "9835",
+      "username": "cloudy",
+      "profile_image": "https://images.pexels.com/photos/3807770/pexels-photo-3807770.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "cover_image": null,
+      "first_name": null,
+      "last_name": null,
+      "organization": null,
+      "title": null,
+      "phone": null,
+      "description": null,
+      "password": null,
+      "personal_email": null,
+      "graduation_year": null,
+      "work_email": null,
+      "createdAt": "2024-08-01T03:34:43.403Z"
+    },
+    {
+      "id": "user_2jwQOUhvvhE4x6eb3RwpxRnrjtk",
+      "username": "chenni",
+      "profile_image": "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzJqd29YUW5CZEZEeU5qRHAxa2M0R09MTmpscCJ9",
+      "cover_image": null,
+      "first_name": null,
+      "last_name": null,
+      "organization": null,
+      "title": null,
+      "phone": null,
+      "description": null,
+      "password": null,
+      "personal_email": null,
+      "graduation_year": null,
+      "work_email": null,
+      "createdAt": "2024-07-29T23:27:09.494Z"
+    },
+    {
+      "id": "user_2k2OISyyyfYQ57H5LL5y7zNqAP1",
+      "username": "laura",
+      "profile_image": "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzJrMk9NaUNRb01CRGVkbm9kaE11bEp4azZoaiJ9",
+      "cover_image": null,
+      "first_name": null,
+      "last_name": null,
+      "organization": null,
+      "title": null,
+      "phone": null,
+      "description": null,
+      "password": null,
+      "personal_email": null,
+      "graduation_year": null,
+      "work_email": null,
+      "createdAt": "2024-08-01T02:08:49.237Z"
+    }
+  ],
+  "channels": [
+    {
+      "id": 1,
+      "channel_name": "Bondhub",
+      "channel_image": "https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "channel_description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+    },
+    {
+      "id": 2,
+      "channel_name": "VoiceNet",
+      "channel_image": "https://images.pexels.com/photos/1000445/pexels-photo-1000445.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "channel_description": "Repellat minus enim consequuntur sed quaerat et veniam quia animi officia, excepturi vero ex aperiam incidunt quos fugiat neque facilis ea praesentium."
+    },
+    {
+      "id": 3,
+      "channel_name": "Inspire",
+      "channel_image": "https://images.pexels.com/photos/1701001/pexels-photo-1701001.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "channel_description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+    },
+    {
+      "id": 4,
+      "channel_name": "UnityForum",
+      "channel_image": "https://images.pexels.com/photos/5583258/pexels-photo-5583258.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "channel_description": "Repellat minus enim consequuntur sed quaerat et veniam quia animi officia, excepturi vero ex aperiam incidunt quos fugiat neque facilis ea praesentium."
+    },
+    {
+      "id": 5,
+      "channel_name": "MentorSpace",
+      "channel_image": "https://images.pexels.com/photos/8528742/pexels-photo-8528742.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "channel_description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+    },
+    {
+      "id": 6,
+      "channel_name": "ChatCollective",
+      "channel_image": "https://images.pexels.com/photos/6457544/pexels-photo-6457544.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "channel_description": "Repellat minus enim consequuntur sed quaerat et veniam quia animi officia, excepturi vero ex aperiam incidunt quos fugiat neque facilis ea praesentium."
+    },
+    {
+      "id": 7,
+      "channel_name": "UnityLeadership",
+      "channel_image": "https://images.pexels.com/photos/5598287/pexels-photo-5598287.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "channel_description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+    },
+    {
+      "id": 8,
+      "channel_name": "LeadNation",
+      "channel_image": "https://images.pexels.com/photos/7551454/pexels-photo-7551454.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "channel_description": "Repellat minus enim consequuntur sed quaerat et veniam quia animi officia, excepturi vero ex aperiam incidunt quos fugiat neque facilis ea praesentium."
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "desc": "Hello! Welcome to Bonhub!",
+      "img": "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "video": null,
+      "createdAt": "2024-07-30T22:19:58.598Z",
+      "updatedAt": "2024-08-01T03:58:26.169Z",
+      "userId": "user_2k2OISyyyfYQ57H5LL5y7zNqAP1",
+      "channelId": 1
+    },
+    {
+      "id": 2,
+      "desc": "Come to check. This is great!",
+      "img": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "video": null,
+      "createdAt": "2024-07-30T22:33:41.367Z",
+      "updatedAt": "2024-08-01T04:14:32.508Z",
+      "userId": "user_2k2OISyyyfYQ57H5LL5y7zNqAP1",
+      "channelId": 2
+    },
+    {
+      "id": 3,
+      "desc": "Perfect experience!",
+      "img": "https://images.pexels.com/photos/1709003/pexels-photo-1709003.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "video": null,
+      "createdAt": "2024-07-30T22:35:32.828Z",
+      "updatedAt": "2024-07-30T22:34:46.233Z",
+      "userId": "user_2jwQOUhvvhE4x6eb3RwpxRnrjtk",
+      "channelId": 1
+    },
+    {
+      "id": 5,
+      "desc": "Effective communication is key to personal and professional success.",
+      "img": "https://images.pexels.com/photos/3719037/pexels-photo-3719037.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "video": null,
+      "createdAt": "2024-08-01T04:11:10.416Z",
+      "updatedAt": "2024-08-01T04:10:24.213Z",
+      "userId": "5641",
+      "channelId": 1
+    },
+    {
+      "id": 6,
+      "desc": "Mastering these skills can lead to better relationships and improved productivity. What are your top communication tips?",
+      "img": "https://images.pexels.com/photos/355948/pexels-photo-355948.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "video": null,
+      "createdAt": "2024-08-01T04:13:03.864Z",
+      "updatedAt": "2024-08-01T04:11:55.465Z",
+      "userId": "1684",
+      "channelId": 2
+    },
+    {
+      "id": 7,
+      "desc": "Be Clear and Concise: Get to the point and avoid unnecessary jargon.",
+      "img": "https://images.pexels.com/photos/7441094/pexels-photo-7441094.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "video": null,
+      "createdAt": "2024-08-01T04:14:01.137Z",
+      "updatedAt": "2024-08-01T04:13:06.582Z",
+      "userId": "7513",
+      "channelId": 2
+    },
+    {
+      "id": 8,
+      "desc": "Did you know that non-verbal communication makes up 93% of our communication? Facial expressions, body language, and tone of voice play a huge role in how our messages are received. ",
+      "img": null,
+      "video": null,
+      "createdAt": "2024-08-01T04:18:44.496Z",
+      "updatedAt": "2024-08-01T04:17:10.762Z",
+      "userId": "7513",
+      "channelId": 3
+    },
+    {
+      "id": 9,
+      "desc": "Leadership is not just about holding a position; it's about making a difference. ",
+      "img": "https://images.pexels.com/photos/4792503/pexels-photo-4792503.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "video": null,
+      "createdAt": "2024-08-01T04:19:31.987Z",
+      "updatedAt": "2024-08-01T04:18:47.018Z",
+      "userId": "5641",
+      "channelId": 3
+    },
+    {
+      "id": 10,
+      "desc": "In today's interconnected world, building a strong network can open doors to new opportunities, collaborations, and knowledge. ",
+      "img": "https://images.pexels.com/photos/3810762/pexels-photo-3810762.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "video": null,
+      "createdAt": "2024-08-01T04:20:40.481Z",
+      "updatedAt": "2024-08-01T04:19:38.182Z",
+      "userId": "user_2jwQOUhvvhE4x6eb3RwpxRnrjtk",
+      "channelId": 3
+    },
+    {
+      "id": 11,
+      "desc": "Remember, your network is your net worth. Invest time in building and maintaining relationships. What's your favorite way to connect with new people?",
+      "img": "https://images.pexels.com/photos/3213982/pexels-photo-3213982.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "video": null,
+      "createdAt": "2024-08-01T04:21:24.581Z",
+      "updatedAt": "2024-08-01T04:20:42.595Z",
+      "userId": "user_2k2OISyyyfYQ57H5LL5y7zNqAP1",
+      "channelId": 3
+    },
+    {
+      "id": 12,
+      "desc": "Networking is about building mutually beneficial relationships. How do you approach networking?",
+      "img": "https://images.pexels.com/photos/3862364/pexels-photo-3862364.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "video": null,
+      "createdAt": "2024-08-01T04:22:18.185Z",
+      "updatedAt": "2024-08-01T04:21:37.074Z",
+      "userId": "9835",
+      "channelId": 4
+    },
+    {
+      "id": 13,
+      "desc": "Building connections is crucial for career growth and personal development. ",
+      "img": "https://images.pexels.com/photos/3810756/pexels-photo-3810756.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "video": null,
+      "createdAt": "2024-08-01T04:22:59.323Z",
+      "updatedAt": "2024-08-01T04:22:19.378Z",
+      "userId": "1684",
+      "channelId": 4
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "desc": "Hi everyone!",
+      "createdAt": "2024-08-01T04:38:51.355Z",
+      "updatedAt": "2024-08-01T04:39:02.253Z",
+      "userId": "7513",
+      "postId": 1
+    },
+    {
+      "id": 2,
+      "desc": "Good to see you guys today!",
+      "createdAt": "2024-08-01T04:39:35.097Z",
+      "updatedAt": "2024-08-01T04:39:06.004Z",
+      "userId": "user_2jwQOUhvvhE4x6eb3RwpxRnrjtk",
+      "postId": 1
+    },
+    {
+      "id": 3,
+      "desc": "What are your top communication tips?",
+      "createdAt": "2024-08-01T04:40:35.528Z",
+      "updatedAt": "2024-08-01T04:39:39.461Z",
+      "userId": "5641",
+      "postId": 3
+    },
+    {
+      "id": 4,
+      "desc": "Thanks for sharing!",
+      "createdAt": "2024-08-01T04:43:24.386Z",
+      "updatedAt": "2024-08-01T04:42:34.220Z",
+      "userId": "user_2jwQOUhvvhE4x6eb3RwpxRnrjtk",
+      "postId": 5
+    },
+    {
+      "id": 5,
+      "desc": "How do you build and motivate your team?",
+      "createdAt": "2024-08-01T04:45:52.354Z",
+      "updatedAt": "2024-08-01T04:45:06.782Z",
+      "userId": "1684",
+      "postId": 2
+    },
+    {
+      "id": 6,
+      "desc": "Got it!",
+      "createdAt": "2024-08-01T04:47:25.931Z",
+      "updatedAt": "2024-08-01T04:52:00.236Z",
+      "userId": "user_2k2OISyyyfYQ57H5LL5y7zNqAP1",
+      "postId": 6
+    },
+    {
+      "id": 7,
+      "desc": "Never heard before.",
+      "createdAt": "2024-08-01T04:51:21.925Z",
+      "updatedAt": "2024-08-01T04:49:43.876Z",
+      "userId": "user_2k2OISyyyfYQ57H5LL5y7zNqAP1",
+      "postId": 8
+    },
+    {
+      "id": 8,
+      "desc": "So amazing!",
+      "createdAt": "2024-08-01T04:52:31.719Z",
+      "updatedAt": "2024-08-01T04:52:02.866Z",
+      "userId": "user_2jwQOUhvvhE4x6eb3RwpxRnrjtk",
+      "postId": 9
+    },
+    {
+      "id": 40,
+      "desc": "wefwef",
+      "createdAt": "2024-08-05T01:29:28.166Z",
+      "updatedAt": "2024-08-05T01:29:28.166Z",
+      "userId": "user_2jwQOUhvvhE4x6eb3RwpxRnrjtk",
+      "postId": 5
+    },
+    {
+      "id": 41,
+      "desc": "Great!",
+      "createdAt": "2024-08-05T01:41:02.878Z",
+      "updatedAt": "2024-08-05T01:41:02.878Z",
+      "userId": "user_2jwQOUhvvhE4x6eb3RwpxRnrjtk",
+      "postId": 64
+    }
+  ]
+}

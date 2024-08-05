@@ -1,27 +1,5 @@
-// import Sidebar from "@/components/dashboard/sidebar/sidebar";
-// import styles from "../../components/dashboard/dashboard.module.css";
-// export default function DashboardLayout({
-//     children,
-// }: {
-//     children: React.ReactNode;
-// }) {
-//     return (
-//         <div className={styles.container}>
-//             {/* hide whent the screen is less than medium size */}
-//             <div className="flex-1 bg-[var(--bgSoft)] p-5 min-h-screen bg-white hidden md:block fixed top-0 left-0">
-//                 <Sidebar />
-//             </div>
-//             <div className={styles.content}>
-//                 <Navbar />
-//                 <div className="h-[calc(100vh)]">{children}</div>
-//                 {/* <Footer /> */}
-//             </div>
-//         </div>
-//     );
-// }
 import Navbar from "@/components/dashboard/navbar/navbar";
 import Sidebar from "@/components/dashboard/Sidebar/sidebar";
-import styles from "../../components/dashboard/dashboard.module.css";
 
 export default function DashboardLayout({
     children,
@@ -29,11 +7,11 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className={styles.container}>
-            <div className={styles.menu}>
+        <div className="flex dark:text-white">
+            <div className="min-h-screen p-5 flex-1 bg-[#9ad0e3] hidden md:block dark:bg-[#182237]">
                 <Sidebar />
             </div>
-            <div className={styles.content}>
+            <div className="flex-6 p-5 dark:bg-[#151c2c]">
                 <Navbar />
                 {children}
             </div>

@@ -33,7 +33,7 @@ const contactUs: FC = () => {
     }
 
     return (
-        <section className="bg-white dark:bg-gray-900">
+        <section className="bg-white dark:bg-[#151c2c]">
             <div className="py-4 lg:py-8 px-4 mx-auto max-w-screen-md">
                 <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center dark:text-white">
                     Contact Us
