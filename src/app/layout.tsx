@@ -24,7 +24,9 @@ export default function RootLayout({
     return (
         <html lang="en" className={`${inter.className} ${customFont.variable}`}>
             <ClerkProvider>
-                <body className={`${inter.className} ${customFont.variable}`}>
+                <body
+                    className={`${inter.className} ${customFont.variable} bg-white dark:bg-[#151c2c] text-[#151c2c]`}
+                >
                     {children}
                 </body>
             </ClerkProvider>

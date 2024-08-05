@@ -2,13 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import styles from "./menuLink.module.css";
 
 interface Item {
     path: string;
     icon: JSX.Element;
     title: string;
 }
+
+const baseClasses =
+    "p-5 flex items-center gap-2.5 my-1 rounded-lg text-[#224c6b] dark:text-white";
+const activeClasses = "bg-white text-[#224c6b] dark:text-[#224c6c]";
 
 interface MenuLinkProps {
     item: Item;
@@ -22,8 +25,8 @@ const MenuLink: React.FC<MenuLinkProps> = ({ item }) => {
     return (
         <Link
             href={item.path}
-            className={`font-avenir ${styles.container} ${
-                pathname === item.path && styles.active
+            className={`font-avenir ${baseClasses} ${
+                pathname === item.path ? activeClasses : ""
             }`}
         >
             {item.icon}

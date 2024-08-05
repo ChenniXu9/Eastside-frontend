@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      flex: {
+        '6': '6 1 0%',
+      },
       colors: {
         "primary-color": "var(--bg)",
         "primary-soft": "var(--bg)",

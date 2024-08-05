@@ -29,9 +29,10 @@ const Navbar = () => {
                         href="/"
                         className="font-glaical text-3xl md:text-5xl font-regular"
                     >
-                        {!hideNavbar
+                        {/* {!hideNavbar
                             ? capitalizedTitle
-                            : pathname?.split("/")[-2]}
+                            : pathname?.split("/")[-2]} */}
+                        {capitalizedTitle}
                     </Link>
                 </div>
 
@@ -40,11 +41,7 @@ const Navbar = () => {
                     <MobileMenu />
                 </div>
             </div>
-            {!hideNavbar ? (
-                <div className="w-full border-b-4 border-[#224c6b]"></div>
-            ) : (
-                ""
-            )}
+            <div className="w-full border-b-4 border-[#224c6b]"></div>
         </div>
     );
 };

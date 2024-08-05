@@ -9,8 +9,7 @@ import {
     MdShoppingBag,
     MdSupervisedUserCircle,
 } from "react-icons/md";
-import MenuLink from "../menuLink/menuLink";
-import styles from "./sidebar.module.css";
+import MenuLink from "./menuLink/menuLink";
 
 // Sidebar item lists
 const menuItems = [
@@ -66,7 +65,7 @@ const Sidebar = () => {
         username: "testing",
     };
     return (
-        <div className={styles.container}>
+        <div className="sticky top-10">
             <div className="md:flex flex items-center gap-5 my-5">
                 <Image
                     src={"/companyLogo.png"}
@@ -82,10 +81,12 @@ const Sidebar = () => {
             </div>
             {/* CENTER */}
             <div className="md:flex h-[70%] text-sm justify-between flex-col">
-                <ul className={styles.list}>
+                <ul className="list-none">
                     {menuItems.map((cat) => (
                         <li key={cat.title}>
-                            <span className={styles.cat}>{cat.title}</span>
+                            <span className="font-bold text-xs mx-2.5 ">
+                                {cat.title}
+                            </span>
                             {cat.list.map((item) => (
                                 <MenuLink item={item} key={item.title} />
                             ))}
@@ -98,7 +99,7 @@ const Sidebar = () => {
                 <button
                     type="button"
                     onClick={handleSignOut}
-                    className={styles.logout}
+                    className="p-5 my-1 flex items-center gap-2.5 cursor-pointer rounded-lg bg-transparent border-none w-full hover:bg-white hover:text-[#224c6b]"
                 >
                     <MdLogout />
                     Logout
