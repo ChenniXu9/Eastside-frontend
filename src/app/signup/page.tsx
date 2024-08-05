@@ -16,6 +16,9 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -43,6 +46,9 @@ const Signup = () => {
       await signUp.create({
         emailAddress: email,
         password,
+        username,
+        firstName,
+        lastName,
       });
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
@@ -66,7 +72,7 @@ const Signup = () => {
       return;
     }
     try {
-      await axios.post('/api/createUser', { userId });
+      await axios.post('/api/createUser', { userId, username, firstName, lastName });
     } catch (error) {
       console.error('Failed to create user in database:', error);
       toast.error('Failed to complete registration. Please contact support.');
@@ -131,6 +137,48 @@ const Signup = () => {
                   className="w-full p-2 rounded bg-white text-black"
                   required
                   autoFocus
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="username" className="block mb-1">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full p-2 rounded bg-white text-black"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="firstName" className="block mb-1">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="w-full p-2 rounded bg-white text-black"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="lastName" className="block mb-1">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="w-full p-2 rounded bg-white text-black"
+                  required
                 />
               </div>
               <div className="mb-4 relative">
