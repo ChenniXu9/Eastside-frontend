@@ -98,26 +98,7 @@ const PostsDetail = () => {
   }, [channel?.id, currentUser]);
 
 
-
-  useEffect(() => {
-    const loadPosts = async () => {
-      if (channel?.id) {
-        const fetchedPosts = await fetchPosts(channel.id); // Fetch initial posts
-        setPosts(fetchedPosts);
-      }
-    };
-
-    loadPosts();
-  }, [channel?.id]);
-  
-
   if (!channel || !currentUser) return <div>Loading...</div>;
-
-  const handlePostAdded = (newPost: Post) => {
-    setPosts(prevPosts => [newPost, ...prevPosts]); // Add the new post to the top of the list
-  };
-
-  channel.posts = posts;
 
   const hasJoined = channel.users.some(user => user.user.id === currentUser.id);
 

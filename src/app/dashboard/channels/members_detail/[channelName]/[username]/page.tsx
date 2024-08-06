@@ -1,11 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import LeftMenu from "@/components/LeftMenu";
-import ChannelNavbar from "@/components/channelContents/ChannelNavbar";
-import MyPostsRightbar from "@/components/channelContents/MyPostsRightbar";
-import UserDetail from "@/components/channelContents/PostsDetail";
-import { deletePost, fetchUserPosts } from '@/lib/actions';
 import Members from "@/components/channelContents/Members";
 import MembersRight from "@/components/channelContents/MembersRight";
 
@@ -59,6 +54,7 @@ type Channel = {
   posts: Post[];
 };
 
+
 const GroupDetail = () => {
   const params = useParams();
   const channelName = params?.channelName as string | undefined;
@@ -66,8 +62,6 @@ const GroupDetail = () => {
 
   const [channel, setChannel] = useState<Channel | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-
-  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     if (channelName && userName) {
@@ -97,7 +91,8 @@ const GroupDetail = () => {
     <div>
       <div className="flex gap-6 pt-6">
         <div className="w-full lg:w-[70%] xl:w-[70%]">
-          <UserDetail channel={channel} currentUser={currentUser} posts={posts} setPosts={setPosts}/>
+          {/* <Members /> */}
+          <Members channel={channel} currentUser={currentUser}/>
         </div>
         <div className="hidden lg:block w-[30%]"><MembersRight channel={channel} currentUser={currentUser}/></div>
       </div>
