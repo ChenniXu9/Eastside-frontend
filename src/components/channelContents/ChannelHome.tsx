@@ -46,9 +46,9 @@ const ChannelHome = ({ userId }: { userId: string }) => {
 
     return (
         <div className="flex flex-col gap-6">
-            <HomeNav username={username}></HomeNav>
+            {/* <HomeNav username={username}></HomeNav> */}
             <div className="p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4">
-                <div className="">
+                {/* <div className="">
                     <Link href="/">
                         <button>
                             <Image
@@ -60,7 +60,7 @@ const ChannelHome = ({ userId }: { userId: string }) => {
                         </button>
                     </Link>
                     <span className="mx-2">Homepage</span>
-                </div>
+                </div> */}
                 <div className="flex justify-between items-center font-medium">
                     <span className="px-4 text-gray-500">All Channels</span>
                     <div className="flex p-2 bg-slate-100 items-center rounded-xl">

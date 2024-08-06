@@ -7,14 +7,20 @@ import Link from "next/link";
 import Image from "next/image";
 
 type User = {
-    id: string;
-    username: string;
-    profile_image: string | null;
-    first_name: string | null;
-    last_name: string | null;
-    description: string | null;
-    city: string | null;
-    createdAt: Date;
+  id: string;
+  username: string;
+  profile_image: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  organization: string | null;
+  title: string | null;
+  phone: string | null; 
+  description: string | null;
+  password: string | null;
+  personal_email: string | null;
+  graduation_year: string | null;
+  work_email: string | null;
+  createdAt: Date;
 };
   
 type Comment = {

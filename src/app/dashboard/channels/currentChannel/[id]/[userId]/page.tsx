@@ -15,8 +15,14 @@ type User = {
   profile_image: string | null;
   first_name: string | null;
   last_name: string | null;
+  organization: string | null;
+  title: string | null;
+  phone: string | null; 
   description: string | null;
-  city: string | null;
+  password: string | null;
+  personal_email: string | null;
+  graduation_year: string | null;
+  work_email: string | null;
   createdAt: Date;
 };
 
@@ -107,7 +113,7 @@ const CurrentChannel = () => {
 
   return (
     <div>
-      <div><ChannelNavbar channel={channel} currentUser={currentUser} /></div>
+      {/* <div><ChannelNavbar channel={channel} currentUser={currentUser} /></div> */}
       <div className="flex gap-6 pt-6">
         <div className="w-full lg:w-[70%] xl:w-[70%]">
           <div className="flex flex-col gap-6">
