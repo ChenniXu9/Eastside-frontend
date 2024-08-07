@@ -2,30 +2,17 @@
 // import LeftMenu from "@/components/leftMenu/LeftMenu";
 import ProfileAboutMe from "@/components/dashboard/profile/singleUser/ProfileAboutMe";
 import prisma from "@/lib/client";
-import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-const ProfilePage = async () => {
-    const { userId } = auth();
-
-    if (!userId) return null;
+const ProfilePage = async ({ params }: { params: { username: string } }) => {
+    const username = params.username;
 
     const user = await prisma.user.findFirst({
         where: {
-            id: userId,
-        },
-        include: {
-            _count: {
-                select: {
-                    channels: true,
-                    posts: true,
-                },
-            },
+            username,
         },
     });
-
-    console.log(user);
 
     if (!user) return notFound();
 
@@ -58,17 +45,9 @@ const ProfilePage = async () => {
                                 <div className="flex items-center justify-center gap-14">
                                     <div className="flex flex-col items-center flex-1">
                                         <span className="font-medium">
-                                            {user._count.posts}
+                                            {10}
                                         </span>
                                         <span className="text-sm">Posts</span>
-                                    </div>
-                                    <div className="flex flex-col items-center flex-1">
-                                        <span className="font-medium">
-                                            {user._count.channels}
-                                        </span>
-                                        <span className="text-sm text-center">
-                                            Channels Joined
-                                        </span>
                                     </div>
                                 </div>
                             </div>
