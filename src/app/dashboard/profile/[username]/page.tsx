@@ -1,5 +1,6 @@
 // import Feed from "@/components/feed/Feed";
 // import LeftMenu from "@/components/leftMenu/LeftMenu";
+import ProfilePosts from "@/components/dashboard/profile/ProfilePosts";
 import ProfileAboutMe from "@/components/dashboard/profile/singleUser/ProfileAboutMe";
 import prisma from "@/lib/client";
 import Image from "next/image";
