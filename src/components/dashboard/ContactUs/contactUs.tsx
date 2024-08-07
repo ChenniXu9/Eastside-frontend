@@ -2,7 +2,7 @@
 import { sendEmail } from "@/lib/send-email";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
-import { ToastContainer, toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export type FormData = {
@@ -39,10 +39,13 @@ const contactUs: FC = () => {
                     Contact Us
                 </h2>
                 <p className="mb-8 lg:mb-16 font-light text-center text-gray-500 dark:text-gray-400 sm:text-xl">
-                    Got a technical issue? Want to send feedback about a beta
-                    feature? Need details about our Business plan? Let us know.
+                    Got a technical issue? Want to send feedback about our new
+                    application? Let us know.
                 </p>
-                <form className="mt-8 space-y-4">
+                <form
+                    className="mt-4 space-y-4"
+                    onSubmit={handleSubmit(onSubmit)}
+                >
                     <input
                         type="text"
                         placeholder="Name"
@@ -61,10 +64,7 @@ const contactUs: FC = () => {
                         className="w-full rounded-md px-4 text-gray-800 bg-gray-100 focus:bg-transparent text-sm pt-3 outline-blue-500"
                         {...register("message", { required: true })}
                     ></textarea>
-                    <button
-                        type="button"
-                        className="text-white bg-[#438bb4] hover:bg-[#224c6b] tracking-wide rounded-md text-sm px-4 py-3 w-full"
-                    >
+                    <button className="text-white bg-[#438bb4] hover:bg-[#224c6b] tracking-wide rounded-md text-sm px-4 py-3 w-full">
                         Send
                     </button>
                     {errors.message && (

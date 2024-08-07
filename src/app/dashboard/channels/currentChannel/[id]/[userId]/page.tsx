@@ -1,7 +1,5 @@
 // src/app/dashboard/channels/currentChannel/[id]/[userId]/page.tsx
 "use client";
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
 import ChannelNavbar from "@/components/channelContents/ChannelNavbar";
 import ChannelRightMenu from "@/components/channelContents/ChannelRightMenu";
 import AddPost from "@/components/channelContents/AddPosts";
@@ -48,45 +46,49 @@ type Post = {
 };
 
 type Channel = {
-  id: number;
-  channel_name: string;
-  channel_image: string | null;
-  channel_description: string | null;
-  users: {
-    user: User;
-  }[];
-  posts: Post[];
+    id: number;
+    channel_name: string;
+    channel_image: string | null;
+    channel_description: string | null;
+    users: {
+        user: User;
+    }[];
+    posts: Post[];
 };
 
 const CurrentChannel = () => {
-  const params = useParams();
-  const id = params?.id as string | undefined;
-  const userId = params?.userId as string;
+    const params = useParams();
+    const id = params?.id as string | undefined;
+    const userId = params?.userId as string;
 
   const [channel, setChannel] = useState<Channel | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const [posts, setPosts] = useState<Post[]>([]);
 
-  useEffect(() => {
-    if (id && userId) {
-      const fetchData = async () => {
-        try {
-          const channelResponse = await fetch(`/api/channel/fetchCurChannel?id=${id}`);
-          const channelData = await channelResponse.json();
-          setChannel(channelData);
+    useEffect(() => {
+        if (id && userId) {
+            const fetchData = async () => {
+                try {
+                    const channelResponse = await fetch(
+                        `/api/channel/fetchCurChannel?id=${id}`
+                    );
+                    const channelData = await channelResponse.json();
+                    setChannel(channelData);
 
-          const userResponse = await fetch(`/api/channel/fetchUser?userId=${userId}`);
-          const userData = await userResponse.json();
-          setCurrentUser(userData);
-        } catch (error) {
-          console.error('Error fetching data:', error);
+                    const userResponse = await fetch(
+                        `/api/channel/fetchUser?userId=${userId}`
+                    );
+                    const userData = await userResponse.json();
+                    setCurrentUser(userData);
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            };
+
+            fetchData();
         }
-      };
-
-      fetchData();
-    }
-  }, [id, userId]);
+    }, [id, userId]);
 
 
   useEffect(() => {
@@ -124,13 +126,18 @@ const CurrentChannel = () => {
             } 
             {hasJoined &&
             <Feed channel={channel} currentUser={currentUser}/>
-            }                  
-          </div>
+            }                   */}
+                    </div>
+                </div>
+                <div className="hidden lg:block w-[30%]">
+                    {/* <ChannelRightMenu
+                        channel={channel}
+                        currentUser={currentUser}
+                    /> */}
+                </div>
+            </div>
         </div>
-        <div className="hidden lg:block w-[30%]"><ChannelRightMenu channel={channel} currentUser={currentUser} /></div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default CurrentChannel;

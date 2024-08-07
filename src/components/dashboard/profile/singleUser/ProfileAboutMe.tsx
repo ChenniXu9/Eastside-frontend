@@ -11,14 +11,13 @@ interface ProfileAboutMeProps {
     user: User;
 }
 
-const { userId } = auth();
-
 const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
+    const { userId } = auth();
     const currentUserId = userId;
     return (
-        <div className="mx-5 w-full">
+        <div className="md:mx-5 w-full">
             <div className="flex flex-col md:flex-row">
-                <div className="flex flex-col w-full md:rounded-lg md:text-surface md:shadow-secondary-1 dark:bg-surface-dark dark:text-white">
+                <div className="flex flex-col w-full p-10 rounded-lg mb-5 dark:bg-blue-950 md:bg-transparent md:dark:bg-transparent md:m-0 md:p-0 md:text-surface md:shadow-secondary-1 dark:text-white">
                     <div className="flex flex-col gap-4 flex-1">
                         <div className="flex items-center gap-2">
                             <span className="text-3xl ">About Me</span>
@@ -70,7 +69,7 @@ const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
                 </div>
 
                 {/* Social */}
-                <div className="flex flex-row w-full">
+                <div className="flex flex-col w-full p-10 rounded-lg mb-5 dark:bg-blue-950 md:bg-transparent md:dark:bg-transparent md:m-0 md:p-0 md:text-surface md:shadow-secondary-1 dark:text-white">
                     <div className="flex flex-col gap-4  flex-1">
                         <div className="flex items-center gap-2">
                             <span className="text-3xl ">Contact</span>
