@@ -153,62 +153,6 @@ export const declineFollowRequest = async (userId: string) => {
   }
 };
 
-// export const updateProfile = async (
-// formData: FormData, cover: string
-// ) => {
-//   const fields = Object.fromEntries(formData);
-
-//   const filteredFields = Object.fromEntries(
-//     Object.entries(fields).filter(([_, value]) => value !== "")
-//   );
-
-//   // confirm here that the passwords match 
-
-//   // Uncomment and adjust the validation as necessary
-//   const Profile = z.object({
-//     cover: z.string().optional(),
-//     name: z.string().max(60).optional(),
-//     surname: z.string().max(60).optional(),
-//     description: z.string().max(255).optional(),
-//     city: z.string().max(60).optional(),
-//     school: z.string().max(60).optional(),
-//     work: z.string().max(60).optional(),
-//     website: z.string().max(60).optional(),
-//   });
-
-//   const validatedFields = Profile.safeParse({ cover, ...filteredFields });
-
-//   if (!validatedFields.success) {
-//     console.log(validatedFields.error.flatten().fieldErrors);
-//     return { success: false, error: true };
-//   }
-
-//   if (filteredFields) {
-//     console.log("user data", filteredFields);
-//     return { success: false, error: true };
-//   }
-
-//   // Uncomment and adjust authentication as necessary
-//   const { userId } = auth();
-
-//   if (!userId) {
-//     return { success: false, error: true };
-//   }
-
-//   try {
-//     await prisma.user.update({
-//       where: {
-//         id: userId,
-//       },
-//       data: validatedFields.data,
-//     });
-//     return { success: true, error: false };
-//   } catch (err) {
-//     console.log(err);
-//     return { success: false, error: true };
-//   }
-// };
-
 export const switchLike = async (postId: number) => {
   const { userId } = auth();
 
@@ -351,6 +295,56 @@ export const deletePost = async (postId: number) => {
   }
 };
 
+// old functional one 
+// export const updateProfile = async(formData: FormData, cover: string, profile: string) => {
+//   console.log(cover, profile)
+//   const fields = Object.fromEntries(formData);
+  
+//   const filteredFields = Object.fromEntries(
+//     Object.entries(fields).filter(([_, value]) => value !== "")
+//   );
+
+//   const Profile = z.object({
+//     cover_image: z.string().optional(),
+//     profile_image: z.string().optional(),
+//     first_name: z.string().max(60).optional(),
+//     last_name: z.string().max(60).optional(),
+//     description: z.string().max(255).optional(),
+//     organization: z.string().max(60).optional(),
+//     title: z.string().max(60).optional(),
+//     phone: z.string().max(60).optional(),
+//     personal_email: z.string().max(60).optional(),
+//     work_email: z.string().max(60).optional(),
+//     graduation_year: z.string().max(60).optional(),
+//     password: z.string().max(60).optional(),
+//   });
+
+//   const validatedFields = Profile.safeParse({ cover_image: cover,profile_image: profile, ...filteredFields });
+
+//     if (!validatedFields.success) {
+//     console.log(validatedFields.error.flatten().fieldErrors);
+//     return "error";
+//   }
+
+//   const { userId } = auth();
+
+//   if (!userId) {
+//     return "error";
+//   }
+
+//   try {
+//     await prisma.user.update({
+//       where: {
+//         id: userId,
+//       },
+//       data: validatedFields.data,
+//     });
+//     return "success"
+//   } catch (err) {
+//     console.log(err);
+//     return "errror"
+//   }
+// }
 
 export const updateProfile = async(formData: FormData, cover: string, profile: string) => {
   console.log(cover, profile)
@@ -379,13 +373,13 @@ export const updateProfile = async(formData: FormData, cover: string, profile: s
 
     if (!validatedFields.success) {
     console.log(validatedFields.error.flatten().fieldErrors);
-    return "error";
+    return { status: 'error', message: 'Internal Server Error' };
   }
 
   const { userId } = auth();
 
   if (!userId) {
-    return "error";
+    return { status: 'error', message: 'Internal Server Error' };
   }
 
   try {
@@ -395,9 +389,62 @@ export const updateProfile = async(formData: FormData, cover: string, profile: s
       },
       data: validatedFields.data,
     });
-    // return "{ success: true, error: false }";
+    return { status: 'success', message: 'Profile updated successfully' };
   } catch (err) {
     console.log(err);
-    // return "{ success: false, error: true }";
+    return { status: 'error', message: 'Internal Server Error' };
   }
 }
+
+// export const updateProfile = async (formData: FormData, cover: string, profile: string) => {
+//   try {
+//     // Convert FormData to plain object
+//     const fields = Object.fromEntries(formData);
+
+//     // Filter out empty fields
+//     const filteredFields = Object.fromEntries(
+//       Object.entries(fields).filter(([_, value]) => value !== "")
+//     );
+
+//     // Define the schema for validation
+//     const Profile = z.object({
+//       cover_image: z.string().optional(),
+//       profile_image: z.string().optional(),
+//       first_name: z.string().max(60).optional(),
+//       last_name: z.string().max(60).optional(),
+//       description: z.string().max(255).optional(),
+//       organization: z.string().max(60).optional(),
+//       title: z.string().max(60).optional(),
+//       phone: z.string().max(60).optional(),
+//       personal_email: z.string().max(60).optional(),
+//       work_email: z.string().max(60).optional(),
+//       graduation_year: z.string().max(60).optional(),
+//       password: z.string().max(60).optional(),
+//     });
+
+//     // Validate the fields
+//     const validatedFields = Profile.safeParse({ cover_image: cover, profile_image: profile, ...filteredFields });
+
+//     if (!validatedFields.success) {
+//       console.log(validatedFields.error.flatten().fieldErrors);
+//       return { status: 'error', message: 'Validation failed', errors: validatedFields.error.flatten().fieldErrors };
+//     }
+
+//     const { userId } = auth();
+
+//     if (!userId) {
+//       return { status: 'error', message: 'User not authenticated' };
+//     }
+
+//     // Update the user profile in the database
+//     await prisma.user.update({
+//       where: { id: userId },
+//       data: validatedFields.data,
+//     });
+
+//     return { status: 'success', message: 'Profile updated successfully' };
+//   } catch (err) {
+//     console.error(err);
+//     return { status: 'error', message: 'Internal Server Error' };
+//   }
+// };

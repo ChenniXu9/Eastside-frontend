@@ -65,7 +65,7 @@ const Sidebar = () => {
         username: "testing",
     };
     return (
-        <div className="sticky top-10">
+        <div className="sticky top-10 flex flex-col justify-between items-stretch">
             <div className="md:flex flex items-center gap-5 my-5">
                 <Image
                     src={"/companyLogo.png"}
