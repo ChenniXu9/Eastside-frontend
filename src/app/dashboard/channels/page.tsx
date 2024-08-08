@@ -19,7 +19,7 @@ const Channels = async () => {
     // if (!user) return null;
 
     return (
-        <div>
+        <div className='text-black '>
             <ChannelHome userId={userId!} />
         </div>
     );

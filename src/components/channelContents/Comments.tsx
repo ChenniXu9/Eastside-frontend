@@ -61,6 +61,7 @@ interface CommentsProps {
     postId: number;
     channel: Channel;
     currentUser: User;
+    onCommentAdded: (postId: number, newComment: Comment) => void;
 }
 
 type AllChannel = {
@@ -70,7 +71,7 @@ type AllChannel = {
     channel_description: string | null;
 };
 
-const Comments: React.FC<CommentsProps> = ({ postId, channel, currentUser})=> {
+const Comments: React.FC<CommentsProps> = ({ postId, channel, currentUser, onCommentAdded})=> {
     const post = channel.posts.find(post => post.id === postId);
     const [users, setUsers] = useState<{ [key: string]: User }>({});
 
@@ -94,8 +95,14 @@ const Comments: React.FC<CommentsProps> = ({ postId, channel, currentUser})=> {
             profile_image: user.imageUrl || '/noAvatar.png',
             first_name: '',
             last_name: '',
+            organization: '',
+            title: '',
+            phone: '',
             description: '',
-            city: '',
+            password: '',
+            personal_email: '',
+            graduation_year: '',
+            work_email: '',
             createdAt: new Date(Date.now()),
           },
         };
@@ -104,6 +111,7 @@ const Comments: React.FC<CommentsProps> = ({ postId, channel, currentUser})=> {
         try {
           const createdComment = await addComment(desc, postId);
           setCommentState((prev) => [createdComment, ...prev]);
+          onCommentAdded(postId, newComment);
           setDesc('');
         } catch (err) {
           console.error('Error adding comment:', err);
@@ -139,6 +147,23 @@ const Comments: React.FC<CommentsProps> = ({ postId, channel, currentUser})=> {
     
     return (
     <>
+    <div className="flex items-center justify-between text-sm my-4">
+              <div className="flex gap-8">
+                <div className="flex items-center gap-4 bg-slate-50 p-2 rounded-xl">
+                  <Image 
+                    src="/comment.png" 
+                    alt="Comment" 
+                    width={16} 
+                    height={16} 
+                    className="cursor-pointer"
+                  />
+                  <span className="text-gray-300">|</span>
+                  <span className="text-gray-500">{optimisticComments.length}
+                    <span className="hidden md:inline xl:inline"> Comments</span>
+                  </span>
+                </div>
+              </div>
+            </div>
       {user && (
         <div className="flex items-center gap-4">
           <Image

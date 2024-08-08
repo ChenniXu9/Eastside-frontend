@@ -146,19 +146,19 @@ const AddPost: React.FC<AddPostProps> = ({ channel, currentUser, onPostAdded}) =
                         onClick={() => open()}
                             >
                         <Image src="/addimage.png" alt="" width={20} height={20} />
-                        Photo
+                        Media
                         </div>
                         );
                         }}
                     </CldUploadWidget>
-                    <div className="flex items-center gap-2 cursor-pointer">
+                    {/* <div className="flex items-center gap-2 cursor-pointer">
                         <Image src="/addVideo.png" 
                             alt="" 
                             width={20} 
                             height={20} 
                         />
                         Video
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

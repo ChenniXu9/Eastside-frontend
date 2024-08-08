@@ -119,11 +119,11 @@ const CurrentGroup: React.FC<CurrentgroupProps> = ({ channel, currentUser }) => 
           <span className="font-medium">{member.user.username}</span>
         </div>
         ))}
-        {channel.users.length > 3 && (
+        {/* {channel.users.length > 3 && (
             <div className="text-sm text-gray-500">
             and {channel.users.length - 3} more...
             </div>
-        )}
+        )} */}
     </div>
     )
 }

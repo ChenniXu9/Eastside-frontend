@@ -45,7 +45,7 @@ const ChannelHome = ({ userId }: { userId: string }) => {
     }, [userId]);
 
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 pt-6">
             {/* <HomeNav username={username}></HomeNav> */}
             <div className="p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4">
                 {/* <div className="">
@@ -63,7 +63,7 @@ const ChannelHome = ({ userId }: { userId: string }) => {
                 </div> */}
                 <div className="flex justify-between items-center font-medium">
                     <span className="px-4 text-gray-500">All Channels</span>
-                    <div className="flex p-2 bg-slate-100 items-center rounded-xl">
+                    {/* <div className="flex p-2 bg-slate-100 items-center rounded-xl">
                         <input
                             type="text"
                             placeholder="search..."
@@ -75,7 +75,7 @@ const ChannelHome = ({ userId }: { userId: string }) => {
                             width={14}
                             height={14}
                         />
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4">

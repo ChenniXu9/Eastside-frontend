@@ -71,6 +71,10 @@ const PostsDetail: React.FC<PostProps> = ({ channel, currentUser, posts, setPost
         }
     };
 
+    const handlePostUpdated = (updatedPost: Post) => {
+        setPosts(prevPosts => prevPosts.map(post => (post.id === updatedPost.id ? updatedPost : post)));
+    };
+
 
     return (
         <div className="flex flex-col gap-6">
@@ -95,11 +99,15 @@ const PostsDetail: React.FC<PostProps> = ({ channel, currentUser, posts, setPost
                     </div>
                 </div>                  
             </div>
-            {posts.length > 0 &&
+            <div>
+            {posts.map(post => (
+                <PostInfo key={post.id} postId={post.id} channel={channel} currentUser={currentUser} post={post} onDeletePost={handleDeletePost} onPostUpdated={handlePostUpdated}/>
+            ))}
+            </div>
+            {/* {posts.length > 0 &&
             <div className='p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4'>
             {posts.map(post => (
             <div key={post.id} className='flex flex-col gap-4'>
-                {/* User */}
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <Image 
@@ -117,7 +125,6 @@ const PostsDetail: React.FC<PostProps> = ({ channel, currentUser, posts, setPost
                         height={16} 
                     />
                 </div>
-                {/* Contents */}
                 <div className="flex flex-col gap-4">                  
                     {post.img && (
                         <div className="w-full min-h-96 relative">
@@ -132,12 +139,10 @@ const PostsDetail: React.FC<PostProps> = ({ channel, currentUser, posts, setPost
                     )}  
                     <p>{post.desc}</p>             
                 </div>
-                {/* Interaction */}
-                <PostInfo key={post.id} postId={post.id} channel={channel} currentUser={currentUser} post={post} onDeletePost={handleDeletePost}/>
+                <PostInfo key={post.id} postId={post.id} channel={channel} currentUser={currentUser} post={post} onDeletePost={handleDeletePost} onPostUpdated={handlePostUpdated}/>
           </div>
         ))}
-
-            </div>}
+            </div>} */}
         </div>
     )
 }

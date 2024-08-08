@@ -112,7 +112,7 @@ const CurrentChannel = () => {
   const hasJoined = channel.users.some(user => user.user.id === currentUser.id);
 
   return (
-    <div>
+    <div className='text-black'>
       {/* <div><ChannelNavbar channel={channel} currentUser={currentUser} /></div> */}
       <div className="flex gap-6 pt-6">
         <div className="w-full lg:w-[70%] xl:w-[70%]">

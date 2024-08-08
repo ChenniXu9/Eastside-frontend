@@ -127,6 +127,11 @@ const Groups: React.FC<GroupsProps> = ({ channel, currentUser }) => {
                 </Link>
                 </div>
             ))}
+            {combinedChannels.length > 3 && (
+            <div className="text-sm text-gray-500">
+            and {combinedChannels.length - 3} more...
+            </div>
+        )}
         </div>
     )
 }

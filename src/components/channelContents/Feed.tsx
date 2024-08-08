@@ -1,10 +1,11 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Link from "next/link";
 import Image from "next/image";
 import Posts from './Posts';
+import { fetchPosts } from '@/lib/actions';
 
 type User = {
   id: string;
@@ -62,10 +63,22 @@ interface FeedProps {
 
 
 const Feed: React.FC<FeedProps> = ({ channel, currentUser }) => {
+  const [posts, setPosts] = useState<Post[]>(channel.posts);
+
+  useEffect(() => {
+    const loadPosts = async () => {
+      const fetchedPosts = await fetchPosts(channel.id);
+      setPosts(fetchedPosts);
+    };
+
+    loadPosts();
+  }, [channel.id]);
+
+
     if (channel.posts.length >= 1) {
       return (
         <div className='p-4 bg-white shadow-md rounded-lg flex flex-col gap-12'>
-            <Posts channel={channel} currentUser={currentUser}/>
+            <Posts channel={channel} currentUser={currentUser} posts={posts} setPosts={setPosts}/>
         </div>
     )
     }

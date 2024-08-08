@@ -60,11 +60,22 @@ type Channel = {
 interface PostProps {
     channel: Channel;
     currentUser: User;
+    posts: Post[];
+  setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
 }
 
-const Posts: React.FC<PostProps> = ({ channel, currentUser }) => {
+const Posts: React.FC<PostProps> = ({ channel, currentUser, posts, setPosts }) => {
   const formatDate = (date: Date) => {
     return format(new Date(date), 'MMMM dd, yyyy HH:mm');
+  };
+
+  const handleCommentAdded = (postId: number, newComment: Comment) => {
+    setPosts(prevPosts =>
+      prevPosts.map(post =>
+        post.id === postId ? { ...post, comments: [...post.comments, newComment] } : post
+      )
+    );
+     
   };
  
     return (
@@ -101,7 +112,7 @@ const Posts: React.FC<PostProps> = ({ channel, currentUser }) => {
                 <p>{post.desc}</p>            
             </div>
             {/* Interaction */}
-            <div className="flex items-center justify-between text-sm my-4">
+            {/* <div className="flex items-center justify-between text-sm my-4">
               <div className="flex gap-8">
                 <div className="flex items-center gap-4 bg-slate-50 p-2 rounded-xl">
                   <Image 
@@ -117,9 +128,9 @@ const Posts: React.FC<PostProps> = ({ channel, currentUser }) => {
                   </span>
                 </div>
               </div>
-            </div>
+            </div> */}
             {/* Comments */}
-            <Comments postId={post.id} channel={channel} currentUser={currentUser}/>
+            <Comments postId={post.id} channel={channel} currentUser={currentUser} onCommentAdded={handleCommentAdded}/>
             <hr className="border-t-1 border-gray-50 w-36 self-center"/>
           </div>
         ))}

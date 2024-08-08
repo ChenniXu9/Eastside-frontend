@@ -210,89 +210,58 @@ import prisma from "./client";
 //   }
 // };
 
-// export const switchLike = async (postId: number) => {
-//   const { userId } = auth();
 
-//   if (!userId) throw new Error("User is not authenticated!");
-
-//   try {
-//     const existingLike = await prisma.like.findFirst({
-//       where: {
-//         postId,
-//         userId,
-//       },
-//     });
-
-//     if (existingLike) {
-//       await prisma.like.delete({
-//         where: {
-//           id: existingLike.id,
-//         },
-//       });
-//     } else {
-//       await prisma.like.create({
-//         data: {
-//           postId,
-//           userId,
-//         },
-//       });
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     throw new Error("Something went wrong");
-//   }
-// };
-
-// export const updateProfile = async(formData: FormData, cover: string, profile: string) => {
-//   console.log(cover, profile)
-//   const fields = Object.fromEntries(formData);
+export const updateProfile = async(formData: FormData, cover: string, profile: string) => {
+  console.log(cover, profile)
+  const fields = Object.fromEntries(formData);
   
-//   const filteredFields = Object.fromEntries(
-//     Object.entries(fields).filter(([_, value]) => value !== "")
-//   );
+  const filteredFields = Object.fromEntries(
+    Object.entries(fields).filter(([_, value]) => value !== "")
+  );
 
-//   const Profile = z.object({
-//     cover_image: z.string().optional(),
-//     profile_image: z.string().optional(),
-//     first_name: z.string().max(60).optional(),
-//     last_name: z.string().max(60).optional(),
-//     description: z.string().max(255).optional(),
-//     organization: z.string().max(60).optional(),
-//     title: z.string().max(60).optional(),
-//     phone: z.string().max(60).optional(),
-//     personal_email: z.string().max(60).optional(),
-//     work_email: z.string().max(60).optional(),
-//     graduation_year: z.string().max(60).optional(),
-//     password: z.string().max(60).optional(),
-//   });
+  const Profile = z.object({
+    cover_image: z.string().optional(),
+    profile_image: z.string().optional(),
+    first_name: z.string().max(60).optional(),
+    last_name: z.string().max(60).optional(),
+    description: z.string().max(255).optional(),
+    organization: z.string().max(60).optional(),
+    title: z.string().max(60).optional(),
+    phone: z.string().max(60).optional(),
+    personal_email: z.string().max(60).optional(),
+    work_email: z.string().max(60).optional(),
+    graduation_year: z.string().max(60).optional(),
+    password: z.string().max(60).optional(),
+  });
 
-//   const validatedFields = Profile.safeParse({ cover_image: cover,profile_image: profile, ...filteredFields });
+  const validatedFields = Profile.safeParse({ cover_image: cover,profile_image: profile, ...filteredFields });
 
-//     if (!validatedFields.success) {
-//     console.log(validatedFields.error.flatten().fieldErrors);
-//     return "error";
-//   }
+    if (!validatedFields.success) {
+    console.log(validatedFields.error.flatten().fieldErrors);
+    return "error";
+  }
 
-//   const { userId } = auth();
+  const { userId } = auth();
 
-//   if (!userId) {
-//     return "error";
-//   }
+  if (!userId) {
+    return "error";
+  }
 
-//   try {
-//     await prisma.user.update({
-//       where: {
-//         id: userId,
-//       },
-//       data: validatedFields.data,
-//     });
-//     // return "{ success: true, error: false }";
-//   } catch (err) {
-//     console.log(err);
-//     // return "{ success: false, error: true }";
-//   }
-// }
+  try {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: validatedFields.data,
+    });
+    // return "{ success: true, error: false }";
+  } catch (err) {
+    console.log(err);
+    // return "{ success: false, error: true }";
+  }
+}
 
+// Following are Channels page actions, please not modify them
 type User = {
   id: string;
   username: string;
@@ -514,6 +483,46 @@ export const deletePost = async (postId: number, channelId: number) => {
   }
 };
 
+export const updatePost = async (postId: number, desc: string, img: string | null, channelId: number) => {
+  const { userId } = auth();
+
+  if (!userId) throw new Error("User is not authenticated!");
+
+  try {
+    const updatedPost = await prisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        desc,
+        img,
+        video: null,
+        userId: userId,
+        channelId: channelId,
+        updatedAt: new Date(),
+      },
+      include: {
+        user: true,
+        comments: {
+          include: {
+            user: true,
+            post: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+      }
+    });
+
+    return updatedPost;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to update post!");
+  }
+};
+
+
 export const addComment = async (desc: string, postId: number) => {
   const { userId } = auth();
 
@@ -537,3 +546,4 @@ export const addComment = async (desc: string, postId: number) => {
     throw new Error("Something went wrong!");
   }
 };
+
