@@ -9,16 +9,6 @@ const Dashboard = (props: Props) => {
     const { userId } = auth();
     return (
         <div>
-            {/* <h1 className="text-3xl">Avenir black</h1>
-            <h1 className="font-avenir text-3xl">Avenir Black</h1>
-            <p className="font-avenir font-book text-lg">Avenir Book</p>
-            <p className="font-avenir font-roman text-lg">Avenir Roman</p>
-            <h1 className="font-glaical font-bold text-3xl">
-                GlaicalIndifference Bold
-            </h1>
-            <p className="font-glaical font-regular text-lg">
-                GlaicalIndifference Regular
-            </p> */}
             <HomepageScreen />
         </div>
     );

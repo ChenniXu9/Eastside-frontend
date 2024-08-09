@@ -22,7 +22,7 @@ const MobileMenu = () => {
         },
         opened: {
             rotate: 45,
-            backgroundColor: "rgb(0,0,255)",
+            backgroundColor: "#224c6b",
         },
     };
     const centerVariants = {
@@ -40,7 +40,7 @@ const MobileMenu = () => {
         },
         opened: {
             rotate: -45,
-            backgroundColor: "rgb(0,0,255)",
+            backgroundColor: "#224c6b",
         },
     };
 

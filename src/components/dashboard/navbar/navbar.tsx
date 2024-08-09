@@ -8,17 +8,13 @@ import Link from "next/link";
 const Navbar = () => {
     const pathname = usePathname();
 
-    const getLastWordAndCapitalize = (path: string): string => {
-        const parts = path.split("/");
-        const lastWord = parts[parts.length - 1];
-        return lastWord.charAt(0).toUpperCase() + lastWord.slice(1);
-    };
-
     // Determine if the navbar should be hidden
     const hideNavbar =
         pathname?.startsWith("/dashboard/channels/") &&
         pathname?.includes("/members_detail/");
 
+<<<<<<< HEAD
+=======
     let capitalizedTitle = getLastWordAndCapitalize(pathname || "");
     if(pathname?.startsWith("/dashboard/channels/")) {
         if (pathname?.includes("/members_detail/") || 
@@ -28,6 +24,7 @@ const Navbar = () => {
             capitalizedTitle = "Channels"
         }
     }
+>>>>>>> main
     return (
         <div className="flex flex-col justify-between">
             <div className="h-24 flex items-center justify-between">
@@ -35,12 +32,9 @@ const Navbar = () => {
                 <div className="flex w-[80%]">
                     <Link
                         href="/"
-                        className="font-glaical text-3xl md:text-5xl font-regular"
+                        className="font-glaical text-3xl md:text-5xl font-bold capitalize"
                     >
-                        {/* {!hideNavbar
-                            ? capitalizedTitle
-                            : pathname?.split("/")[-2]} */}
-                        {capitalizedTitle}
+                        {pathname?.split("/").pop()}
                     </Link>
                 </div>
 
