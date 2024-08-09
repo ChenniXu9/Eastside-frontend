@@ -6,29 +6,41 @@ import Link from "next/link";
 import Image from "next/image";
 
 type User = {
-    id: string;
-    username: string;
-    profile_image: string | null;
-    first_name: string | null;
-    last_name: string | null;
-    description: string | null;
-    city: string | null;
-    createdAt: Date;
-  };
+  id: string;
+  username: string;
+  profile_image: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  organization: string | null;
+  title: string | null;
+  phone: string | null; 
+  description: string | null;
+  password: string | null;
+  personal_email: string | null;
+  graduation_year: string | null;
+  work_email: string | null;
+  createdAt: Date;
+};
   
   type Comment = {
     id: number;
     desc: string;
+    userId: string;
+    postId: number;
     user: User;
-    post: Post;
 };
 
 type Post = {
-    id: number;
-    desc: string;
-    img: string;
-    user: User;
-    comments: Comment[];
+  id: number;
+  desc: string;
+  img: string | null;
+  video: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  channelId: number;
+  user: User;
+  comments: Comment[];
   };
   
 type Channel = {
@@ -102,13 +114,15 @@ const MyPosts: React.FC<MyPostsProps> = ({ channel, currentUser })=> {
             {/* Bottom  */}
             {firstPost && 
                 <div className="flex flex-col mt-4 gap-4">
-                    <div className="relative w-full h-24">
-                        <Image src={firstPost.img} 
-                            alt={firstPost.desc} 
-                            fill
-                            className="rounded-lg object-cover"
-                        />
-                    </div>
+                    {firstPost.img && 
+                      <div className="relative w-full h-24">
+                      <Image src={firstPost.img} 
+                          alt={firstPost.desc} 
+                          fill
+                          className="rounded-lg object-cover"
+                      />
+                  </div>
+                    }
                     <div className="flex items-center gap-4">
                         <Image src={currentUser.profile_image || "/noavatar.png"} 
                             alt="" 

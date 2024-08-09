@@ -12,12 +12,18 @@ const nextConfig = {
             hostname: "img.clerk.com",
           },
           {
+            protocol: "http",
+            hostname: "res.cloudinary.com",
+          },
+          {
             protocol: "https",
             hostname: "res.cloudinary.com",
           },
         ]
       },
-
+      env: {
+        NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+      },
 };
 
 
