@@ -2,27 +2,39 @@ import CurrentGroup from "@/components/channelContents/CurrentGroup";
 import Groups from "@/components/channelContents/Groups";
 
 type User = {
-    id: string;
-    username: string;
-    profile_image: string | null;
-    first_name: string | null;
-    last_name: string | null;
-    description: string | null;
-    city: string | null;
-    createdAt: Date;
-  };
+  id: string;
+  username: string;
+  profile_image: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  organization: string | null;
+  title: string | null;
+  phone: string | null; 
+  description: string | null;
+  password: string | null;
+  personal_email: string | null;
+  graduation_year: string | null;
+  work_email: string | null;
+  createdAt: Date;
+};
   
   type Comment = {
     id: number;
     desc: string;
+    userId: string;
+    postId: number;
     user: User;
-    post: Post;
   };
   
   type Post = {
     id: number;
     desc: string;
-    img: string;
+    img: string | null;
+    video: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    userId: string;
+    channelId: number;
     user: User;
     comments: Comment[];
   };

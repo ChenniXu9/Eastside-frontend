@@ -8,6 +8,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Invalid channelId' });
   }
 
+
+
   try {
     const channel = await prisma.channel.findUnique({
       where: { id: parseInt(id, 10) },
@@ -15,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         users: {
           include: {
             user: true,
-          },
+          }, 
         },
         posts: {
           include: {
@@ -26,6 +28,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               },
             },
           },
+          orderBy: {
+            updatedAt: "desc",
+          }
         },
       },
     });

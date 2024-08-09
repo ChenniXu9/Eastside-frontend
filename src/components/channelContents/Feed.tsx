@@ -1,35 +1,48 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Link from "next/link";
 import Image from "next/image";
 import Posts from './Posts';
+import { fetchPosts } from '@/lib/actions';
 
 type User = {
-    id: string;
-    username: string;
-    profile_image: string | null;
-    first_name: string | null;
-    last_name: string | null;
-    description: string | null;
-    city: string | null;
-    createdAt: Date;
-  };
+  id: string;
+  username: string;
+  profile_image: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  organization: string | null;
+  title: string | null;
+  phone: string | null; 
+  description: string | null;
+  password: string | null;
+  personal_email: string | null;
+  graduation_year: string | null;
+  work_email: string | null;
+  createdAt: Date;
+};
   
   type Comment = {
     id: number;
     desc: string;
+    userId: string;
+    postId: number;
     user: User;
-    post: Post;
 };
 
 type Post = {
-    id: number;
-    desc: string;
-    img: string;
-    user: User;
-    comments: Comment[];
+  id: number;
+  desc: string;
+  img: string | null;
+  video: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  channelId: number;
+  user: User;
+  comments: Comment[];
   };
   
 type Channel = {
@@ -50,10 +63,22 @@ interface FeedProps {
 
 
 const Feed: React.FC<FeedProps> = ({ channel, currentUser }) => {
+  const [posts, setPosts] = useState<Post[]>(channel.posts);
+
+  useEffect(() => {
+    const loadPosts = async () => {
+      const fetchedPosts = await fetchPosts(channel.id);
+      setPosts(fetchedPosts);
+    };
+
+    loadPosts();
+  }, [channel.id]);
+
+
     if (channel.posts.length >= 1) {
       return (
         <div className='p-4 bg-white shadow-md rounded-lg flex flex-col gap-12'>
-            <Posts channel={channel} currentUser={currentUser}/>
+            <Posts channel={channel} currentUser={currentUser} posts={posts} setPosts={setPosts}/>
         </div>
     )
     }
