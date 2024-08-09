@@ -106,6 +106,44 @@ const Sidebar = () => {
                 </button>
             </div>
         </div>
+        // <div className="fixed top-10 flex flex-col justify-between items-stretch h-screen w-64 px-4 dark:bg-[#182237] bg-[#9ad0e3]">
+        //     <div className="md:flex items-center gap-5 my-5">
+        //         <Image
+        //             src={"/companyLogo.png"}
+        //             alt=""
+        //             sizes="100vw"
+        //             className="w-full h-auto"
+        //             width={400}
+        //             height={100}
+        //         />
+        //     </div>
+        //     {/* CENTER */}
+        //     <div className="md:flex h-[70%] text-sm justify-between flex-col overflow-y-auto">
+        //         <ul className="list-none">
+        //             {menuItems.map((cat) => (
+        //                 <li key={cat.title}>
+        //                     <span className="font-bold text-xs mx-2.5">
+        //                         {cat.title}
+        //                     </span>
+        //                     {cat.list.map((item) => (
+        //                         <MenuLink item={item} key={item.title} />
+        //                     ))}
+        //                 </li>
+        //             ))}
+        //         </ul>
+        //     </div>
+        //     {/* BOTTOM */}
+        //     <div className="md:flex h-[10%] text-md justify-between flex-col">
+        //         <button
+        //             type="button"
+        //             onClick={handleSignOut}
+        //             className="p-5 my-1 flex items-center gap-2.5 cursor-pointer rounded-lg bg-transparent border-none w-full hover:bg-white hover:text-[#224c6b]"
+        //         >
+        //             <MdLogout />
+        //             Logout
+        //         </button>
+        //     </div>
+        // </div>
     );
 };
 
