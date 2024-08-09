@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import prisma from "./client";
@@ -262,9 +262,13 @@ import prisma from "./client";
 // }
 
 export const updateProfile = async(formData: FormData, cover: string, profile: string) => {
-  console.log(cover, profile)
   const fields = Object.fromEntries(formData);
-  
+  console.log("fields", fields)
+
+  // Separate password fields from the rest of the fields
+  const { password, confirm_password, ...restFields } = fields;
+  console.log(password, confirm_password)
+
   const filteredFields = Object.fromEntries(
     Object.entries(fields).filter(([_, value]) => value !== "")
   );
@@ -286,9 +290,30 @@ export const updateProfile = async(formData: FormData, cover: string, profile: s
 
   const validatedFields = Profile.safeParse({ cover_image: cover,profile_image: profile, ...filteredFields });
 
-    if (!validatedFields.success) {
+  if (!validatedFields.success) {
     console.log(validatedFields.error.flatten().fieldErrors);
     return { status: 'error', message: 'Internal Server Error' };
+  }
+
+  // Validate password and confirm_password
+  if (password || confirm_password) {
+    const passwordSchema = z.object({
+      password: z.string().min(6, "Password must be at least 6 characters long"),
+      confirm_password: z.string(),
+    }).refine(
+      (data) => data.password === data.confirm_password,
+      {
+        message: "Passwords must match!",
+        path: ["confirm_password"],
+      }
+    );
+
+    const passwordResult = passwordSchema.safeParse({ password, confirm_password });
+
+    if (!passwordResult.success) {
+      console.log(passwordResult.error.flatten().fieldErrors);
+      return { status: 'error', message: passwordResult.error.flatten().fieldErrors.confirm_password?.[0] || 'Invalid password input' };
+    }
   }
 
   const { userId } = auth();
@@ -298,12 +323,25 @@ export const updateProfile = async(formData: FormData, cover: string, profile: s
   }
 
   try {
+    // Primsa update
     await prisma.user.update({
       where: {
         id: userId,
       },
       data: validatedFields.data,
     });
+
+    if (password) {
+      try {
+        await clerkClient.users.updateUser(userId, {
+          password: password as string, // Ensure it's cast to a string
+        });
+      } catch (error) {
+        console.error("Failed to update password:", error);
+        return { status: 'error', message: 'Password update failed. Please ensure it meets the required criteria.' };
+      }
+    }
+
     return { status: 'success', message: 'Profile updated successfully' };
   } catch (err) {
     console.log(err);

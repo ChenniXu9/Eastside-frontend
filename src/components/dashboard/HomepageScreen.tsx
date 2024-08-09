@@ -54,7 +54,9 @@ const HompageScreen = (props: Props) => {
                     inclusive organization that promotes connections, develops
                     and enriches leaders, and is a catalyst for communities to
                     address important issues and meet the challenges of a
-                    diverse and dynamic region.
+                    diverse and dynamic region. We hope that you are able to use
+                    this application to empower your experience with Leadership
+                    Eastside!
                 </h3>
             </div>
 
