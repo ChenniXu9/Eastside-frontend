@@ -11,7 +11,7 @@ interface Item {
 
 const baseClasses =
     "p-5 flex items-center gap-2.5 my-1 rounded-lg text-[#224c6b] dark:text-white";
-const activeClasses = "bg-white text-[#224c6b] dark:text-[#224c6c]";
+const activeClasses = "bg-white text-[#224c6b] dark:text-black";
 
 interface MenuLinkProps {
     item: Item;
@@ -25,9 +25,9 @@ const MenuLink: React.FC<MenuLinkProps> = ({ item }) => {
     return (
         <Link
             href={item.path}
-            className={`font-avenir ${baseClasses} ${
+            className={`font-avenir ${
                 pathname === item.path ? activeClasses : ""
-            }`}
+            } ${baseClasses}`}
         >
             {item.icon}
             <h1 className="font-avenir text-xl">{item.title}</h1>

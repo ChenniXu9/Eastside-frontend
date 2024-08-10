@@ -48,21 +48,21 @@ const HompageScreen = (props: Props) => {
                 </h1>
                 <h3 className="text-xl">
                     The aim of this application is to create a all-in-one
-                    application for leadership Eastside student to use where
+                    application for Leadership Eastside student to use where
                     they can connect with fellow alumni and student, share
                     information, and access resources. Leadership Eastside is an
                     inclusive organization that promotes connections, develops
                     and enriches leaders, and is a catalyst for communities to
                     address important issues and meet the challenges of a
-                    diverse and dynamic region.
+                    diverse and dynamic region. We hope that you are able to use
+                    this application to empower your experience with Leadership
+                    Eastside!
                 </h3>
             </div>
 
             <div className="w-full border-b-2 border-gray-300 my-5"></div>
 
             <div>
-                {/* Create a contact us form for people to send information to */}
-                {/* use nodemailer to send the email */}
                 <ContactUs />
             </div>
         </div>

@@ -20,12 +20,14 @@ const Navbar = () => {
         pathname?.includes("/members_detail/");
 
     let capitalizedTitle = getLastWordAndCapitalize(pathname || "");
-    if(pathname?.startsWith("/dashboard/channels/")) {
-        if (pathname?.includes("/members_detail/") || 
-        pathname?.includes("/currentChannel/") || 
-        pathname?.includes("/groups/") || 
-        pathname?.includes("/posts_detail/")) {
-            capitalizedTitle = "Channels"
+    if (pathname?.startsWith("/dashboard/channels/")) {
+        if (
+            pathname?.includes("/members_detail/") ||
+            pathname?.includes("/currentChannel/") ||
+            pathname?.includes("/groups/") ||
+            pathname?.includes("/posts_detail/")
+        ) {
+            capitalizedTitle = "Channels";
         }
     }
     return (
@@ -35,11 +37,8 @@ const Navbar = () => {
                 <div className="flex w-[80%]">
                     <Link
                         href="/"
-                        className="font-glaical text-3xl md:text-5xl font-regular"
+                        className="font-glaical text-3xl md:text-5xl font-bold capitalize"
                     >
-                        {/* {!hideNavbar
-                            ? capitalizedTitle
-                            : pathname?.split("/")[-2]} */}
                         {capitalizedTitle}
                     </Link>
                 </div>
