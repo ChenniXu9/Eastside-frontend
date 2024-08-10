@@ -8,18 +8,26 @@ import Link from "next/link";
 const Navbar = () => {
     const pathname = usePathname();
 
+    const getLastWordAndCapitalize = (path: string): string => {
+        const parts = path.split("/");
+        const lastWord = parts[parts.length - 1];
+        return lastWord.charAt(0).toUpperCase() + lastWord.slice(1);
+    };
+
     // Determine if the navbar should be hidden
     const hideNavbar =
         pathname?.startsWith("/dashboard/channels/") &&
         pathname?.includes("/members_detail/");
 
     let capitalizedTitle = getLastWordAndCapitalize(pathname || "");
-    if(pathname?.startsWith("/dashboard/channels/")) {
-        if (pathname?.includes("/members_detail/") || 
-        pathname?.includes("/currentChannel/") || 
-        pathname?.includes("/groups/") || 
-        pathname?.includes("/posts_detail/")) {
-            capitalizedTitle = "Channels"
+    if (pathname?.startsWith("/dashboard/channels/")) {
+        if (
+            pathname?.includes("/members_detail/") ||
+            pathname?.includes("/currentChannel/") ||
+            pathname?.includes("/groups/") ||
+            pathname?.includes("/posts_detail/")
+        ) {
+            capitalizedTitle = "Channels";
         }
     }
     return (
@@ -31,7 +39,7 @@ const Navbar = () => {
                         href="/"
                         className="font-glaical text-3xl md:text-5xl font-bold capitalize"
                     >
-                        {pathname?.split("/").pop()}
+                        {capitalizedTitle}
                     </Link>
                 </div>
 

@@ -8,28 +8,28 @@ import GroupHeader from "@/components/channelContents/GroupHeader";
 import { fetchPosts } from '@/lib/actions';
 
 type User = {
-  id: string;
-  username: string;
-  profile_image: string | null;
-  first_name: string | null;
-  last_name: string | null;
-  organization: string | null;
-  title: string | null;
-  phone: string | null; 
-  description: string | null;
-  password: string | null;
-  personal_email: string | null;
-  graduation_year: string | null;
-  work_email: string | null;
-  createdAt: Date;
+    id: string;
+    username: string;
+    profile_image: string | null;
+    first_name: string | null;
+    last_name: string | null;
+    organization: string | null;
+    title: string | null;
+    phone: string | null;
+    description: string | null;
+    password: string | null;
+    personal_email: string | null;
+    graduation_year: string | null;
+    work_email: string | null;
+    createdAt: Date;
 };
 
 type Comment = {
-  id: number;
-  desc: string;
-  userId: string;
-  postId: number;
-  user: User;
+    id: number;
+    desc: string;
+    userId: string;
+    postId: number;
+    user: User;
 };
 
 type Post = {
@@ -91,27 +91,28 @@ const CurrentChannel = () => {
     }, [id, userId]);
 
 
-  useEffect(() => {
-    const loadPosts = async () => {
-      if (channel?.id) {
-        const fetchedPosts = await fetchPosts(channel.id); // Fetch initial posts
-        setPosts(fetchedPosts);
-      }
+    useEffect(() => {
+        const loadPosts = async () => {
+            if (channel?.id) {
+                const fetchedPosts = await fetchPosts(channel.id); // Fetch initial posts
+                setPosts(fetchedPosts);
+            }
+        };
+
+        loadPosts();
+    }, [channel?.id]);
+
+    if (!channel || !currentUser) return <div>Loading...</div>;
+
+    const handlePostAdded = (newPost: Post) => {
+        setPosts((prevPosts) => [newPost, ...prevPosts]); // Add the new post to the top of the list
     };
 
-    loadPosts();
-  }, [channel?.id]);
-  
+    channel.posts = posts;
 
-  if (!channel || !currentUser) return <div>Loading...</div>;
-
-  const handlePostAdded = (newPost: Post) => {
-    setPosts(prevPosts => [newPost, ...prevPosts]); // Add the new post to the top of the list
-  };
-
-  channel.posts = posts;
-
-  const hasJoined = channel.users.some(user => user.user.id === currentUser.id);
+    const hasJoined = channel.users.some(
+        (user) => user.user.id === currentUser.id
+    );
 
   return (
     <div className='text-black'>
@@ -130,10 +131,10 @@ const CurrentChannel = () => {
                     </div>
                 </div>
                 <div className="hidden lg:block w-[30%]">
-                    {/* <ChannelRightMenu
+                    <ChannelRightMenu
                         channel={channel}
                         currentUser={currentUser}
-                    /> */}
+                    />
                 </div>
             </div>
         </div>
