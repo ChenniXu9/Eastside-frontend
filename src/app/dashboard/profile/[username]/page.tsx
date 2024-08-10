@@ -30,7 +30,7 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
                                 className="rounded-md object-cover"
                             />
                             <div className="absolute inset-0 bg-black bg-opacity-50 rounded-md"></div>
-                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center rounded-lg p-6 text-surface shadow-secondary-1 dark:bg-surface-dark dark:bg-[#151c2c] text-white">
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center rounded-lg p-6 text-surface shadow-secondary-1 text-white">
                                 <Image
                                     src={user.profile_image || "/noAvatar.png"}
                                     alt=""
