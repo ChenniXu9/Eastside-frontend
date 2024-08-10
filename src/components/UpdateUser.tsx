@@ -76,9 +76,9 @@ const UpdateUser = ({ user }: { user: User }) => {
     }, [open]);
 
     return (
-        <div className="bg-[#438bb4] text-white py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-[#224c6b] transform hover:-translate-y-1">
+        <div className="">
             <span
-                className="text-md cursor-pointer text-white"
+                className="text-md cursor-pointer text-white bg-[#438bb4] py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-[#224c6b] transform hover:-translate-y-1"
                 onClick={() => setOpen(true)}
             >
                 Update your Information
