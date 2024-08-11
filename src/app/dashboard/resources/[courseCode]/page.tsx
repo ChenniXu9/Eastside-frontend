@@ -160,7 +160,7 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
                   className="cursor-pointer flex items-center space-x-2"
                 >
                   <span>{openFolders[file.name] ? '📂' : '📁'}</span>
-                  <span className="font-semibold text-lg">{file.name}</span>
+                  <span className="font-semibold text-lg my-1">{file.name}</span>
                 </div>
                 {openFolders[file.name] && (
                   <div className="ml-4 space-y-2">
