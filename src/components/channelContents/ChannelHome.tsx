@@ -84,7 +84,7 @@ const ChannelHome = ({ userId }: { userId: string }) => {
                         <li key={channel.id}>
                             <div className="flex justify-between">
                                 <Link
-                                    href={`/dashboard/channels/currentChannel/${channel.id}/${userId}`}
+                                    href={`/dashboard/channels/currentChannel/${channel.channel_name}/${username}`}
                                     className="flex items-center gap-4 p-2 rounded-lg hover:bg-slate-100"
                                 >
                                     <Image

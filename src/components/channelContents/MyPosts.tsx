@@ -109,7 +109,7 @@ const MyPosts: React.FC<MyPostsProps> = ({ channel, currentUser })=> {
              {/* Top */}
              <div className="flex justify-between items-center font-medium">
                 <span className="text-gray-500">My Posts</span>
-                <Link href={`/dashboard/channels/posts_detail/${channel.id}/${userId}`} className="text-blue-500 text-sm">See all</Link>
+                <Link href={`/dashboard/channels/posts_detail/${channel.channel_name}/${username}`} className="text-blue-500 text-sm">See all</Link>
             </div>
             {/* Bottom  */}
             {firstPost && 
