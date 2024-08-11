@@ -137,7 +137,8 @@ const ResourcePageContent: React.FC = () => {
             <div className="flex justify-end mb-4">
                 <button
                     onClick={toggleViewMode}
-                    className="bg-gray-500 text-white py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-gray-600 transform hover:-translate-y-1"
+                    // p-3 bg-[#438bb4] rounded-full hover:bg-[#224c6b] text-[#224c6b]
+                    className="bg-[#438bb4] text-white py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-[#224c6b] transform hover:-translate-y-1"
                 >
                     {viewMode === "card"
                         ? "Switch to List View"

@@ -2,15 +2,26 @@
 // import LeftMenu from "@/components/leftMenu/LeftMenu";
 import ProfileAboutMe from "@/components/dashboard/profile/singleUser/ProfileAboutMe";
 import prisma from "@/lib/client";
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-const ProfilePage = async ({ params }: { params: { username: string } }) => {
-    const username = params.username || "truont2";
+const ProfilePage = async () => {
+    const { userId } = auth();
+
+    if (!userId) return null;
 
     const user = await prisma.user.findFirst({
         where: {
-            username,
+            id: userId,
+        },
+        include: {
+            _count: {
+                select: {
+                    channels: true,
+                    posts: true,
+                },
+            },
         },
     });
 
@@ -31,7 +42,7 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
                                 className="rounded-md object-cover"
                             />
                             <div className="absolute inset-0 bg-black bg-opacity-50 rounded-md"></div>
-                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center rounded-lg p-6 text-surface shadow-secondary-1 dark:bg-surface-dark dark:bg-[#151c2c] text-white">
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center rounded-lg p-6 text-surface shadow-secondary-1 text-white">
                                 <Image
                                     src={user.profile_image || "/noAvatar.png"}
                                     alt=""
@@ -47,13 +58,13 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
                                 <div className="flex items-center justify-center gap-14">
                                     <div className="flex flex-col items-center flex-1">
                                         <span className="font-medium">
-                                            {10}
+                                            {user._count.posts}
                                         </span>
                                         <span className="text-sm">Posts</span>
                                     </div>
                                     <div className="flex flex-col items-center flex-1">
                                         <span className="font-medium">
-                                            {10}
+                                            {user._count.channels}
                                         </span>
                                         <span className="text-sm text-center">
                                             Channels Joined
