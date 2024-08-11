@@ -1,25 +1,21 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Home = () => {
-  const router = useRouter();
+    const router = useRouter();
 
-  useEffect(() => {
-    // Logic to check if user is authenticated
-    const isAuthenticated = false; // Replace with actual authentication logic
+    useEffect(() => {
+        // Logic to check if user is authenticated
+        const isAuthenticated = false; // Replace with actual authentication logic
 
-    if (!isAuthenticated) {
-      router.push('/login');
-    }
-  }, [router]);
+        if (!isAuthenticated) {
+            router.replace("/login");
+        }
+    }, [router]);
 
-  return (
-    <div>
-      <h1>Welcome to the App</h1>
-    </div>
-  );
+    return null;
 };
 
 export default Home;

@@ -10,16 +10,19 @@ const Navbar = () => {
 
     const getLastWordAndCapitalize = (path: string): string => {
         const parts = path.split("/");
-        const lastWord = parts[parts.length - 1];
-        return lastWord.charAt(0).toUpperCase() + lastWord.slice(1);
+        console.log("parts", parts);
+        if (parts.length > 2) {
+            return parts[2];
+        } else {
+            return parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+        }
+
+        // const lastWord = parts[parts.length - 1];
+        // return lastWord.charAt(0).toUpperCase() + lastWord.slice(1);
     };
 
-    // Determine if the navbar should be hidden
-    const hideNavbar =
-        pathname?.startsWith("/dashboard/channels/") &&
-        pathname?.includes("/members_detail/");
-
     let capitalizedTitle = getLastWordAndCapitalize(pathname || "");
+
     if (pathname?.startsWith("/dashboard/channels/")) {
         if (
             pathname?.includes("/members_detail/") ||
@@ -30,6 +33,7 @@ const Navbar = () => {
             capitalizedTitle = "Channels";
         }
     }
+
     return (
         <div className="flex flex-col justify-between">
             <div className="h-24 flex items-center justify-between">

@@ -41,7 +41,7 @@ const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
     return (
         <div className="md:mx-5 w-full">
             <div className="flex flex-col md:flex-row">
-                <div className="flex flex-col w-full p-5 rounded-lg mb-5 dark:bg-blue-950 md:bg-transparent md:dark:bg-transparent md:m-0 md:p-0 md:text-surface md:shadow-secondary-1 dark:text-white">
+                <div className="flex flex-col w-full p-5 rounded-lg mb-5 md:bg-transparent md:m-0 md:p-0 md:text-surface md:shadow-secondary-1">
                     <div className="flex flex-col gap-4 flex-1">
                         <div className="flex items-center gap-2">
                             <span className="text-3xl ">About Me</span>
@@ -78,7 +78,7 @@ const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
                 </div>
 
                 {/* Social */}
-                <div className="flex flex-col w-full p-5 rounded-lg mb-5 dark:bg-blue-950 md:bg-transparent md:dark:bg-transparent md:m-0 md:p-0 md:text-surface md:shadow-secondary-1 dark:text-white">
+                <div className="flex flex-col w-full p-5 rounded-lg mb-5 md:bg-transparent md:m-0 md:p-0 md:text-surface md:shadow-secondary-1">
                     <div className="flex flex-col gap-4  flex-1">
                         <div className="flex items-center gap-2">
                             <span className="text-3xl ">Contact</span>

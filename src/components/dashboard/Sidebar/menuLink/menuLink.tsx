@@ -10,8 +10,8 @@ interface Item {
 }
 
 const baseClasses =
-    "p-5 flex items-center gap-2.5 my-1 rounded-lg text-[#224c6b] dark:text-white";
-const activeClasses = "bg-white text-[#224c6b] dark:text-black";
+    "p-5 flex items-center gap-2.5 my-1 rounded-lg text-[#224c6b]";
+const activeClasses = "bg-white text-[#224c6b]";
 
 interface MenuLinkProps {
     item: Item;

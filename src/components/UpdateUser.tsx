@@ -6,7 +6,8 @@ import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+// import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import UpdateButton from "./rightMenu/UpdateButton";
 
 const UpdateUser = ({ user }: { user: User }) => {
@@ -75,9 +76,9 @@ const UpdateUser = ({ user }: { user: User }) => {
     }, [open]);
 
     return (
-        <div className="p-3 bg-[#438bb4] rounded-full hover:bg-[#224c6b] text-[#224c6b]">
+        <div className="">
             <span
-                className="text-md cursor-pointer text-white"
+                className="text-md cursor-pointer text-white bg-[#438bb4] py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-[#224c6b] transform hover:-translate-y-1"
                 onClick={() => setOpen(true)}
             >
                 Update your Information
@@ -86,11 +87,10 @@ const UpdateUser = ({ user }: { user: User }) => {
                 <div className="absolute w-screen h-screen top-0 left-0 bg-black bg-opacity-65 flex items-center justify-center z-50 ">
                     <form
                         onSubmit={handleSubmit}
-                        // p-12 bg-white rounded-lg shadow-md flex flex-col gap-2 w-full md:w-1/2 xl:w-1/3 relative text-center
-                        className="p-2 md:p-12 bg-white rounded-lg shadow-md flex flex-col gap-2 w-full md:w-1/2 xl:w-1/3 relative text-center"
+                        className="p-3 m-2 md:p-12 bg-white rounded-lg shadow-md flex flex-col gap-2 w-full md:w-1/2 xl:w-1/3 relative text-center"
                     >
-                        <h1 className="text-xl">Update Profile</h1>
-                        <div className="flex flex-row justify-evenly">
+                        <h1 className="text-xl mb-4">Update Profile</h1>
+                        <div className="flex flex-row justify-evenly gap-4">
                             <CldUploadWidget
                                 uploadPreset="eastside"
                                 onSuccess={(result) => {
@@ -154,9 +154,8 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 )}
                             </CldUploadWidget>
                         </div>
-
-                        <div className="flex flex-wrap justify-between gap-2 xl:gap-4">
-                            <div className="flex flex-col gap-4">
+                        <div className="flex flex-wrap gap-4">
+                            <div className="flex flex-col gap-2 md:gap-4 flex-1 min-w-[45%]">
                                 <label
                                     htmlFor="first_name"
                                     className="text-xs text-gray-500"
@@ -166,12 +165,12 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 <input
                                     type="text"
                                     placeholder={user.first_name || "John"}
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm w-full"
                                     name="first_name"
                                     id="first_name"
                                 />
                             </div>
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-2 md:gap-4 flex-1 min-w-[45%]">
                                 <label
                                     htmlFor="last_name"
                                     className="text-xs text-gray-500"
@@ -181,12 +180,12 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 <input
                                     type="text"
                                     placeholder={user.last_name || "Doe"}
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm w-full"
                                     name="last_name"
                                     id="last_name"
                                 />
                             </div>
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-2 md:gap-4 flex-1 min-w-[45%]">
                                 <label
                                     htmlFor="organization"
                                     className="text-xs text-gray-500"
@@ -198,12 +197,12 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     placeholder={
                                         user.organization || "New York"
                                     }
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm w-full"
                                     name="organization"
                                     id="organization"
                                 />
                             </div>
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-2 md:gap-4 flex-1 min-w-[45%]">
                                 <label
                                     htmlFor="title"
                                     className="text-xs text-gray-500"
@@ -213,12 +212,12 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 <input
                                     type="text"
                                     placeholder={user.title || "MIT"}
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm w-full"
                                     name="title"
                                     id="title"
                                 />
                             </div>
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-2 md:gap-4 flex-1 min-w-[45%]">
                                 <label
                                     htmlFor="phone"
                                     className="text-xs text-gray-500"
@@ -228,12 +227,12 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 <input
                                     type="text"
                                     placeholder={user.phone || "1123342131"}
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm w-full"
                                     name="phone"
                                     id="phone"
                                 />
                             </div>
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-2 md:gap-4 flex-1 min-w-[45%]">
                                 <label
                                     htmlFor="graduation_year"
                                     className="text-xs text-gray-500"
@@ -245,12 +244,12 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     placeholder={
                                         user.graduation_year || "1123342131"
                                     }
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm w-full"
                                     name="graduation_year"
                                     id="graduation_year"
                                 />
                             </div>
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-2 md:gap-4 flex-1 min-w-[45%]">
                                 <label
                                     htmlFor="work_email"
                                     className="text-xs text-gray-500"
@@ -262,12 +261,12 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     placeholder={
                                         user.work_email || "1123342131"
                                     }
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm w-full"
                                     name="work_email"
                                     id="work_email"
                                 />
                             </div>
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-2 md:gap-4 flex-1 min-w-[45%]">
                                 <label
                                     htmlFor="personal_email"
                                     className="text-xs text-gray-500"
@@ -279,13 +278,13 @@ const UpdateUser = ({ user }: { user: User }) => {
                                     placeholder={
                                         user.personal_email || "1123342131"
                                     }
-                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                    className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm w-full"
                                     name="personal_email"
                                     id="personal_email"
                                 />
                             </div>
                         </div>
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-2 md:gap-4 mt-4">
                             <label
                                 htmlFor="description"
                                 className="text-xs text-gray-500"
@@ -296,15 +295,16 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 placeholder={
                                     user.description || "Life is beautiful..."
                                 }
-                                className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                                className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm w-full"
                                 name="description"
                                 id="description"
                             />
                         </div>
+
                         <div className="mt-2">
                             <h1>Update Password</h1>
-                            <div className="flex flex-wrap justify-between gap-2 xl:gap-4">
-                                <div className="flex flex-col gap-4 relative">
+                            <div className="flex flex-wrap justify-between gap-2 xl:gap-4 ">
+                                <div className="flex flex-col gap-4 relative flex-1 min-w-[45%]">
                                     <label
                                         htmlFor="password"
                                         className="text-xs text-gray-500"
@@ -328,13 +328,13 @@ const UpdateUser = ({ user }: { user: User }) => {
                                         }
                                     >
                                         {showPassword ? (
-                                            <IoMdEyeOff />
+                                            <FaEyeSlash />
                                         ) : (
-                                            <IoMdEye />
+                                            <FaEye />
                                         )}
                                     </button>
                                 </div>
-                                <div className="flex flex-col gap-4 relative">
+                                <div className="flex flex-col gap-4 relative flex-1 min-w-[45%]">
                                     <label
                                         htmlFor="confirm_password"
                                         className="text-xs text-gray-500"
@@ -362,9 +362,9 @@ const UpdateUser = ({ user }: { user: User }) => {
                                         }
                                     >
                                         {showConfirmPassword ? (
-                                            <IoMdEyeOff />
+                                            <FaEyeSlash />
                                         ) : (
-                                            <IoMdEye />
+                                            <FaEye />
                                         )}
                                     </button>
                                 </div>
