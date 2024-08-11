@@ -105,7 +105,7 @@ const CurrentGroup: React.FC<CurrentgroupProps> = ({ channel, currentUser }) => 
         <div className='p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-4'>
             <div className="flex justify-between items-center font-medium">
                 <span className="text-gray-500">{channel.users.length} members</span>
-                <Link href={`/dashboard/channels/members_detail/${channel.id}/${userId}`} className="text-blue-500 text-sm">See all</Link>
+                <Link href={`/dashboard/channels/members_detail/${channel.channel_name}/${username}`} className="text-blue-500 text-sm">See all</Link>
             </div>
         {channel.users.slice(0, 3).map(member => (
         <div key={member.user.id} className="flex items-center gap-4">

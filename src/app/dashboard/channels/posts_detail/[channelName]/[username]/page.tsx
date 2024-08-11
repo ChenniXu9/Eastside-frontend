@@ -2,9 +2,10 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import LeftMenu from "@/components/LeftMenu";
-import AllGroups from "@/components/channelContents/AllGroups";
 import ChannelNavbar from "@/components/channelContents/ChannelNavbar";
-import prisma from "@/lib/client";
+import MyPostsRightbar from "@/components/channelContents/MyPostsRightbar";
+import UserDetail from "@/components/channelContents/PostsDetail";
+import { deletePost, fetchUserPosts } from '@/lib/actions';
 
 type User = {
   id: string;
@@ -55,23 +56,27 @@ type Channel = {
   posts: Post[];
 };
 
-const Groups = ()=> {
+
+
+const PostsDetail = () => {
   const params = useParams();
-  const id = params?.id as string | undefined;
-  const userId = params?.userId as string;
+  const channelName = params?.channelName as string | undefined;
+  const userName = params?.username as string;
 
   const [channel, setChannel] = useState<Channel | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
+  const [posts, setPosts] = useState<Post[]>([]);
+
   useEffect(() => {
-    if (id && userId) {
+    if (channelName && userName) {
       const fetchData = async () => {
         try {
-          const channelResponse = await fetch(`/api/channel/fetchCurChannel?id=${id}`);
+          const channelResponse = await fetch(`/api/channel/fetchCurChannel?channelName=${channelName}`);
           const channelData = await channelResponse.json();
           setChannel(channelData);
 
-          const userResponse = await fetch(`/api/channel/fetchUser?userId=${userId}`);
+          const userResponse = await fetch(`/api/channel/fetchUser?userName=${userName}`);
           const userData = await userResponse.json();
           setCurrentUser(userData);
         } catch (error) {
@@ -81,11 +86,24 @@ const Groups = ()=> {
 
       fetchData();
     }
-  }, [id, userId]);
+  }, [channelName, userName]);
+
+  useEffect(() => {
+    const loadPosts = async () => {
+      if (channel?.id && currentUser) {
+        const fetchedPosts = await fetchUserPosts(channel.id, currentUser.id);
+        setPosts(fetchedPosts);
+      }
+    };
+
+    loadPosts();
+  }, [channel?.id, currentUser]);
+
 
   if (!channel || !currentUser) return <div>Loading...</div>;
 
   const hasJoined = channel.users.some(user => user.user.id === currentUser.id);
+
 
   
   return (
@@ -93,11 +111,12 @@ const Groups = ()=> {
       {/* <div><ChannelNavbar channel={channel} currentUser={currentUser}/></div> */}
       <div className="flex gap-6 pt-6">
         <div className="w-full lg:w-[70%] xl:w-[70%]">
-          <AllGroups channel={channel} currentUser={currentUser}/>
-        </div>        
+          <UserDetail channel={channel} currentUser={currentUser} posts={posts} setPosts={setPosts}/>
+        </div>
+        <div className="hidden lg:block w-[30%]"><MyPostsRightbar channel={channel} currentUser={currentUser}/></div>
       </div>
     </div>
   )
 }
 
-export default Groups;
+export default PostsDetail;
