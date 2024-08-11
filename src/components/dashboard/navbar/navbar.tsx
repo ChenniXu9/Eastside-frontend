@@ -10,7 +10,6 @@ const Navbar = () => {
 
     const getLastWordAndCapitalize = (path: string): string => {
         const parts = path.split("/");
-<<<<<<< HEAD
         console.log("parts", parts);
         if (parts.length > 2) {
             return parts[2];
@@ -24,18 +23,6 @@ const Navbar = () => {
 
     let capitalizedTitle = getLastWordAndCapitalize(pathname || "");
 
-=======
-        const lastWord = parts[parts.length - 1];
-        return lastWord.charAt(0).toUpperCase() + lastWord.slice(1);
-    };
-
-    // Determine if the navbar should be hidden
-    const hideNavbar =
-        pathname?.startsWith("/dashboard/channels/") &&
-        pathname?.includes("/members_detail/");
-
-    let capitalizedTitle = getLastWordAndCapitalize(pathname || "");
->>>>>>> 7edba0b (merge with chenni)
     if (pathname?.startsWith("/dashboard/channels/")) {
         if (
             pathname?.includes("/members_detail/") ||
