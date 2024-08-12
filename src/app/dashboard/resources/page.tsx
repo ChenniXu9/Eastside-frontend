@@ -32,22 +32,6 @@ const initialCourses = [
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV2-qJuHx3GgYorwKuGrRaqz-GNgB8MMWkhg&s",
         archived: false,
     },
-    {
-        courseCode: "4",
-        courseName: "Executive Insight",
-        semester: "Fall 2023",
-        courseFrontpage:
-            "https://media.tacdn.com/media/attractions-splice-spp-674x446/06/71/21/da.jpg",
-        archived: false,
-    },
-    {
-        courseCode: "5",
-        courseName: "Executive Insight",
-        semester: "Spring 2023",
-        courseFrontpage:
-            "https://uploads.visitseattle.org/2023/01/11122537/Banner_rachael-jones-media_aerial-destination-photos-24_3.jpg",
-        archived: false,
-    },
 ];
 
 const ResourcePageContent: React.FC = () => {
@@ -137,7 +121,6 @@ const ResourcePageContent: React.FC = () => {
             <div className="flex justify-end mb-4">
                 <button
                     onClick={toggleViewMode}
-                    // p-3 bg-[#438bb4] rounded-full hover:bg-[#224c6b] text-[#224c6b]
                     className="bg-[#438bb4] text-white py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-[#224c6b] transform hover:-translate-y-1"
                 >
                     {viewMode === "card"
@@ -202,18 +185,18 @@ const ResourcePageContent: React.FC = () => {
                 )}
             </div>
             <div className="w-full flex justify-center mt-8">
-                <button
-                    onClick={handleArchive}
-                    className="bg-blue-600 mr-10 text-white py-2 px-6 rounded-full transition duration-300 ease-in-out hover:bg-blue-700 transform hover:-translate-y-1"
-                >
-                    Archive
-                </button>
-                <button
-                    onClick={handleAddCourseButton}
-                    className="bg-blue-800 text-white py-2 px-6 rounded-full transition duration-300 ease-in-out hover:bg-blue-700 transform hover:-translate-y-1"
-                >
-                    Add Course
-                </button>
+            <button
+                onClick={handleArchive}
+                className="bg-[#8ABBD9] mr-10 text-white py-2 px-6 rounded-full transition duration-300 ease-in-out hover:bg-[#72A5C9] transform hover:-translate-y-1"
+            >
+                Archive
+            </button>
+            <button
+                onClick={handleAddCourseButton}
+                className="bg-[#5A8BB8] text-white py-2 px-6 rounded-full transition duration-300 ease-in-out hover:bg-[#467AA1] transform hover:-translate-y-1"
+            >
+                Add Course
+            </button>
             </div>
             {isAddingCourse && (
                 <div>

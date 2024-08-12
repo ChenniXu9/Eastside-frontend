@@ -105,7 +105,7 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
   };
 
   const handleDelete = async (key: string) => {
-    console.log(`Deleting file with key: ${key}`);  // 添加调试信息
+    console.log(`Deleting file with key: ${key}`); 
     await deleteObject(key);
 
     setFiles(prevFiles => {
@@ -145,7 +145,7 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
     <div className="p-4 flex flex-col h-screen">
       <button 
         onClick={() => router.push('/dashboard/resources')} 
-        className="self-start border border-blue-500 text-blue-500 py-2 px-4 rounded-full mb-8 bg-white hover:bg-blue-100"
+        className="self-start border border-[#90B8D6] text-[#90B8D6] py-2 px-4 rounded-full mb-8 bg-white hover:bg-blue-100"
       >
         Back
       </button>
@@ -169,17 +169,17 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
                         <div className="flex items-center space-x-4">
                           <span>📄</span>
                           <div className="flex-1">
-                            <span className="text-black">{childFile.title || childFile.name}</span>
+                            <span className="text-[#2F4559]">{childFile.title || childFile.name}</span>
                           </div>
                         </div>
                         <div className="ml-8 flex items-center space-x-4 text-sm">
                           {childFile.downloadable && (
-                            <a href={childFile.url} download className="text-blue-500 underline">Download</a>
+                            <a href={childFile.url} download className="text-[#90B8D6] underline">Download</a>
                           )}
-                          <a href={childFile.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">View</a>
+                          <a href={childFile.url} target="_blank" rel="noopener noreferrer" className="text-[#90B8D6] underline">View</a>
                           <button 
                             onClick={() => handleDelete(childFile.key || '')} 
-                            className="text-red-500 underline"
+                            className="text-[#D9534F] underline"
                           >
                             Delete
                           </button>
@@ -196,12 +196,12 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
                 </div>
                 <div className="flex space-x-4 text-sm">
                   {file.downloadable && (
-                    <a href={file.url} download className="text-blue-500 underline">Download</a>
+                    <a href={file.url} download className="text-[#90B8D6] underline">Download</a>
                   )}
-                  <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">View</a>
+                  <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-[#90B8D6] underline">View</a>
                   <button 
                     onClick={() => handleDelete(file.key || '')} 
-                    className="text-red-500 underline"
+                    className="text-[#D9534F] underline"
                   >
                     Delete
                   </button>
@@ -213,7 +213,7 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
         <div className="flex justify-center mt-4">
           <button 
             onClick={() => setShowUpdateSection(prev => !prev)} 
-            className="border border-blue-500 text-blue-500 py-2 px-4 rounded-full bg-white hover:bg-blue-100"
+            className="border border-[#90B8D6] text-[#90B8D6] py-2 px-4 rounded-full bg-white hover:bg-blue-100"
           >
             {showUpdateSection ? 'Hide' : 'Update Files'}
           </button>
@@ -230,7 +230,7 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
               onChange={(e) => setNewFolderName(e.target.value)} 
               className="border p-2 mr-2"
             />
-            <button onClick={createNewFolder} className="p-2 bg-blue-500 text-white rounded">Create Folder</button>
+            <button onClick={createNewFolder} className="p-2 bg-[#8ABBD9] hover:bg-[#72A5C9] text-white rounded">Create Folder</button>
           </div>
 
           <form 
@@ -291,7 +291,7 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
                   checked={newFileDownloadable} 
                   onChange={(e) => setNewFileDownloadable(e.target.checked)} 
                   className="mr-2"
-                  disabled={!!newFileUrl} // Disable the checkbox if it's a URL
+                  disabled={!!newFileUrl} 
                 />
                 Downloadable (only for files)
               </label>
@@ -300,7 +300,7 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
             <div className="mb-4">
               <button 
                 type="submit" 
-                className="p-2 bg-blue-500 text-white rounded w-full"
+                className="p-2 bg-[#8ABBD9] text-white rounded w-full hover:bg-[#72A5C9]"
               >
                 Upload
               </button>

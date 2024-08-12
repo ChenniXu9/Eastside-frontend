@@ -33,7 +33,7 @@ const ArchiveCourse: React.FC<ArchiveCoursesProps> = ({ courses, selectedCourses
   };
 
   return (
-    <div className="w-full p-4 bg-gray-100 rounded-md shadow-md">
+    <div className="w-full p-4 bg-gray-100 rounded-md shadow-md mt-10">
       <h2 className="text-blue-800 text-lg font-semibold mb-4">Select Courses to Archive</h2>
       {courses.map((course) => (
         <div key={course.courseCode} className="flex items-center mb-2">
@@ -55,7 +55,7 @@ const ArchiveCourse: React.FC<ArchiveCoursesProps> = ({ courses, selectedCourses
         </button>
         <button
           onClick={handleConfirm}
-          className="bg-blue-600 text-white py-2 px-4 rounded-full"
+          className="bg-[#8ABBD9] text-white py-2 px-4 rounded-full hover:bg-[#72A5C9]"
         >
           Confirm
         </button>
