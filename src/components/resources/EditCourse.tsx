@@ -77,7 +77,7 @@ const EditCourse: React.FC<EditCourseProps> = ({ courseCode, courseName, semeste
           </button>
           <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-blue-600 transform hover:-translate-y-1"
+            className="bg-[#8ABBD9] text-white py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-blue-600 transform hover:bg-[#72A5C9]"
           >
             Save Course
           </button>
