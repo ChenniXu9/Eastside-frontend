@@ -21,20 +21,19 @@ const Navbar = () => {
         // return lastWord.charAt(0).toUpperCase() + lastWord.slice(1);
     };
 
-    // Determine if the navbar should be hidden
-    const hideNavbar =
-        pathname?.startsWith("/dashboard/channels/") &&
-        pathname?.includes("/members_detail/");
-
     let capitalizedTitle = getLastWordAndCapitalize(pathname || "");
-    if(pathname?.startsWith("/dashboard/channels/")) {
-        if (pathname?.includes("/members_detail/") || 
-        pathname?.includes("/currentChannel/") || 
-        pathname?.includes("/groups/") || 
-        pathname?.includes("/posts_detail/")) {
-            capitalizedTitle = "Channels"
+
+    if (pathname?.startsWith("/dashboard/channels/")) {
+        if (
+            pathname?.includes("/members_detail/") ||
+            pathname?.includes("/currentChannel/") ||
+            pathname?.includes("/groups/") ||
+            pathname?.includes("/posts_detail/")
+        ) {
+            capitalizedTitle = "Channels";
         }
     }
+
     return (
         <div className="flex flex-col justify-between">
             <div className="h-24 flex items-center justify-between">

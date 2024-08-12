@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import prisma from "./client";
 
-
 // export const switchFollow = async (userId: string) => {
 //   const { userId: currentUserId } = auth();
 
