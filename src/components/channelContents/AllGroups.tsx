@@ -12,24 +12,24 @@ type User = {
     last_name: string | null;
     organization: string | null;
     title: string | null;
-    phone: string | null;
+    phone: string | null; 
     description: string | null;
     password: string | null;
     personal_email: string | null;
     graduation_year: string | null;
     work_email: string | null;
     createdAt: Date;
-};
-
-type Comment = {
+  };
+  
+  type Comment = {
     id: number;
     desc: string;
     userId: string;
     postId: number;
     user: User;
-};
-
-type Post = {
+  };
+  
+  type Post = {
     id: number;
     desc: string;
     img: string | null;
@@ -40,18 +40,18 @@ type Post = {
     channelId: number;
     user: User;
     comments: Comment[];
-};
-
-type Channel = {
+  };
+  
+  type Channel = {
     id: number;
     channel_name: string;
     channel_image: string | null;
     channel_description: string | null;
     users: {
-        user: User;
+      user: User;
     }[];
     posts: Post[];
-};
+  };
 
 interface AllGroupsProps {
     channel: Channel;
@@ -97,15 +97,15 @@ const AllGroups: React.FC<AllGroupsProps> = ({ channel, currentUser }) => {
             console.error("Error fetching channels:", error);
           }
         };
-
+    
         fetchChannels();
-    }, [userId]);
+      }, [userId]);
 
     const combinedChannels = joinedChannels.concat(notJoinedChannels);
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4">
+            <div className='p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4'>   
                 <div className="">
                     <Link 
                         href={`/dashboard/channels/currentChannel/${channel.channel_name}/${username}`}
@@ -135,10 +135,10 @@ const AllGroups: React.FC<AllGroupsProps> = ({ channel, currentUser }) => {
                             height={14}
                         />
                     </div>
-                </div>
+                </div>                  
             </div>
-            <div className="p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4">
-                <ul className="px-2 text-lg flex flex-col gap-4">
+            <div className='p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4'>
+                <ul className='px-2 text-lg flex flex-col gap-4'>
                     {joinedChannels.map((channel) => (
                         <li key={channel.id}>
                             <div className="flex justify-between">
@@ -198,7 +198,7 @@ const AllGroups: React.FC<AllGroupsProps> = ({ channel, currentUser }) => {
                 </ul>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default AllGroups;

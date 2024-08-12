@@ -6,52 +6,52 @@ import Image from "next/image";
 import Link from "next/link";
 
 type User = {
-    id: string;
-    username: string;
-    profile_image: string | null;
-    first_name: string | null;
-    last_name: string | null;
-    organization: string | null;
-    title: string | null;
-    phone: string | null;
-    description: string | null;
-    password: string | null;
-    personal_email: string | null;
-    graduation_year: string | null;
-    work_email: string | null;
-    createdAt: Date;
+  id: string;
+  username: string;
+  profile_image: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  organization: string | null;
+  title: string | null;
+  phone: string | null; 
+  description: string | null;
+  password: string | null;
+  personal_email: string | null;
+  graduation_year: string | null;
+  work_email: string | null;
+  createdAt: Date;
 };
-
+  
 type Comment = {
-    id: number;
-    desc: string;
-    userId: string;
-    postId: number;
-    user: User;
+  id: number;
+  desc: string;
+  userId: string;
+  postId: number;
+  user: User;
 };
 
 type Post = {
-    id: number;
-    desc: string;
-    img: string | null;
-    video: string | null;
-    createdAt: Date;
-    updatedAt: Date;
-    userId: string;
-    channelId: number;
-    user: User;
-    comments: Comment[];
+  id: number;
+  desc: string;
+  img: string | null;
+  video: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  channelId: number;
+  user: User;
+  comments: Comment[];
 };
 
 type Channel = {
-    id: number;
-    channel_name: string;
-    channel_image: string | null;
-    channel_description: string | null;
-    users: {
-        user: User;
-    }[];
-    posts: Post[];
+  id: number;
+  channel_name: string;
+  channel_image: string | null;
+  channel_description: string | null;
+  users: {
+    user: User;
+  }[];
+  posts: Post[];
 };
 
 interface GroupsProps {
@@ -105,7 +105,7 @@ const Groups: React.FC<GroupsProps> = ({ channel, currentUser }) => {
   const combinedChannels = joinedChannels.concat(notJoinedChannels);
 
     return (
-        <div className="p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-4">
+        <div className='p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-4'>
             {/* Top */}
             <div className="flex justify-between items-center font-medium">
                 <span className="text-gray-500">Channels</span>
@@ -130,12 +130,12 @@ const Groups: React.FC<GroupsProps> = ({ channel, currentUser }) => {
                 </div>
             ))}
             {combinedChannels.length > 3 && (
-                <div className="text-sm text-gray-500">
-                    and {combinedChannels.length - 3} more...
-                </div>
-            )}
+            <div className="text-sm text-gray-500">
+            and {combinedChannels.length - 3} more...
+            </div>
+        )}
         </div>
-    );
-};
+    )
+}
 
 export default Groups;
