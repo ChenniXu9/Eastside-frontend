@@ -80,7 +80,7 @@ const PostsDetail: React.FC<PostProps> = ({ channel, currentUser, posts, setPost
         <div className="flex flex-col gap-6">
             <div className='p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4'>   
                 <div className="">
-                    <Link href={`/dashboard/channels/currentChannel/${channel.id}/${currentUser.id}`}>
+                    <Link href={`/dashboard/channels/currentChannel/${channel.channel_name}/${currentUser.username}`}>
                         <button>
                             <Image src="/backArrow.png" 
                                 alt="back" 

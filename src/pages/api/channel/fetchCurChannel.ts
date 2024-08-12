@@ -2,17 +2,17 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query;
+  const { channelName } = req.query;
 
-  if (!id || Array.isArray(id)) {
-    return res.status(400).json({ error: 'Invalid channelId' });
+
+  if (!channelName || typeof channelName !== 'string') {
+    return res.status(400).json({ error: 'Invalid channel name' });
   }
-
 
 
   try {
     const channel = await prisma.channel.findUnique({
-      where: { id: parseInt(id, 10) },
+      where: { channel_name: channelName },
       include: {
         users: {
           include: {
