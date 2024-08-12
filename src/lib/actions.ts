@@ -398,14 +398,19 @@ export const fetchUserPosts = async (channelId: number, userId: string): Promise
 };
 
 
-export const addPost = async (formData: FormData, img: string | null, channelId: number) => {
-  const desc = formData.get("desc") as string;
+export const addChannel = async (formData: FormData, img: string | null) => {
+  const fields = Object.fromEntries(formData);
+  console.log("channel fields", fields)
+  const desc = fields.desc
+  const channel_name = fields.channel_name
 
   const Desc = z.string().min(1).max(255);
+  const Channel_Name = z.string().min(1).max(255);
 
   const validatedDesc = Desc.safeParse(desc);
+  const validateChannelName = Channel_Name.safeParse(channel_name);
 
-  if (!validatedDesc.success) {
+  if (!validatedDesc.success || !validateChannelName) {
     //TODO
     console.log("description is not valid");
     return;
@@ -415,32 +420,16 @@ export const addPost = async (formData: FormData, img: string | null, channelId:
   if (!userId) throw new Error("User is not authenticated!");
 
   try {
-    const newPost = await prisma.post.create({      
-      data: {
-        desc: validatedDesc.data,
-        img: img || null,
-        video: null,
-        userId: userId,
-        channelId: channelId
-      },
-      include: {
-        user: true,
-        comments: {
-          include: {
-            user: true,
-            post: true,
-          },
-          orderBy: {
-            createdAt: "desc",
-          },
+    const newChannel = await prisma.channel.create({
+        data: {
+            channel_name: channel_name as string,
+            channel_description: desc as string,
+            channel_image: img,
         },
-      }
     });
-
-    revalidatePath(`/dashboard/channels/currentChannel/${channelId}/${userId}`);
-    return newPost;
-  } catch (err) {
-    console.log(err);
+    return newChannel;
+  } catch (error) {
+      console.error("Error creating channel:", error);
   }
 };
 
@@ -525,5 +514,51 @@ export const addComment = async (desc: string, postId: number) => {
   } catch (err) {
     console.log(err);
     throw new Error("Something went wrong!");
+  }
+};
+
+export const addPost = async (formData: FormData, img: string | null, channelId: number) => {
+  const desc = formData.get("desc") as string;
+
+  const Desc = z.string().min(1).max(255);
+
+  const validatedDesc = Desc.safeParse(desc);
+
+  if (!validatedDesc.success) {
+    //TODO
+    console.log("description is not valid");
+    return;
+  }
+  const { userId } = auth();
+
+  if (!userId) throw new Error("User is not authenticated!");
+
+  try {
+    const newPost = await prisma.post.create({      
+      data: {
+        desc: validatedDesc.data,
+        img: img || null,
+        video: null,
+        userId: userId,
+        channelId: channelId
+      },
+      include: {
+        user: true,
+        comments: {
+          include: {
+            user: true,
+            post: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+      }
+    });
+
+    revalidatePath(`/dashboard/channels/currentChannel/${channelId}/${userId}`);
+    return newPost;
+  } catch (err) {
+    console.log(err);
   }
 };

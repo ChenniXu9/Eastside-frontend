@@ -5,23 +5,6 @@ export interface FileItem {
     uploadTime?: string;
 }
 
-// export interface User {
-//     id: string;
-//     username: string;
-//     first_name: string;
-//     last_name: string;
-//     organization: string;
-//     title: string;
-//     phone: string;
-//     email_personal: string;
-//     email_work: string;
-//     graduation_year: string;
-//     desc: string;
-//     profile_image?: string;
-//     cover_image?: string;
-//     password: string;
-// }
-
 export interface User {
     id: string;
     username: string;
@@ -37,4 +20,5 @@ export interface User {
     personal_email: string | null; // Updated to allow null
     graduation_year: string | null; // Updated to allow null
     work_email: string | null; // Updated to allow null
+    admin: number;
 }

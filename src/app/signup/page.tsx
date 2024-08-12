@@ -43,6 +43,7 @@ const Signup = () => {
         }
 
         try {
+            console.log("in try catch");
             await signUp.create({
                 emailAddress: email,
                 password,
@@ -50,10 +51,11 @@ const Signup = () => {
                 firstName,
                 lastName,
             });
-
+            console.log("create");
             await signUp.prepareEmailAddressVerification({
                 strategy: "email_code",
             });
+            console.log("verified");
             setPendingVerification(true);
         } catch (err: any) {
             const errorMessage =
@@ -353,6 +355,8 @@ const Signup = () => {
                     <Image
                         src="/whitelogo.png"
                         alt="Logo"
+                        width={20}
+                        height={20}
                         className="w-[150px] sm:w-[200px] md:w-[250px] h-auto"
                     />
                 </div>

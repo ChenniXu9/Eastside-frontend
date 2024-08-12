@@ -2,7 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import HomeNav from "./HomeNav";
+import AddChannel from "./AddChannel";
+// import HomeNav from "./HomeNav";
 
 type Channel = {
     id: number;
@@ -12,9 +13,12 @@ type Channel = {
 };
 
 const ChannelHome = ({ userId }: { userId: string }) => {
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [username, setUsername] = useState<string | null>(null);
     const [joinedChannels, setJoinedChannels] = useState<Channel[]>([]);
     const [notJoinedChannels, setNotJoinedChannels] = useState<Channel[]>([]);
+    const [open, setOpen] = useState<boolean>(false);
+    console.log(open);
 
     useEffect(() => {
         const fetchChannels = async () => {
@@ -30,6 +34,13 @@ const ChannelHome = ({ userId }: { userId: string }) => {
 
                 const data = await response.json();
 
+                const userResponse = await fetch(
+                    `/api/channel/fetchUserById?userId=${userId}`
+                );
+                const userData = await userResponse.json();
+                console.log("isadmin ", userData.admin);
+                setIsAdmin(userData.admin);
+
                 setUsername(data.username);
                 setJoinedChannels(data.joinedChannels);
                 setNotJoinedChannels(data.notJoinedChannels);
@@ -44,23 +55,15 @@ const ChannelHome = ({ userId }: { userId: string }) => {
         fetchChannels();
     }, [userId]);
 
+    const handleChannelAdded = (newChannel: Channel) => {
+        setNotJoinedChannels((prevChannels) => [newChannel, ...prevChannels]); // Add the new post to the top of the list
+    };
+
     return (
         <div className="flex flex-col gap-6 pt-6">
             {/* <HomeNav username={username}></HomeNav> */}
+
             <div className="p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4">
-                {/* <div className="">
-                    <Link href="/">
-                        <button>
-                            <Image
-                                src="/backArrow.png"
-                                alt="back"
-                                width={20}
-                                height={20}
-                            />
-                        </button>
-                    </Link>
-                    <span className="mx-2">Homepage</span>
-                </div> */}
                 <div className="flex justify-between items-center font-medium">
                     <span className="px-4 text-gray-500">All Channels</span>
                     {/* <div className="flex p-2 bg-slate-100 items-center rounded-xl">
@@ -76,7 +79,20 @@ const ChannelHome = ({ userId }: { userId: string }) => {
                             height={14}
                         />
                     </div> */}
+                    {isAdmin && (
+                        <button
+                            className="text-xs cursor-pointer text-white bg-[#438bb4] py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-[#224c6b] transform hover:-translate-y-1"
+                            onClick={() => setOpen((prev) => !prev)}
+                        >
+                            Create a Channel
+                        </button>
+                    )}
                 </div>
+            </div>
+            <div>
+                {isAdmin && open ? (
+                    <AddChannel onChannelAdded={handleChannelAdded} />
+                ) : null}
             </div>
             <div className="p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4">
                 <ul className="px-2 text-lg flex flex-col gap-4">
@@ -85,7 +101,7 @@ const ChannelHome = ({ userId }: { userId: string }) => {
                             <div className="flex justify-between">
                                 <Link
                                     href={`/dashboard/channels/currentChannel/${channel.channel_name}/${username}`}
-                                    className="flex items-center gap-4 p-2 rounded-lg hover:bg-slate-100"
+                                    className="flex items-center gap-4 p-2 rounded-lg hover:bg-slate-100 w-full"
                                 >
                                     <Image
                                         src={channel.channel_image || ""}
@@ -113,8 +129,8 @@ const ChannelHome = ({ userId }: { userId: string }) => {
                         <li key={channel.id}>
                             <div className="flex justify-between">
                                 <Link
-                                    href={`/dashboard/channels/currentChannel/${channel.id}/${userId}`}
-                                    className="flex items-center gap-4 p-2 rounded-lg hover:bg-slate-100"
+                                    href={`/dashboard/channels/currentChannel/${channel.channel_name}/${username}`}
+                                    className="flex items-center gap-4 p-2 rounded-lg hover:bg-slate-100 w-full"
                                 >
                                     <Image
                                         src={channel.channel_image || ""}

@@ -1,12 +1,12 @@
-"use client";
-
 import { useFormStatus } from "react-dom";
 
-const AddPostButton = () => {
+type Props = {};
+
+const NewChannelButton = (props: Props) => {
     const { pending } = useFormStatus();
     return (
         <button
-            className="bg-blue-500 p-2 mt-2 rounded-md text-white disabled:bg-blue-300 disabled:cursor-not-allowed"
+            className="bg-[#438bb4] p-2 rounded-md text-white disabled:bg-[#224c6b] disabled:cursor-not-allowed"
             disabled={pending}
         >
             {pending ? (
@@ -15,10 +15,10 @@ const AddPostButton = () => {
                     Sending
                 </div>
             ) : (
-                "Send"
+                "Create Channel"
             )}
         </button>
     );
 };
 
-export default AddPostButton;
+export default NewChannelButton;

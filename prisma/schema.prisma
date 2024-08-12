@@ -28,6 +28,7 @@ model User {
   personal_email String?
   graduation_year String?
   work_email    String?
+  admin          Boolean     @default(false)
   createdAt     DateTime @default(now())
   channels      UserToChannel[]
   posts         Post[]
