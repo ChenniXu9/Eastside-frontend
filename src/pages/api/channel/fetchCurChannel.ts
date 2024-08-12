@@ -10,6 +10,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
   try {
     const channel = await prisma.channel.findUnique({
       where: { channel_name: channelName },

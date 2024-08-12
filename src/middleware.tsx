@@ -14,4 +14,8 @@ export const config = {
         "/api/:path*",
         "/dashboard/:path*",
     ],
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> main

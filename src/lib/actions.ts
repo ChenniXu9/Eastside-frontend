@@ -10,6 +10,7 @@ import prisma from "./client";
 
 //   if (!currentUserId) {
 //     throw new Error("User is not authenticated!");
+<<<<<<< HEAD
 //   }
 
 //   try {
@@ -249,18 +250,162 @@ import prisma from "./client";
 
 //   try {
 //     await prisma.user.update({
+=======
+//   }
+
+//   try {
+//     const existingFollow = await prisma.follower.findFirst({
+>>>>>>> main
 //       where: {
-//         id: userId,
+//         followerId: currentUserId,
+//         followingId: userId,
 //       },
-//       data: validatedFields.data,
 //     });
+<<<<<<< HEAD
 //     return "success"
 //   } catch (err) {
 //     console.log(err);
 //     return "errror"
+=======
+
+//     if (existingFollow) {
+//       await prisma.follower.delete({
+//         where: {
+//           id: existingFollow.id,
+//         },
+//       });
+//     } else {
+//       const existingFollowRequest = await prisma.followRequest.findFirst({
+//         where: {
+//           senderId: currentUserId,
+//           receiverId: userId,
+//         },
+//       });
+
+//       if (existingFollowRequest) {
+//         await prisma.followRequest.delete({
+//           where: {
+//             id: existingFollowRequest.id,
+//           },
+//         });
+//       } else {
+//         await prisma.followRequest.create({
+//           data: {
+//             senderId: currentUserId,
+//             receiverId: userId,
+//           },
+//         });
+//       }
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     throw new Error("Something went wrong!");
+>>>>>>> main
 //   }
 // }
 
+<<<<<<< HEAD
+=======
+// export const switchBlock = async (userId: string) => {
+//   const { userId: currentUserId } = auth();
+
+//   if (!currentUserId) {
+//     throw new Error("User is not Authenticated!!");
+//   }
+
+//   try {
+//     const existingBlock = await prisma.block.findFirst({
+//       where: {
+//         blockerId: currentUserId,
+//         blockedId: userId,
+//       },
+//     });
+
+//     if (existingBlock) {
+//       await prisma.block.delete({
+//         where: {
+//           id: existingBlock.id,
+//         },
+//       });
+//     } else {
+//       await prisma.block.create({
+//         data: {
+//           blockerId: currentUserId,
+//           blockedId: userId,
+//         },
+//       });
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     throw new Error("Something went wrong!");
+//   }
+// };
+
+// export const acceptFollowRequest = async (userId: string) => {
+//   const { userId: currentUserId } = auth();
+
+//   if (!currentUserId) {
+//     throw new Error("User is not Authenticated!!");
+//   }
+
+//   try {
+//     const existingFollowRequest = await prisma.followRequest.findFirst({
+//       where: {
+//         senderId: userId,
+//         receiverId: currentUserId,
+//       },
+//     });
+
+//     if (existingFollowRequest) {
+//       await prisma.followRequest.delete({
+//         where: {
+//           id: existingFollowRequest.id,
+//         },
+//       });
+
+//       await prisma.follower.create({
+//         data: {
+//           followerId: userId,
+//           followingId: currentUserId,
+//         },
+//       });
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     throw new Error("Something went wrong!");
+//   }
+// };
+
+// export const declineFollowRequest = async (userId: string) => {
+//   const { userId: currentUserId } = auth();
+
+//   if (!currentUserId) {
+//     throw new Error("User is not Authenticated!!");
+//   }
+
+//   try {
+//     const existingFollowRequest = await prisma.followRequest.findFirst({
+//       where: {
+//         senderId: userId,
+//         receiverId: currentUserId,
+//       },
+//     });
+
+//     if (existingFollowRequest) {
+//       await prisma.followRequest.delete({
+//         where: {
+//           id: existingFollowRequest.id,
+//         },
+//       });
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     throw new Error("Something went wrong!");
+//   }
+// };
+
+
+>>>>>>> main
 export const updateProfile = async(formData: FormData, cover: string, profile: string) => {
   const fields = Object.fromEntries(formData);
   console.log("fields", fields)
@@ -345,7 +490,11 @@ export const updateProfile = async(formData: FormData, cover: string, profile: s
     return { status: 'success', message: 'Profile updated successfully' };
   } catch (err) {
     console.log(err);
+<<<<<<< HEAD
     // return "{ success: false, error: true }";
+=======
+    return { status: 'error', message: 'Internal Server Error' };
+>>>>>>> main
   }
 }
 
