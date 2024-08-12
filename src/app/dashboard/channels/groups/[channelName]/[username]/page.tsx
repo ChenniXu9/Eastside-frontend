@@ -86,12 +86,7 @@ const Groups = ()=> {
 
   
   return (
-<<<<<<< HEAD:src/app/dashboard/channels/groups/[channelName]/[username]/page.tsx
     <div>
-=======
-    <div className='text-black '>
-      {/* <div><ChannelNavbar channel={channel} currentUser={currentUser}/></div> */}
->>>>>>> main:src/app/dashboard/channels/groups/[id]/[userId]/page.tsx
       <div className="flex gap-6 pt-6">
         <div className="w-full lg:w-[70%] xl:w-[70%]">
           <AllGroups channel={channel} currentUser={currentUser}/>
