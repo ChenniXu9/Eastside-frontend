@@ -65,7 +65,7 @@ const Members: React.FC<MembersProps> = ({ channel, currentUser }) => {
             <div className="p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4">
                 <div className="">
                     <Link
-                        href={`/dashboard/channels/currentChannel/${channel.id}/${currentUser.id}`}
+                        href={`/dashboard/channels/currentChannel/${channel.channel_name}/${currentUser.username}`}
                     >
                         <button>
                             <Image

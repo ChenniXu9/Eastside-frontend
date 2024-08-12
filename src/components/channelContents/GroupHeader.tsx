@@ -60,7 +60,7 @@ interface GroupHeaderProps {
   }
 
 const GroupHeader: React.FC<GroupHeaderProps> = ({ channel, currentUser }) => {
-    const hasJoined = channel.users.some(user => user.user.id === currentUser.id);
+  const hasJoined = Array.isArray(channel.users) && channel.users.some(user => user.user.id === currentUser.id);
 
     // Fix the Channel intro while scrolling down
     const [showOnScroll, setShowOnScroll] = useState(false);

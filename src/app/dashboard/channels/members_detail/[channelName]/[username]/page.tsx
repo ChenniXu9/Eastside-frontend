@@ -1,12 +1,9 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import LeftMenu from "@/components/LeftMenu";
-import ChannelNavbar from "@/components/channelContents/ChannelNavbar";
 import Members from "@/components/channelContents/Members";
 import MembersRight from "@/components/channelContents/MembersRight";
-import prisma from "@/lib/client";
-import Link from 'next/link';
+
 
 type User = {
   id: string;
@@ -91,35 +88,11 @@ const GroupDetail = () => {
   const hasJoined = channel.users.some(user => user.user.id === currentUser.id);
   
   return (
-    <div className='text-black '>
-      {/* <div><ChannelNavbar channel={channel} currentUser={currentUser}/></div> */}
+    <div>
       <div className="flex gap-6 pt-6">
         <div className="w-full lg:w-[70%] xl:w-[70%]">
-              
           {/* <Members /> */}
           <Members channel={channel} currentUser={currentUser}/>
-          {/* {
-            channel.users.length >0 &&
-            <div className='p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4'>
-            {channel.users.map((user) => (
-              <li key={channel.id} className='list-none'>
-                <div className="flex justify-between">
-                    <Link href="" className="flex items-center gap-4 p-2 rounded-lg hover:bg-slate-100">
-                      <img src={user.user.profile_image || ''} 
-                        alt={user.user.description || ''} 
-                        width={20}
-                        height={20}
-                        className="w-10 h-10 rounded-full"
-                      />
-                      <span className="font-semibold font-medium">{user.user.username}</span>
-                    </Link>
-                </div>
-                <hr className="border-t-1 border-gray-50 w-36 self-center"/>
-              </li>
-            ))}    
-          </div>
-          } */}
-          
         </div>
         <div className="hidden lg:block w-[30%]"><MembersRight channel={channel} currentUser={currentUser}/></div>
       </div>

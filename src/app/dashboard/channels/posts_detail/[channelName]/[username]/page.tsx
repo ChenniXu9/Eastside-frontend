@@ -1,8 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import LeftMenu from "@/components/LeftMenu";
-import ChannelNavbar from "@/components/channelContents/ChannelNavbar";
 import MyPostsRightbar from "@/components/channelContents/MyPostsRightbar";
 import UserDetail from "@/components/channelContents/PostsDetail";
 import { deletePost, fetchUserPosts } from '@/lib/actions';
@@ -107,8 +105,7 @@ const PostsDetail = () => {
 
   
   return (
-    <div className='text-black '>
-      {/* <div><ChannelNavbar channel={channel} currentUser={currentUser}/></div> */}
+    <div>
       <div className="flex gap-6 pt-6">
         <div className="w-full lg:w-[70%] xl:w-[70%]">
           <UserDetail channel={channel} currentUser={currentUser} posts={posts} setPosts={setPosts}/>
