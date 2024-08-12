@@ -1,5 +1,5 @@
 "use client";
-"use client";
+
 import AddPost from "@/components/channelContents/AddPosts";
 import ChannelRightMenu from "@/components/channelContents/ChannelRightMenu";
 import Feed from "@/components/channelContents/Feed";
