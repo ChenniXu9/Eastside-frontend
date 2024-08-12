@@ -44,14 +44,14 @@ type Post = {
 };
 
 type Channel = {
-  id: number;
-  channel_name: string;
-  channel_image: string | null;
-  channel_description: string | null;
-  users: {
-    user: User;
-  }[];
-  posts: Post[];
+    id: number;
+    channel_name: string;
+    channel_image: string | null;
+    channel_description: string | null;
+    users: {
+        user: User;
+    }[];
+    posts: Post[];
 };
 
 
