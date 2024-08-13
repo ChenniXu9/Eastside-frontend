@@ -20,5 +20,5 @@ export interface User {
     personal_email: string | null; // Updated to allow null
     graduation_year: string | null; // Updated to allow null
     work_email: string | null; // Updated to allow null
-    admin: number;
+    admin: number | null;
 }

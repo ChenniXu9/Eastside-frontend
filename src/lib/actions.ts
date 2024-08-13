@@ -411,7 +411,6 @@ export const addChannel = async (formData: FormData, img: string | null) => {
   const validateChannelName = Channel_Name.safeParse(channel_name);
 
   if (!validatedDesc.success || !validateChannelName) {
-    //TODO
     console.log("description is not valid");
     return;
   }
@@ -560,5 +559,101 @@ export const addPost = async (formData: FormData, img: string | null, channelId:
     return newPost;
   } catch (err) {
     console.log(err);
+  }
+};
+
+// Join Channel request 
+export const declineChannelRequest = async (userId: string, channelId: number) => {
+  //TODO: Need to make sure that the user is an admin but we are just not showing the option for now
+  const { userId: currentUserId } = auth();
+
+  if (!currentUserId) {
+    throw new Error("User is not Authenticated!!");
+  }
+
+  try {
+    const existingFollowRequest = await prisma.channelRequest.findFirst({
+      where: {
+        senderId: userId,
+        channelId: channelId,
+      },
+    });
+
+    if (existingFollowRequest) {
+      await prisma.channelRequest.delete({
+        where: {
+          id: existingFollowRequest.id,
+        },
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    throw new Error("Something went wrong!");
+  }
+};
+
+export const acceptChannelRequest = async (userId: string, channelId: number) => {
+  const { userId: currentUserId } = auth();
+
+  if (!currentUserId) {
+    throw new Error("User is not Authenticated!!");
+  }
+
+  try {
+    const existingChannelRequest = await prisma.channelRequest.findFirst({
+      where: {
+        senderId: userId,
+        channelId: channelId,
+      },
+    });
+
+    if (existingChannelRequest) {
+      await prisma.channelRequest.delete({
+        where: {
+          id: existingChannelRequest.id,
+        },
+      });
+
+      await prisma.userToChannel.create({
+        data: {
+          userId: userId,
+          channelId: channelId,
+        },
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    throw new Error("Something went wrong!");
+  }
+};
+
+export const newRequest = async (channelId: number) => {
+  const { userId: currentUserId } = auth();
+
+  if (!currentUserId) {
+    throw new Error("User is not Authenticated!!");
+  }
+
+  try {
+    const existingChannelRequest = await prisma.channelRequest.findFirst({
+      where: {
+        senderId: currentUserId,
+        channelId: channelId,
+      },
+    });
+
+    if (existingChannelRequest) {
+      return 
+    } else {
+      await prisma.channelRequest.create({
+        data: {
+          senderId: currentUserId,
+          channelId: channelId,
+        },
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    throw new Error("Something went wrong!");
   }
 };

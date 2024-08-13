@@ -1,9 +1,12 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AddChannel from "./AddChannel";
 // import HomeNav from "./HomeNav";
+// import ManageChannelRequests from "./ManageChannelRequests";
+import { newRequest } from "@/lib/actions";
 
 type Channel = {
     id: number;
@@ -12,13 +15,60 @@ type Channel = {
     channel_description: string | null;
 };
 
+type Request = {
+    channelId: number;
+    senderId: string;
+    status: string;
+};
+
 const ChannelHome = ({ userId }: { userId: string }) => {
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [username, setUsername] = useState<string | null>(null);
     const [joinedChannels, setJoinedChannels] = useState<Channel[]>([]);
     const [notJoinedChannels, setNotJoinedChannels] = useState<Channel[]>([]);
+    const [requests, setRequests] = useState<Request[]>([]);
     const [open, setOpen] = useState<boolean>(false);
-    console.log(open);
+    const pathname = usePathname();
+    const router = useRouter();
+
+    const handleRequest = async (channelId: number) => {
+        try {
+            await newRequest(channelId);
+            // Assuming you have access to `currentUserId` in your context
+            const localNewRequest: Request = {
+                channelId,
+                senderId: userId, // Replace with the actual senderId if different
+                status: "Pending",
+            };
+            setRequests((prevRequests) => [...prevRequests, localNewRequest]);
+        } catch (err) {
+            console.log(err, "couldnt make channel request");
+        }
+        router.refresh();
+    };
+
+    const getLastWordAndCapitalize = (path: string): string => {
+        const parts = path.split("/");
+        console.log("parts", parts);
+        return parts[-2];
+
+        // const lastWord = parts[parts.length - 1];
+        // return lastWord.charAt(0).toUpperCase() + lastWord.slice(1);
+    };
+
+    const isRequestPending = (channelId: number) => {
+        return requests.some(
+            (request) =>
+                request.channelId === channelId && request.status === "Pending"
+        );
+    };
+
+    const isRequestSent = (channelId: number) => {
+        return requests.some((request) => request.channelId === channelId);
+    };
+
+    let capitalizedTitle = getLastWordAndCapitalize(pathname || "");
+    console.log(capitalizedTitle);
 
     useEffect(() => {
         const fetchChannels = async () => {
@@ -38,7 +88,6 @@ const ChannelHome = ({ userId }: { userId: string }) => {
                     `/api/channel/fetchUserById?userId=${userId}`
                 );
                 const userData = await userResponse.json();
-                console.log("isadmin ", userData.admin);
                 setIsAdmin(userData.admin);
 
                 setUsername(data.username);
@@ -52,6 +101,17 @@ const ChannelHome = ({ userId }: { userId: string }) => {
             }
         };
 
+        const fetchRequests = async () => {
+            const response = await fetch("/api/channel/fetchAllRequests");
+            if (!response.ok) {
+                throw new Error("Failed to fetch channels");
+            }
+
+            const data = await response.json();
+            setRequests(data);
+        };
+
+        fetchRequests();
         fetchChannels();
     }, [userId]);
 
@@ -143,11 +203,23 @@ const ChannelHome = ({ userId }: { userId: string }) => {
                                         {channel.channel_name}
                                     </span>
                                 </Link>
-                                <Link href="">
-                                    <button className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md my-3">
-                                        Request to Join
-                                    </button>
-                                </Link>
+                                <button
+                                    onClick={() => {
+                                        if (!isRequestSent(channel.id)) {
+                                            handleRequest(channel.id);
+                                        }
+                                    }}
+                                    className={`text-xs px-2 py-1 rounded-md my-3 ${
+                                        isRequestPending(channel.id)
+                                            ? "bg-gray-500 cursor-not-allowed"
+                                            : "bg-blue-500"
+                                    } text-white`}
+                                    disabled={isRequestSent(channel.id)}
+                                >
+                                    {isRequestPending(channel.id)
+                                        ? "Pending"
+                                        : "Request to Join"}
+                                </button>
                             </div>
                             <hr className="border-t-1 border-gray-50 w-36 self-center" />
                         </li>
