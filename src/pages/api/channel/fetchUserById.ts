@@ -3,17 +3,17 @@ import prisma from '@/lib/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { userName } = req.query;
+  const { userId } = req.query;
 
-  console.log(userName)
-
-  if (typeof userName !== 'string') {
-    return res.status(400).json({ error: 'Invalid username' });
+  if (typeof userId !== 'string') {
+    return res.status(400).json({ error: 'Invalid userId' });
   }
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { username: userName },
+    const user = await prisma.user.findFirst({
+        where: {
+            id: userId,
+        },
     });
 
     if (!user) {

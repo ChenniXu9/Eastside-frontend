@@ -1,15 +1,13 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import Link from "next/link";
-import Image from "next/image";
 import { CldUploadWidget } from "next-cloudinary";
+import Image from "next/image";
 import { useFormStatus } from "react-dom";
 // import { useRouter } from 'next/router';
 import { addPost } from "@/lib/actions";
-import AddPostButton from './AddPostButton';
-
+import AddPostButton from "./AddPostButton";
 
 type User = {
     id: string;
@@ -19,14 +17,14 @@ type User = {
     last_name: string | null;
     organization: string | null;
     title: string | null;
-    phone: string | null; 
+    phone: string | null;
     description: string | null;
     password: string | null;
     personal_email: string | null;
     graduation_year: string | null;
     work_email: string | null;
     createdAt: Date;
-  };
+};
 
 type Comment = {
     id: number;
@@ -48,14 +46,14 @@ type Post = {
     user: User;
     comments: Comment[];
 };
-  
+
 type Channel = {
     id: number;
     channel_name: string;
     channel_image: string | null;
     channel_description: string | null;
     users: {
-      user: User;
+        user: User;
     }[];
     posts: Post[];
 };
@@ -66,63 +64,67 @@ interface AddPostProps {
     onPostAdded: (post: Post) => void;
 }
 
-
-const AddPost: React.FC<AddPostProps> = ({ channel, currentUser, onPostAdded}) => {
-    const [desc, setDesc] = useState('');
+const AddPost: React.FC<AddPostProps> = ({
+    channel,
+    currentUser,
+    onPostAdded,
+}) => {
+    const [desc, setDesc] = useState("");
     const [img, setImg] = useState<any>();
 
     const { pending } = useFormStatus();
 
     const handleAddPost = async (e: React.FormEvent) => {
         e.preventDefault();
-    
+
         const formData = new FormData();
         formData.append("desc", desc);
         if (img) {
-          formData.append("img", img);
-        } 
-        
+            formData.append("img", img);
+        }
+
         try {
             const newPost = await addPost(formData, img, channel.id);
-    
+
             if (newPost) {
-            onPostAdded(newPost); // Call the callback function with the new post
+                onPostAdded(newPost); // Call the callback function with the new post
             }
-        
-            setDesc('');
+
+            setDesc("");
             setImg(null);
-        }catch (error) {
-            console.error('Failed to add post:', error);
-        } 
+        } catch (error) {
+            console.error("Failed to add post:", error);
+        }
     };
 
     return (
-        <div className='p-4 bg-white shadow-md rounded-lg flex gap-4 justify-between text-sm'>
+        <div className="p-4 bg-white shadow-md rounded-lg flex gap-4 justify-between text-sm">
             {/* Avatar */}
-            <Image src={currentUser.profile_image || "/noavatar.png"}
-                alt="" 
-                width={48} 
-                height={48} 
+            <Image
+                src={currentUser.profile_image || "/noavatar.png"}
+                alt=""
+                width={48}
+                height={48}
                 className="w-12 h-12 object-cover rounded-full"
             />
             {/* Post */}
             <div className="flex-1">
                 {/* Text input */}
-                <form  onSubmit={handleAddPost} className="flex gap-4">
-                    <textarea placeholder="What's on your mind?" 
-                        className="flex-1 bg-slate-100 rounded-lg p-2" 
+                <form onSubmit={handleAddPost} className="flex gap-4">
+                    <textarea
+                        placeholder="What's on your mind?"
+                        className="flex-1 bg-slate-100 rounded-lg p-2"
                         name="desc"
                         value={desc}
                         onChange={(e) => setDesc(e.target.value)}
-                    >
-                    </textarea>
+                    ></textarea>
                     <div className="">
                         <Image
-                        src="/emoji.png"
-                        alt=""
-                        width={20}
-                        height={20}
-                        className="w-5 h-5 cursor-pointer self-end"
+                            src="/emoji.png"
+                            alt=""
+                            width={20}
+                            height={20}
+                            className="w-5 h-5 cursor-pointer self-end"
                         />
                         <AddPostButton />
                     </div>
@@ -131,24 +133,32 @@ const AddPost: React.FC<AddPostProps> = ({ channel, currentUser, onPostAdded}) =
                 {/* Post options */}
                 <div className="flex items-center gap-4 mt-4 text-gray-400 flex-wrap">
                     <CldUploadWidget
-                    uploadPreset="channel_demo"
-                    onSuccess={(result, { widget }) => {
-                        if (typeof result.info !== 'string' && result.info?.url) {
-                            setImg(result.info.url); // Extract the URL string
-                          }
-                    widget.close();
+                        uploadPreset="channel_demo"
+                        onSuccess={(result, { widget }) => {
+                            if (
+                                typeof result.info !== "string" &&
+                                result.info?.url
+                            ) {
+                                setImg(result.info.url); // Extract the URL string
+                            }
+                            // widget.close();
                         }}
                     >
                         {({ open }) => {
-                        return (
-                        <div
-                        className="flex items-center gap-2 cursor-pointer"
-                        onClick={() => open()}
-                            >
-                        <Image src="/addimage.png" alt="" width={20} height={20} />
-                        Media
-                        </div>
-                        );
+                            return (
+                                <div
+                                    className="flex items-center gap-2 cursor-pointer"
+                                    onClick={() => open()}
+                                >
+                                    <Image
+                                        src="/addimage.png"
+                                        alt=""
+                                        width={20}
+                                        height={20}
+                                    />
+                                    Media
+                                </div>
+                            );
                         }}
                     </CldUploadWidget>
                     {/* <div className="flex items-center gap-2 cursor-pointer">
@@ -162,7 +172,7 @@ const AddPost: React.FC<AddPostProps> = ({ channel, currentUser, onPostAdded}) =
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default AddPost;

@@ -28,10 +28,12 @@ model User {
   personal_email String?
   graduation_year String?
   work_email    String?
+  admin          Boolean     @default(false)
   createdAt     DateTime @default(now())
   channels      UserToChannel[]
   posts         Post[]
   comments      Comment[]
+  sentChannelRequests    ChannelRequest[] @relation("SentChannelRequests")
 }
 
 model Channel {
@@ -41,6 +43,7 @@ model Channel {
   channel_description String?
   users               UserToChannel[]
   posts               Post[]
+  channelRequests     ChannelRequest[] @relation("ChannelRequests")
 }
 
 model Post {
@@ -70,15 +73,22 @@ model Comment {
 
 model UserToChannel {
   id          Int       @id  @default(autoincrement())
+  createdAt DateTime @default(now())
   user        User      @relation(fields: [userId], references: [id])
   userId      String
   channel     Channel   @relation(fields: [channelId], references: [id])
   channelId   Int     
 }
 
+model ChannelRequest {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  sender      User     @relation("SentChannelRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId    String
+  channel     Channel  @relation("ChannelRequests", fields: [channelId], references: [id], onDelete: Cascade)
+  channelId   Int
+  status      String    @default("pending") // You can use 'pending', 'accepted', 'rejected'
 
-
-
-
-
+  @@unique([senderId, channelId])
+}
 

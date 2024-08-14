@@ -10,7 +10,6 @@ const Navbar = () => {
 
     const getLastWordAndCapitalize = (path: string): string => {
         const parts = path.split("/");
-        console.log("parts", parts);
         if (parts.length > 2) {
             return parts[2];
         } else {
