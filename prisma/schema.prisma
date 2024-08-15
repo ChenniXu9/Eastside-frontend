@@ -92,3 +92,32 @@ model ChannelRequest {
   @@unique([senderId, channelId])
 }
 
+model Course {
+  id            Int       @id @default(autoincrement())
+  courseName    String
+  semester      String?
+  createdAt     DateTime  @default(now())
+  frontpage     String?
+  archived      Boolean   @default(false)
+  folders       Folder[]  // 关联到 Folder 表
+}
+
+model File {
+  id          Int       @id @default(autoincrement())
+  fileName    String
+  filePath    String
+  createdAt   DateTime  @default(now())
+  authorId    Int?
+  type        String
+  folderId    Int
+  folder      Folder    @relation(fields: [folderId], references: [id], onDelete: Cascade)
+}
+
+model Folder {
+  id          Int       @id @default(autoincrement())
+  courseId    Int
+  folderName  String
+  createdAt   DateTime  @default(now())
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  files       File[]    
+}
