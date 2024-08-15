@@ -107,7 +107,7 @@ const Members: React.FC<MembersProps> = ({ channel, currentUser }) => {
                                     className="flex items-center gap-4 p-2 rounded-lg hover:bg-slate-100 w-full"
                                 >
                                     <Image
-                                        src={user.user.profile_image || ""}
+                                        src={user.user.profile_image || "/noavatar.png"}
                                         alt={user.user.description || ""}
                                         width={20}
                                         height={20}

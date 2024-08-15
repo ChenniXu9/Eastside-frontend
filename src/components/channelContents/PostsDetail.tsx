@@ -111,7 +111,7 @@ const PostsDetail: React.FC<PostProps> = ({ channel, currentUser, posts, setPost
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <Image 
-                        src={post.user.profile_image || "https://via.placeholder.com/150"} 
+                        src={post.user.profile_image || "/noavatar.png"} 
                         alt={post.user.username} 
                         width={40} 
                         height={40} 
