@@ -1,37 +1,29 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 interface AddCourseProps {
-  onAddCourse: (course) => void;
-  nextCourseCode: string;
-  onCancel: () => void
+  onAddCourse: (course: any) => void;
+  onCancel: () => void;
 }
 
-const AddCourse: React.FC<AddCourseProps> = ({ onAddCourse, nextCourseCode, onCancel }) => {
-  const [courseCode, setCourseCode] = useState('');
-
-  useEffect(() => {
-    setCourseCode(nextCourseCode);
-  }, [nextCourseCode]);
-
+const AddCourse: React.FC<AddCourseProps> = ({ onAddCourse, onCancel }) => {
   const [courseName, setCourseName] = useState('');
   const [semester, setSemester] = useState('');
-  const [courseFrontpage, setCourseFrontpage] = useState('');
+  const [frontpage, setFrontpage] = useState(''); 
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const newCourse = {
-      courseCode,
       courseName,
       semester,
-      courseFrontpage,
+      frontpage,   
+      archived: false,
     };
     onAddCourse(newCourse);
-    setCourseCode('');
     setCourseName('');
     setSemester('');
-    setCourseFrontpage('');
+    setFrontpage('');
   };
 
   return (
@@ -63,8 +55,8 @@ const AddCourse: React.FC<AddCourseProps> = ({ onAddCourse, nextCourseCode, onCa
           <input
             type="text"
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-            value={courseFrontpage}
-            onChange={(e) => setCourseFrontpage(e.target.value)}
+            value={frontpage} 
+            onChange={(e) => setFrontpage(e.target.value)}  
             required
           />
         </div>

@@ -99,7 +99,7 @@ model Course {
   createdAt     DateTime  @default(now())
   frontpage     String?
   archived      Boolean   @default(false)
-  folders       Folder[]  // 关联到 Folder 表
+  folders       Folder[]  
 }
 
 model File {
