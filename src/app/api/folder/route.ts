@@ -6,25 +6,43 @@ const prisma = new PrismaClient();
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
+    const folderId = searchParams.get('id');
     const courseId = searchParams.get('courseId');
 
-    if (!courseId) {
-      return NextResponse.json({ error: 'Course ID is required' }, { status: 400 });
+    // Handling GET request by folder ID
+    if (folderId) {
+      const folder = await prisma.folder.findUnique({
+        where: { id: Number(folderId) },
+        include: { files: true },
+      });
+
+      if (!folder) {
+        return NextResponse.json({ error: 'Folder not found' }, { status: 404 });
+      }
+
+      return NextResponse.json(folder);
     }
 
-    const folders = await prisma.folder.findMany({
-      where: { courseId: Number(courseId) },
-      include: { files: true }, // Include related files
-    });
+    // Handling GET request by course ID
+    if (courseId) {
+      const folders = await prisma.folder.findMany({
+        where: { courseId: Number(courseId) },
+        include: { files: true },
+      });
 
-    if (folders.length === 0) {
-      return NextResponse.json({ error: 'No folders found for this course' }, { status: 404 });
+      if (folders.length === 0) {
+        return NextResponse.json({ error: 'No folders found for this course' }, { status: 404 });
+      }
+
+      return NextResponse.json(folders);
     }
 
-    return NextResponse.json(folders);
+    // If neither folderId nor courseId is provided
+    return NextResponse.json({ error: 'Folder ID or Course ID is required' }, { status: 400 });
+
   } catch (error) {
-    console.error('Error fetching folders:', error);
-    return NextResponse.json({ error: 'Failed to fetch folders' }, { status: 500 });
+    console.error('Error fetching folder:', error);
+    return NextResponse.json({ error: 'Failed to fetch folder' }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }

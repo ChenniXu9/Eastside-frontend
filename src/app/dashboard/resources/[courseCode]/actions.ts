@@ -134,12 +134,12 @@ export async function onSubmit(formData: FormData, folderId: number, displayName
 }
 
 // Delete an object from S3 and remove its metadata from the database
-export async function deleteObject(key: string, fileId: number) {
+export async function deleteObject(filePath: string, fileId: number) {
   try {
     // Delete the object from S3
     const command = new DeleteObjectCommand({
       Bucket: process.env.AWS_BUCKET_NAME!,
-      Key: key,
+      Key: filePath,
     });
     await client.send(command);
 

@@ -37,18 +37,22 @@ const FilesPage: React.FC = () => {
   const handleFileUpload = async () => {
     console.log('handleFileUpload called');
     if (!selectedFolderId || (!newFile && !newFileUrl)) return;
-  
+
     const formData = new FormData();
     if (newFile) {
       formData.append('file', newFile);
     } else if (newFileUrl) {
       formData.append('url', newFileUrl);
     }
-  
+
     const savedFile = await onSubmit(formData, selectedFolderId, newFileTitle);
-  
+
     if (!savedFile) return;
-  
+
+    // Construct the full URL using your S3 bucket base URL
+    const baseUrl = `https://leadership-eastside-storage.s3.us-east-2.amazonaws.com/`;
+    const fileUrl = `${baseUrl}${savedFile.filePath}`;
+
     const newFileItem: FileItem = {
       id: savedFile.id,
       fileName: savedFile.fileName,
@@ -58,10 +62,10 @@ const FilesPage: React.FC = () => {
       folderId: savedFile.folderId,
       downloadable: newFileDownloadable,
       displayName: savedFile.displayName || newFileTitle,
-      key: savedFile.filePath,
-      url: savedFile.filePath // Assuming filePath is the URL
+      key: savedFile.filePath.split('/').slice(1).join('/'),
+      url: fileUrl 
     };
-  
+
     setFolders(prevFolders => {
       const updatedFolders = prevFolders.map(folder => {
         if (folder.id === selectedFolderId) {
@@ -74,7 +78,7 @@ const FilesPage: React.FC = () => {
       });
       return updatedFolders;
     });
-  
+
     setNewFile(null);
     setNewFileUrl('');
     setNewFileTitle('');
@@ -84,6 +88,11 @@ const FilesPage: React.FC = () => {
 
   const handleDelete = async (fileId: number, key: string) => {
     try {
+      if (!key) {
+        console.error("Delete failed: Key is empty or undefined.");
+        return;
+      }
+  
       console.log("Delete button clicked. File ID:", fileId, "Key:", key);
   
       await deleteObject(key, fileId);
@@ -97,9 +106,9 @@ const FilesPage: React.FC = () => {
       });
   
     } catch (error) {
-      console.error('Error during deletion:', error);
+      console.error('Error deleting object:', error);
     }
-  };  
+  };
   
   const createNewFolder = async () => {
     if (newFolderName.trim() === '') return;
@@ -167,8 +176,8 @@ const FilesPage: React.FC = () => {
                         <button 
                           onClick={() => {
                             console.log("Full file object:", file);
-                            console.log("Delete button clicked. File ID:", file.id, "Key:", file.key);
-                            handleDelete(file.id, file.key || '');
+                            console.log("Delete button clicked. File ID:", file.id, "Key:", file.filePath);
+                            handleDelete(file.id, file.filePath || '');
                           }} 
                           className="text-[#D9534F] underline"
                         >
