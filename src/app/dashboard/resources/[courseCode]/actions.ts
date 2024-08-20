@@ -1,9 +1,11 @@
 "use server";
 
-import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
 import { nanoid } from 'nanoid';
 import { PrismaClient } from '@prisma/client';
+import { FolderItem, FileItem } from '@/types';
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const prisma = new PrismaClient();
 
@@ -24,6 +26,7 @@ export async function createFolder(folderName: string, courseId: number): Promis
       Bucket: process.env.AWS_BUCKET_NAME!,
       Key: key,
       Body: '',
+      ContentDisposition: 'attachment'
     });
     await client.send(command);
 
@@ -61,9 +64,9 @@ export async function createFolder(folderName: string, courseId: number): Promis
   return undefined;
 }
 
-export async function onSubmit(formData: FormData, folderId: number, displayName: string): Promise<FileItem | undefined> {
+export async function onSubmit(formData: FormData, folderId: number, displayName: string, downloadable: boolean): Promise<FileItem | undefined> {
   try {
-    console.log('Display Name in onSubmit:', displayName); // Log the displayName passed
+    console.log('Display Name in onSubmit:', displayName); 
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
     
@@ -81,51 +84,73 @@ export async function onSubmit(formData: FormData, folderId: number, displayName
       throw new Error('Folder not found');
     }
 
-    const key = `${folder.folderName}/` + nanoid(); // Ensure you're using `folder.folderName`
-    console.log('Uploading to S3 with key:', key);
+    let fileData: Partial<FileItem> = {
+      folderId: folder.id,
+      displayName: String(displayName),
+    };
 
-    const { url, fields } = await createPresignedPost(client, {
-      Bucket: process.env.AWS_BUCKET_NAME!,
-      Key: key,
-    });
+    // Check if the upload is a file or a URL
+    if (formData.get('file')) {
+      // Handle file upload
+      const key = `${folder.folderName}/` + nanoid();
+      console.log('Uploading to S3 with key:', key);
 
-    const formDataS3 = new FormData();
-    Object.entries(fields).forEach(([fieldKey, value]) => {
-      formDataS3.append(fieldKey, value);
-    });
-    formDataS3.append('file', formData.get('file') as File);
-
-    const response = await fetch(url, {
-      method: 'POST',
-      body: formDataS3,
-    });
-
-    if (response.ok) {
-      const fileData = {
-        fileName: formData.get('file')?.name || '',
-        filePath: key,
-        type: formData.get('file')?.type || 'unknown',
-        folderId: folder.id,
-        displayName: String(displayName),
-      };
-
-      console.log('File Data being saved:', fileData);
-
-      const saveResponse = await fetch(`${baseUrl}/api/file`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(fileData),
+      const { url, fields } = await createPresignedPost(client, {
+        Bucket: process.env.AWS_BUCKET_NAME!,
+        Key: key,
+        Fields: {
+          "Content-Type": formData.get('file')?.type || 'application/octet-stream',
+        },
       });
 
-      if (saveResponse.ok) {
-        const savedFile = await saveResponse.json(); // Get the saved file, including its id
-        console.log('Saved file with ID:', savedFile.id); // Log the saved file id
-        return savedFile; // Return the full file metadata including id
+      const formDataS3 = new FormData();
+      Object.entries(fields).forEach(([fieldKey, value]) => {
+        formDataS3.append(fieldKey, value);
+      });
+      formDataS3.append('file', formData.get('file') as File);
+
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formDataS3,
+      });
+
+      if (response.ok) {
+        fileData = {
+          ...fileData,
+          fileName: (formData.get('file') as File).name || '',
+          filePath: key,
+          type: (formData.get('file') as File).type || 'unknown',
+          downloadable: downloadable,  // Use the original logic for downloadable files
+        };
       } else {
-        throw new Error('Failed to save file metadata');
+        throw new Error('Failed to upload file to S3');
       }
+    } else if (formData.get('url')) {
+      // Handle URL input
+      const urlInput = formData.get('url') as string;
+      fileData = {
+        ...fileData,
+        fileName: urlInput,  // Store the URL as the fileName
+        filePath: urlInput,  // You can also store it in filePath or keep it consistent
+        type: 'url',  // Set a custom type for URL
+        downloadable: false,  // URLs should not be downloadable
+      };
+    }
+
+    console.log('File Data being saved:', fileData);
+
+    const saveResponse = await fetch(`${baseUrl}/api/file`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(fileData),
+    });
+
+    if (saveResponse.ok) {
+      const savedFile = await saveResponse.json(); 
+      console.log('Saved file with ID:', savedFile.id); 
+      return savedFile;
     } else {
-      throw new Error('Failed to upload file to S3');
+      throw new Error('Failed to save file metadata');
     }
   } catch (err: any) {
     console.error('Error uploading file:', err);
@@ -160,6 +185,7 @@ export async function deleteObject(filePath: string, fileId: number) {
 export async function fetchFilesAndFolders(courseId: number): Promise<FolderItem[]> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const s3BaseUrl = `https://leadership-eastside-storage.s3.us-east-2.amazonaws.com/`;
     const response = await fetch(`${baseUrl}/api/folder?courseId=${courseId}`);
 
     if (!response.ok) {
@@ -167,10 +193,31 @@ export async function fetchFilesAndFolders(courseId: number): Promise<FolderItem
     }
 
     const data = await response.json();
-    console.log('Fetched data:', data);
-    return data;
+
+    // Ensure URLs are correctly formed
+    const formattedData = data.map((folder: FolderItem) => ({
+      ...folder,
+      files: folder.files.map((file: FileItem) => ({
+        ...file,
+        url: `${s3BaseUrl}${file.filePath}`, // Construct the full URL
+      }))
+    }));
+
+    console.log('Fetched and formatted data:', formattedData);
+    return formattedData;
   } catch (error) {
     console.error('Error fetching folders and files:', error);
     return [];
   }
+}
+
+export async function getPresignedUrl(key: string) {
+  const command = new GetObjectCommand({
+    Bucket: process.env.AWS_BUCKET_NAME!,
+    Key: key,
+    ResponseContentDisposition: 'attachment',
+  });
+
+  const url = await getSignedUrl(client, command, { expiresIn: 3600 });
+  return url;
 }

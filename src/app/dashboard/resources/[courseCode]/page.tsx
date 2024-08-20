@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { createFolder, onSubmit, deleteObject, fetchFilesAndFolders } from './actions';
+import { createFolder, onSubmit, deleteObject, fetchFilesAndFolders, getPresignedUrl } from './actions';
+import { FolderItem, FileItem } from '@/types';
 
 const FilesPage: React.FC = () => {
   const router = useRouter();
@@ -38,6 +39,10 @@ const FilesPage: React.FC = () => {
     console.log('handleFileUpload called');
     if (!selectedFolderId || (!newFile && !newFileUrl)) return;
 
+    if (newFileUrl && !newFile) {
+      setNewFileDownloadable(false);
+    }
+
     const formData = new FormData();
     if (newFile) {
       formData.append('file', newFile);
@@ -45,7 +50,7 @@ const FilesPage: React.FC = () => {
       formData.append('url', newFileUrl);
     }
 
-    const savedFile = await onSubmit(formData, selectedFolderId, newFileTitle);
+    const savedFile = await onSubmit(formData, selectedFolderId, newFileTitle, newFileDownloadable);
 
     if (!savedFile) return;
 
@@ -60,7 +65,7 @@ const FilesPage: React.FC = () => {
       createdAt: new Date(),
       type: savedFile.type,
       folderId: savedFile.folderId,
-      downloadable: newFileDownloadable,
+      downloadable: savedFile.downloadable,
       displayName: savedFile.displayName || newFileTitle,
       key: savedFile.filePath.split('/').slice(1).join('/'),
       url: fileUrl 
@@ -109,7 +114,7 @@ const FilesPage: React.FC = () => {
       console.error('Error deleting object:', error);
     }
   };
-  
+
   const createNewFolder = async () => {
     if (newFolderName.trim() === '') return;
 
@@ -136,6 +141,17 @@ const FilesPage: React.FC = () => {
       ...prevState,
       [folderId]: !prevState[folderId]
     }));
+  };
+
+  const handleDownload = async (fileUrl: string) => {
+    console.log("Downloading....");
+    const downloadUrl = await getPresignedUrl(fileUrl);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = ''; 
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -170,9 +186,28 @@ const FilesPage: React.FC = () => {
                       </div>
                       <div className="ml-8 flex items-center space-x-4 text-sm">
                         {file.downloadable && (
-                          <a href={file.url} download className="text-[#90B8D6] underline">Download</a>
-                        )}
-                        <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-[#90B8D6] underline">View</a>
+                        <button 
+                        onClick={() => handleDownload(file.filePath)} 
+                        className="text-[#90B8D6] underline"
+                        >
+                        Download
+                        </button>)}
+                        {/* <a 
+                          href={file.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-[#90B8D6] underline no-download"
+                        >
+                          View
+                        </a> */}
+                        <a 
+                          href={file.type === 'url' ? file.fileName : file.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-[#90B8D6] underline no-download"
+                        >
+                          View 
+                        </a>
                         <button 
                           onClick={() => {
                             console.log("Full file object:", file);
@@ -258,16 +293,18 @@ const FilesPage: React.FC = () => {
                 onChange={(e) => {
                   setNewFileUrl('');
                   if (e.target.files) setNewFile(e.target.files[0]);
+                  setNewFileDownloadable(true);
                 }} 
                 className="border p-2 w-full"
               />
               <input 
                 type="url" 
-                placeholder="or add URL link" 
+                placeholder="Or Add URL Link" 
                 value={newFileUrl} 
                 onChange={(e) => {
                   setNewFile(null);
                   setNewFileUrl(e.target.value);
+                  setNewFileDownloadable(false);
                 }} 
                 className="border p-2 w-full mt-2"
               />
@@ -282,7 +319,7 @@ const FilesPage: React.FC = () => {
                   className="mr-2"
                   disabled={!!newFileUrl} 
                 />
-                Downloadable (only for files)
+                Downloadable (for files)
               </label>
             </div>
             <div className="mb-4">
