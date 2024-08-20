@@ -192,14 +192,6 @@ const FilesPage: React.FC = () => {
                         >
                         Download
                         </button>)}
-                        {/* <a 
-                          href={file.url} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          className="text-[#90B8D6] underline no-download"
-                        >
-                          View
-                        </a> */}
                         <a 
                           href={file.type === 'url' ? file.fileName : file.url} 
                           target="_blank" 

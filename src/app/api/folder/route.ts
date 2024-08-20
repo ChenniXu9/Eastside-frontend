@@ -64,6 +64,6 @@ export async function POST(request: Request) {
     console.error('Error creating folder:', error);
     return NextResponse.json({ error: 'Failed to create folder' }, { status: 500 });
   } finally {
-    await prisma.$disconnect(); // Disconnect Prisma after the request
+    await prisma.$disconnect(); 
   }
 }

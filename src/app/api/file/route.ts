@@ -15,7 +15,7 @@ export async function GET(request: Request) {
   const files = await prisma.file.findMany({
     where: {
       folder: {
-        courseId: Number(courseId),  // Assuming that `Folder` has a `courseId` field
+        courseId: Number(courseId),
       },
     },
   });
@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     name: file.fileName,
     type: 'file',
     url: file.filePath,
-    title: file.displayName || file.fileName,  // Use displayName if available
+    title: file.displayName || file.fileName, 
     downloadable: file.downloadable,
     key: file.filePath,
   }));
@@ -57,41 +57,6 @@ export async function POST(request: Request) {
     await prisma.$disconnect();
   }
 }
-  
-// export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-//   try {
-//     console.log('DELETE request received for file ID:', params.id);
-//     const fileId = Number(params.id);
-
-//     // Check if the file exists
-//     const file = await prisma.file.findUnique({
-//       where: { id: fileId },
-//     });
-
-//     if (!file) {
-//       console.error('File not found in the database for ID:', fileId);
-//       return NextResponse.json({ error: 'File not found' }, { status: 404 });
-//     }
-
-//     // Proceed to delete the file
-//     await prisma.file.delete({
-//       where: { id: fileId },
-//     });
-
-//     console.log(`File with ID ${fileId} deleted successfully from the database.`);
-//     return NextResponse.json({ success: true }, { status: 200 });
-//   } catch (error) {
-//     console.error('Error deleting file:', error);
-//     return NextResponse.json({ error: 'Failed to delete file metadata' }, { status: 500 });
-//   } finally {
-//     await prisma.$disconnect();
-//   }
-// }
-
-// export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-//   console.log('This DELETE route is deprecated. Please use the deleteObject function directly.');
-//   return NextResponse.json({ success: false, message: 'Deprecated route' }, { status: 410 });
-// }
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   try {

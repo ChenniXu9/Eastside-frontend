@@ -33,7 +33,7 @@ export async function createFolder(folderName: string, courseId: number): Promis
     // Convert courseId to a number if it's not already
     const folderData = {
       folderName,
-      courseId: Number(courseId),  // Ensure courseId is an integer
+      courseId: Number(courseId), 
     };
 
     // Debug log
@@ -51,7 +51,7 @@ export async function createFolder(folderName: string, courseId: number): Promis
 
     if (response.ok) {
       const data = await response.json();
-      return data.id; // Return the folder ID from the database
+      return data.id; 
     } else {
       throw new Error('Failed to save folder metadata');
     }
@@ -130,10 +130,10 @@ export async function onSubmit(formData: FormData, folderId: number, displayName
       const urlInput = formData.get('url') as string;
       fileData = {
         ...fileData,
-        fileName: urlInput,  // Store the URL as the fileName
-        filePath: urlInput,  // You can also store it in filePath or keep it consistent
-        type: 'url',  // Set a custom type for URL
-        downloadable: false,  // URLs should not be downloadable
+        fileName: urlInput,  
+        filePath: urlInput,  
+        type: 'url', 
+        downloadable: false, 
       };
     }
 
