@@ -1,143 +1,131 @@
 "use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { createFolder, onSubmit, deleteObject } from './actions';
+import React, { useState, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { createFolder, onSubmit, deleteObject, fetchFilesAndFolders } from './actions';
 
-interface FileItem {
-  name: string;
-  type: 'file' | 'directory';
-  url?: string;
-  title?: string;
-  downloadable?: boolean;
-  key?: string;
-  children?: FileItem[];
-}
-
-const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => {
-  const { courseCode } = params;
+const FilesPage: React.FC = () => {
   const router = useRouter();
+  const params = useParams();
+  const courseId = params.courseCode;
 
-  const [files, setFiles] = useState<FileItem[]>([
-    { 
-      name: 'Leadership Principles', 
-      type: 'directory',
-      children: [
-        { name: 'April 2023 - Insight.pdf', type: 'file', url: '#', title: 'April 2023 - Insight', downloadable: true }
-      ]
-    },
-    { 
-      name: 'Recruiting Preparation', 
-      type: 'directory',
-      children: [
-        { name: 'Finding Your Voice - August 2023', type: 'file', url: 'https://example.com/finding-your-voice', title: 'Finding Your Voice - August 2023', downloadable: true },
-        { name: 'How AI is affecting recruiting - August 2023.pdf', type: 'file', url: '#', title: 'How AI is affecting recruiting - August 2023', downloadable: true },
-        { name: 'How to Squeeze the Most out of your Summer: Internships, Projects, and Interview Prep - June 2024.pdf', type: 'file', url: '#', title: 'How to Squeeze the Most out of your Summer: Internships, Projects, and Interview Prep - June 2024', downloadable: true }
-      ]
-    }
-  ]);
+  console.log('FilesPage loaded with courseId:', courseId);
 
-  const [selectedFolder, setSelectedFolder] = useState<string>('');
+  const [folders, setFolders] = useState<FolderItem[]>([]);
+  const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [newFolderName, setNewFolderName] = useState<string>('');
-  const [openFolders, setOpenFolders] = useState<Record<string, boolean>>({});
+  const [openFolders, setOpenFolders] = useState<Record<number, boolean>>({});
   const [newFile, setNewFile] = useState<File | null>(null);
   const [newFileUrl, setNewFileUrl] = useState<string>('');
   const [newFileTitle, setNewFileTitle] = useState<string>('');
   const [newFileDownloadable, setNewFileDownloadable] = useState<boolean>(true);
   const [showUpdateSection, setShowUpdateSection] = useState<boolean>(false);
 
-  const handleFileUpload = async () => {
-    if (!selectedFolder || (!newFile && !newFileUrl)) return;
+  useEffect(() => {
+    console.log('UseEffect triggered with courseId:', courseId); 
+    async function loadFilesAndFolders() {
+      if (courseId) {
+        const data = await fetchFilesAndFolders(courseId);
+        setFolders(data);
+      } else {
+        console.error('Invalid courseId:', courseId); 
+      }
+    }
+    loadFilesAndFolders();
+  }, [courseId]);  
 
+  const handleFileUpload = async () => {
+    console.log('handleFileUpload called');
+    if (!selectedFolderId || (!newFile && !newFileUrl)) return;
+  
     const formData = new FormData();
     if (newFile) {
       formData.append('file', newFile);
     } else if (newFileUrl) {
       formData.append('url', newFileUrl);
     }
-
-    const key = await onSubmit(formData, selectedFolder);
-
-    if (!key) return;
-
-    let newFileItem: FileItem;
-    if (newFile) {
-      newFileItem = {
-        name: newFile.name,
-        type: 'file',
-        url: URL.createObjectURL(newFile),
-        title: newFileTitle || newFile.name,
-        downloadable: newFileDownloadable,
-        key: key
-      };
-    } else if (newFileUrl) {
-      newFileItem = {
-        name: newFileUrl,
-        type: 'file',
-        url: newFileUrl,
-        title: newFileTitle || newFileUrl,
-        downloadable: false, // URL links are not downloadable
-        key: key
-      };
-    } else {
-      return;
-    }
-
-    setFiles(prevFiles => {
-      const updatedFiles = prevFiles.map(folder => {
-        if (folder.name === selectedFolder) {
+  
+    const savedFile = await onSubmit(formData, selectedFolderId, newFileTitle);
+  
+    if (!savedFile) return;
+  
+    const newFileItem: FileItem = {
+      id: savedFile.id,
+      fileName: savedFile.fileName,
+      filePath: savedFile.filePath,
+      createdAt: new Date(),
+      type: savedFile.type,
+      folderId: savedFile.folderId,
+      downloadable: newFileDownloadable,
+      displayName: savedFile.displayName || newFileTitle,
+      key: savedFile.filePath,
+      url: savedFile.filePath // Assuming filePath is the URL
+    };
+  
+    setFolders(prevFolders => {
+      const updatedFolders = prevFolders.map(folder => {
+        if (folder.id === selectedFolderId) {
           return {
             ...folder,
-            children: folder.children ? [...folder.children, newFileItem] : [newFileItem]
+            files: folder.files ? [...folder.files, newFileItem] : [newFileItem]
           };
         }
         return folder;
       });
-      return updatedFiles;
+      return updatedFolders;
     });
-
-    // Reset the form
+  
     setNewFile(null);
     setNewFileUrl('');
     setNewFileTitle('');
     setNewFileDownloadable(true);
-    setSelectedFolder('');
-  };
+    setSelectedFolderId(null); 
+  };  
 
-  const handleDelete = async (key: string) => {
-    console.log(`Deleting file with key: ${key}`); 
-    await deleteObject(key);
-
-    setFiles(prevFiles => {
-      const updatedFiles = prevFiles.map(folder => {
-        return {
+  const handleDelete = async (fileId: number, key: string) => {
+    try {
+      console.log("Delete button clicked. File ID:", fileId, "Key:", key);
+  
+      await deleteObject(key, fileId);
+  
+      setFolders(prevFolders => {
+        const updatedFolders = prevFolders.map(folder => ({
           ...folder,
-          children: folder.children?.filter(file => file.key !== key) || []
-        };
+          files: folder.files?.filter(file => file.id !== fileId) || []
+        }));
+        return updatedFolders;
       });
-      return updatedFiles;
-    });
-  };
-
+  
+    } catch (error) {
+      console.error('Error during deletion:', error);
+    }
+  };  
+  
   const createNewFolder = async () => {
     if (newFolderName.trim() === '') return;
 
-    await createFolder(newFolderName);
+    console.log('Creating new folder with courseId:', courseId);
 
-    const newFolder: FileItem = {
-      name: newFolderName,
-      type: 'directory',
-      children: []
-    };
+    const newFolderId = await createFolder(newFolderName, courseId);
 
-    setFiles(prevFiles => [...prevFiles, newFolder]);
-    setNewFolderName('');
+    if (newFolderId) {
+      const newFolder: FolderItem = {
+        id: newFolderId,
+        courseId: Number(courseId),
+        folderName: newFolderName,
+        createdAt: new Date(),
+        files: []
+      };
+
+      setFolders(prevFolders => [...prevFolders, newFolder]);
+      setNewFolderName('');
+    }
   };
 
-  const toggleFolder = (folderName: string) => {
+  const toggleFolder = (folderId: number) => {
     setOpenFolders(prevState => ({
       ...prevState,
-      [folderName]: !prevState[folderName]
+      [folderId]: !prevState[folderId]
     }));
   };
 
@@ -151,63 +139,47 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
       </button>
 
       <div className="flex-grow space-y-4 overflow-auto">
-        {files.map((file, folderIndex) => (
-          <div key={folderIndex}>
-            {file.type === 'directory' ? (
-              <div>
-                <div 
-                  onClick={() => toggleFolder(file.name)} 
-                  className="cursor-pointer flex items-center space-x-2"
-                >
-                  <span>{openFolders[file.name] ? '📂' : '📁'}</span>
-                  <span className="font-semibold text-lg my-1">{file.name}</span>
-                </div>
-                {openFolders[file.name] && (
-                  <div className="ml-4 space-y-2">
-                    {file.children?.map((childFile, fileIndex) => (
-                      <div key={fileIndex} className="flex flex-col space-y-1">
-                        <div className="flex items-center space-x-4">
-                          <span>📄</span>
-                          <div className="flex-1">
-                            <span className="text-[#2F4559]">{childFile.title || childFile.name}</span>
-                          </div>
-                        </div>
-                        <div className="ml-8 flex items-center space-x-4 text-sm">
-                          {childFile.downloadable && (
-                            <a href={childFile.url} download className="text-[#90B8D6] underline">Download</a>
-                          )}
-                          <a href={childFile.url} target="_blank" rel="noopener noreferrer" className="text-[#90B8D6] underline">View</a>
-                          <button 
-                            onClick={() => handleDelete(childFile.key || '')} 
-                            className="text-[#D9534F] underline"
-                          >
-                            Delete
-                          </button>
+        {folders.map((folder) => (
+          <div key={folder.id}>
+            <div>
+              <div 
+                onClick={() => toggleFolder(folder.id)} 
+                className="cursor-pointer flex items-center space-x-2"
+              >
+                <span>{openFolders[folder.id] ? '📂' : '📁'}</span>
+                <span className="font-semibold text-lg my-1">{folder.folderName}</span>
+              </div>
+              {openFolders[folder.id] && (
+                <div className="ml-4 space-y-2">
+                  {folder.files?.map((file) => (
+                    <div key={file.id} className="flex flex-col space-y-1">
+                      <div className="flex items-center space-x-4">
+                        <span>📄</span>
+                        <div className="flex-1">
+                          <span className="text-[#2F4559]">{file.displayName || file.fileName}</span>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="flex items-center space-x-4">
-                <div className="flex-1">
-                  <span className="text-black">{file.title || file.name}</span>
+                      <div className="ml-8 flex items-center space-x-4 text-sm">
+                        {file.downloadable && (
+                          <a href={file.url} download className="text-[#90B8D6] underline">Download</a>
+                        )}
+                        <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-[#90B8D6] underline">View</a>
+                        <button 
+                          onClick={() => {
+                            console.log("Full file object:", file);
+                            console.log("Delete button clicked. File ID:", file.id, "Key:", file.key);
+                            handleDelete(file.id, file.key || '');
+                          }} 
+                          className="text-[#D9534F] underline"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="flex space-x-4 text-sm">
-                  {file.downloadable && (
-                    <a href={file.url} download className="text-[#90B8D6] underline">Download</a>
-                  )}
-                  <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-[#90B8D6] underline">View</a>
-                  <button 
-                    onClick={() => handleDelete(file.key || '')} 
-                    className="text-[#D9534F] underline"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         ))}
         <div className="flex justify-center mt-4">
@@ -236,19 +208,27 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
           <form 
             className="space-y-4 w-2/3 mx-auto mt-4 mb-4"
             onSubmit={async (e) => {
-              e.preventDefault();
-              await handleFileUpload();
+              e.preventDefault();  
+              await handleFileUpload();  
             }}
           >
             <div className="mb-4">
               <select 
-                value={selectedFolder} 
-                onChange={(e) => setSelectedFolder(e.target.value)} 
+                value={selectedFolderId?.toString() || ''} 
+                onChange={(e) => {
+                  const folderId = parseInt(e.target.value);
+                  setSelectedFolderId(folderId); 
+
+                  const folder = folders.find(folder => folder.id === folderId);
+                  if (folder) {
+                    console.log('Folder selected:', folder.folderName, 'with ID:', folderId);
+                  }
+                }}  
                 className="border p-2 w-full"
               >
                 <option value="" disabled>Select Folder to Upload</option>
-                {files.map((file, index) => (
-                  file.type === 'directory' && <option key={index} value={file.name}>{file.name}</option>
+                {folders.map((folder) => (
+                  <option key={folder.id} value={folder.id.toString()}>{folder.folderName}</option>
                 ))}
               </select>
             </div>
@@ -296,7 +276,6 @@ const FilesPage: React.FC<{ params: { courseCode: string } }> = ({ params }) => 
                 Downloadable (only for files)
               </label>
             </div>
-
             <div className="mb-4">
               <button 
                 type="submit" 

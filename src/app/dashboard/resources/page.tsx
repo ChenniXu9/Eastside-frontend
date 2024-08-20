@@ -173,11 +173,7 @@ const ResourcePageContent: React.FC = () => {
                                 <div className="flex space-x-4">
                                     <button
                                         onClick={() =>
-                                            router.push(
-                                                `resources/${encodeURIComponent(
-                                                    course.id
-                                                )}`
-                                            )
+                                            router.push(`dashboard/resources/${encodeURIComponent(course.id)}`)
                                         }
                                         className="text-blue-800 underline"
                                     >
