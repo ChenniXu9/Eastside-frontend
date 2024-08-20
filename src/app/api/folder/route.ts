@@ -9,37 +9,31 @@ export async function GET(request: Request) {
     const folderId = searchParams.get('id');
     const courseId = searchParams.get('courseId');
 
-    // Handling GET request by folder ID
+    let data;
+
     if (folderId) {
-      const folder = await prisma.folder.findUnique({
+      data = await prisma.folder.findUnique({
         where: { id: Number(folderId) },
         include: { files: true },
       });
 
-      if (!folder) {
+      if (!data) {
         return NextResponse.json({ error: 'Folder not found' }, { status: 404 });
       }
-
-      return NextResponse.json(folder);
-    }
-
-    // Handling GET request by course ID
-    if (courseId) {
-      const folders = await prisma.folder.findMany({
+    } else if (courseId) {
+      data = await prisma.folder.findMany({
         where: { courseId: Number(courseId) },
         include: { files: true },
       });
 
-      if (folders.length === 0) {
+      if (data.length === 0) {
         return NextResponse.json({ error: 'No folders found for this course' }, { status: 404 });
       }
-
-      return NextResponse.json(folders);
+    } else {
+      return NextResponse.json({ error: 'Folder ID or Course ID is required' }, { status: 400 });
     }
 
-    // If neither folderId nor courseId is provided
-    return NextResponse.json({ error: 'Folder ID or Course ID is required' }, { status: 400 });
-
+    return NextResponse.json(data);
   } catch (error) {
     console.error('Error fetching folder:', error);
     return NextResponse.json({ error: 'Failed to fetch folder' }, { status: 500 });

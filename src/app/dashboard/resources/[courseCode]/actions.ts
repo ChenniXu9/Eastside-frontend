@@ -159,7 +159,6 @@ export async function deleteObject(filePath: string, fileId: number) {
 // Fetch files and folders metadata from the database
 export async function fetchFilesAndFolders(courseId: number): Promise<FolderItem[]> {
   try {
-    // Construct the absolute URL
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/folder?courseId=${courseId}`);
 
