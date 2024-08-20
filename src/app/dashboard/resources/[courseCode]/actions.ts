@@ -66,6 +66,8 @@ export async function onSubmit(formData: FormData, folderId: number, displayName
     console.log('Display Name in onSubmit:', displayName); // Log the displayName passed
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    
+    // Ensure the folderId is correctly passed and the URL is correct
     const folderResponse = await fetch(`${baseUrl}/api/folder?id=${folderId}`);
 
     if (!folderResponse.ok) {
@@ -73,11 +75,13 @@ export async function onSubmit(formData: FormData, folderId: number, displayName
     }
 
     const folder = await folderResponse.json();
+    console.log('Folder fetched:', folder);
+    
     if (!folder?.id) {
       throw new Error('Folder not found');
     }
 
-    const key = `${folder.name}/` + nanoid();
+    const key = `${folder.folderName}/` + nanoid(); // Ensure you're using `folder.folderName`
     console.log('Uploading to S3 with key:', key);
 
     const { url, fields } = await createPresignedPost(client, {
@@ -102,10 +106,10 @@ export async function onSubmit(formData: FormData, folderId: number, displayName
         filePath: key,
         type: formData.get('file')?.type || 'unknown',
         folderId: folder.id,
-        displayName: String(displayName), // Ensure displayName is set correctly here
+        displayName: String(displayName),
       };
 
-      console.log('File Data being saved:', fileData); // Log the file data before saving
+      console.log('File Data being saved:', fileData);
 
       const saveResponse = await fetch(`${baseUrl}/api/file`, {
         method: 'POST',

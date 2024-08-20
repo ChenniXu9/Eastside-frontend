@@ -14,36 +14,19 @@ export async function GET(request: Request) {
 
     const folders = await prisma.folder.findMany({
       where: { courseId: Number(courseId) },
-      include: { files: true },
+      include: { files: true }, // Include related files
     });
 
-    if (!folders.length) {
-      return NextResponse.json({ error: 'No folders found' }, { status: 404 });
+    if (folders.length === 0) {
+      return NextResponse.json({ error: 'No folders found for this course' }, { status: 404 });
     }
 
-    const data = folders.map(folder => ({
-      id: folder.id,
-      courseId: folder.courseId,
-      folderName: folder.folderName,
-      createdAt: folder.createdAt,
-      files: folder.files.map(file => ({
-        id: file.id,
-        fileName: file.fileName,
-        filePath: file.filePath,
-        createdAt: file.createdAt,
-        authorId: file.authorId,
-        type: file.type,
-        folderId: file.folderId,
-        downloadable: file.downloadable,
-        displayName: file.displayName,
-        key: file.filePath,
-      })),
-    }));
-
-    return NextResponse.json(data);
+    return NextResponse.json(folders);
   } catch (error) {
     console.error('Error fetching folders:', error);
     return NextResponse.json({ error: 'Failed to fetch folders' }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
