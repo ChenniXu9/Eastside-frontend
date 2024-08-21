@@ -80,7 +80,10 @@ const CurrentGroup: React.FC<CurrentgroupProps> = ({
     useEffect(() => {
         const fetchChannels = async () => {
             try {
-                console.log("Fetching channels for user:", userId);
+                console.log(
+                    "Fetching channels for user current group:",
+                    userId
+                );
 
                 const response = await fetch(
                     `/api/channel/fetchChannels?userId=${userId}`
@@ -106,6 +109,7 @@ const CurrentGroup: React.FC<CurrentgroupProps> = ({
     }, [userId]);
 
     const combinedChannels = joinedChannels.concat(notJoinedChannels);
+    console.log("username current group menu", currentUser.username);
 
     return (
         <div className="p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-4">
@@ -114,7 +118,7 @@ const CurrentGroup: React.FC<CurrentgroupProps> = ({
                     {channel.users?.length} members
                 </span>
                 <Link
-                    href={`/dashboard/channels/members_detail/${channel.channel_name}/${username}`}
+                    href={`/dashboard/channels/members_detail/${channel.channel_name}/${currentUser.username}`}
                     className="text-blue-500 text-sm"
                 >
                     See all

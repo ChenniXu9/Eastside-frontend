@@ -76,7 +76,7 @@ const MyPosts: React.FC<MyPostsProps> = ({ channel, currentUser }) => {
     useEffect(() => {
         const fetchChannels = async () => {
             try {
-                console.log("Fetching channels for user:", userId);
+                console.log("Fetching channels for user my post", userId);
 
                 const response = await fetch(
                     `/api/channel/fetchChannels?userId=${userId}`

@@ -76,7 +76,7 @@ const AllGroups: React.FC<AllGroupsProps> = ({ channel, currentUser }) => {
     useEffect(() => {
         const fetchChannels = async () => {
             try {
-                console.log("Fetching channels for user:", userId);
+                console.log("Fetching channels for user all groups:", userId);
 
                 const response = await fetch(
                     `/api/channel/fetchChannels?userId=${userId}`
@@ -120,6 +120,7 @@ const AllGroups: React.FC<AllGroupsProps> = ({ channel, currentUser }) => {
                         </button>
                     </Link>
                     <span className="mx-2">{channel.channel_name}</span>
+                    <span className="mx-2">{`/dashboard/channels/currentChannel/${channel.channel_name}/${username}`}</span>
                 </div>
                 <div className="flex justify-between items-center font-medium">
                     <span className="text-gray-500">All Channels</span>
@@ -154,7 +155,7 @@ const AllGroups: React.FC<AllGroupsProps> = ({ channel, currentUser }) => {
                                         height={20}
                                         className="w-10 h-10 rounded-full"
                                     />
-                                    <span className="font-semibold font-medium">
+                                    <span className="font-medium">
                                         {channel.channel_name}
                                     </span>
                                 </Link>

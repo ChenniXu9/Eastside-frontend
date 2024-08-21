@@ -82,6 +82,7 @@ const ChannelRightMenu: React.FC<ChannelRightProps> = ({
     //     window.removeEventListener('scroll', handleScroll);
     //     };
     // }, []);
+    console.log("username right menu", currentUser.username);
 
     return (
         <div className="flex flex-col gap-6">

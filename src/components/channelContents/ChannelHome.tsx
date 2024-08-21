@@ -73,7 +73,7 @@ const ChannelHome = ({ userId }: { userId: string }) => {
     useEffect(() => {
         const fetchChannels = async () => {
             try {
-                console.log("Fetching channels for user:", userId);
+                console.log("Fetching channels for user home:", userId);
 
                 const response = await fetch(
                     `/api/channel/fetchChannels?userId=${userId}`
