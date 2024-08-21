@@ -22,7 +22,8 @@ const nextConfig = {
         ]
       },
       env: {
-        NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+        NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+        DATABASE_URL: process.env.DATABASE_URL,
       },
 };
 

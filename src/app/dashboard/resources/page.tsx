@@ -1,89 +1,81 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddCourse from "../../../components/resources/AddCourse";
 import ArchiveCourses from "../../../components/resources/ArchiveCourse";
 import CourseCard from "../../../components/resources/CourseCard";
 import EditCourse from "../../../components/resources/EditCourse";
 
-const initialCourses = [
-    {
-        courseCode: "1",
-        courseName: "Adaptive Leadership program",
-        semester: "Class of 2025",
-        courseFrontpage:
-            "https://uploads.visitseattle.org/2023/01/11122537/Banner_rachael-jones-media_aerial-destination-photos-24_3.jpg",
-        archived: false,
-    },
-    {
-        courseCode: "2",
-        courseName: "Adaptive Leadership program",
-        semester: "Class of 2024",
-        courseFrontpage:
-            "https://media.tacdn.com/media/attractions-splice-spp-674x446/06/71/21/da.jpg",
-        archived: false,
-    },
-    {
-        courseCode: "3",
-        courseName: "Executive Insight",
-        semester: "Spring 2024",
-        courseFrontpage:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV2-qJuHx3GgYorwKuGrRaqz-GNgB8MMWkhg&s",
-        archived: false,
-    },
-];
-
 const ResourcePageContent: React.FC = () => {
-    const [courses, setCourses] = useState(initialCourses);
+    const [courses, setCourses] = useState([]);
     const [isAddingCourse, setIsAddingCourse] = useState(false);
     const [isEditingCourse, setIsEditingCourse] = useState(false);
-    const [editingCourse, setEditingCourse] = useState(null);
+    const [editingCourse, setEditingCourse] = useState(null);  
     const [isArchiving, setIsArchiving] = useState(false);
-    const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
-    const [viewMode, setViewMode] = useState<"card" | "list">("card"); // 新增
+    const [selectedCourses, setSelectedCourses] = useState<number[]>([]);
+    const [viewMode, setViewMode] = useState<"card" | "list">("card"); 
     const router = useRouter();
 
-    const handleAddCourse = (newCourse) => {
-        setCourses([...courses, newCourse]);
-        setIsAddingCourse(false);
-    };
+    useEffect(() => {
+        async function fetchCourses() {
+            try {
+                const response = await fetch('/api/courses');
+                if (!response.ok) {
+                    console.error('Failed to fetch courses:', response.statusText);
+                    return;
+                }
+                const fetchedCourses = await response.json();
+                setCourses(fetchedCourses);
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            }
+        }
+        fetchCourses();
+    }, []);
 
-    const handleAddCourseButton = () => {
-        setIsAddingCourse(true);
-    };
-
-    const getNextCourseCode = () => {
-        const maxCode = courses.reduce(
-            (max, course) => Math.max(max, parseInt(course.courseCode)),
-            0
-        );
-        return (maxCode + 1).toString();
-    };
-
-    const handleEditCourse = (courseCode: string) => {
-        const course = courses.find((c) => c.courseCode === courseCode);
+    const handleEditCourse = (id: number) => { 
+        const course = courses.find((c) => c.id === id);
         setEditingCourse(course);
         setIsEditingCourse(true);
         setIsAddingCourse(false);
     };
 
-    const handleSaveCourse = (updatedCourse) => {
+    const handleAddCourse = async (newCourse) => {
+        try {
+            const response = await fetch('/api/courses', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newCourse),
+            });
+    
+            if (!response.ok) {
+                console.error('Failed to add course:', response.statusText);
+                return;
+            }
+    
+            const createdCourse = await response.json();
+            setCourses((prevCourses) => [...prevCourses, createdCourse]);
+            setIsAddingCourse(false);
+        } catch (error) {
+            console.error('Error adding course:', error);
+        }
+    };    
+
+    const handleSaveCourse = async (updatedCourse) => {
+        const response = await fetch('/api/courses', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedCourse),
+        });
+        const savedCourse = await response.json();
         setCourses(
             courses.map((course) =>
-                course.courseCode === updatedCourse.courseCode
-                    ? updatedCourse
+                course.id === updatedCourse.id
+                    ? savedCourse
                     : course
             )
         );
-        setIsEditingCourse(false);
-    };
-
-    const handleCancelAddCourse = () => {
-        setIsAddingCourse(false);
-    };
-
-    const handleCancelEditCourse = () => {
         setIsEditingCourse(false);
     };
 
@@ -91,26 +83,46 @@ const ResourcePageContent: React.FC = () => {
         setSelectedCourses(
             courses
                 .filter((course) => course.archived)
-                .map((course) => course.courseCode)
+                .map((course) => course.id)
         );
         setIsArchiving(true);
     };
 
-    const handleArchiveConfirm = (selectedCourses: string[]) => {
-        setCourses(
-            courses.map((course) =>
-                selectedCourses.includes(course.courseCode)
-                    ? { ...course, archived: true }
-                    : { ...course, archived: false }
-            )
-        );
-        setSelectedCourses(selectedCourses);
-        setIsArchiving(false);
-    };
-
-    const handleArchiveCancel = () => {
-        setIsArchiving(false);
-    };
+    const handleArchiveConfirm = async (coursesToArchive: number[], coursesToUnarchive: number[]) => {
+        try {
+            // Send request to update the courses
+            const response = await fetch('/api/courses', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ coursesToArchive, coursesToUnarchive }),
+            });
+    
+            if (!response.ok) {
+                console.error('Failed to update courses:', response.statusText);
+                return;
+            }
+    
+            const updatedCourses = await response.json();
+    
+            // Update local state
+            setCourses(
+                courses.map((course) => {
+                    if (coursesToArchive.includes(course.id)) {
+                        return { ...course, archived: true };
+                    } else if (coursesToUnarchive.includes(course.id)) {
+                        return { ...course, archived: false };
+                    } else {
+                        return course;
+                    }
+                })
+            );
+    
+            setSelectedCourses([]);
+            setIsArchiving(false);
+        } catch (error) {
+            console.error('Error updating courses:', error);
+        }
+    };    
 
     const toggleViewMode = () => {
         setViewMode((prevMode) => (prevMode === "card" ? "list" : "card"));
@@ -141,10 +153,10 @@ const ResourcePageContent: React.FC = () => {
                         (viewMode === "card" ? (
                             <CourseCard
                                 key={index}
-                                courseCode={course.courseCode}
+                                id={course.id} 
                                 courseName={course.courseName}
                                 semester={course.semester}
-                                courseFrontpage={course.courseFrontpage}
+                                courseFrontpage={course.frontpage}
                                 onEditCourse={handleEditCourse}
                             />
                         ) : (
@@ -161,11 +173,7 @@ const ResourcePageContent: React.FC = () => {
                                 <div className="flex space-x-4">
                                     <button
                                         onClick={() =>
-                                            router.push(
-                                                `resources/${encodeURIComponent(
-                                                    course.courseCode
-                                                )}`
-                                            )
+                                            router.push(`dashboard/resources/${encodeURIComponent(course.id)}`)
                                         }
                                         className="text-blue-800 underline"
                                     >
@@ -173,7 +181,7 @@ const ResourcePageContent: React.FC = () => {
                                     </button>
                                     <button
                                         onClick={() =>
-                                            handleEditCourse(course.courseCode)
+                                            handleEditCourse(course.id)
                                         }
                                         className="text-blue-800 underline"
                                     >
@@ -185,37 +193,36 @@ const ResourcePageContent: React.FC = () => {
                 )}
             </div>
             <div className="w-full flex justify-center mt-8">
-            <button
-                onClick={handleArchive}
-                className="bg-[#8ABBD9] mr-10 text-white py-2 px-6 rounded-full transition duration-300 ease-in-out hover:bg-[#72A5C9] transform hover:-translate-y-1"
-            >
-                Archive
-            </button>
-            <button
-                onClick={handleAddCourseButton}
-                className="bg-[#5A8BB8] text-white py-2 px-6 rounded-full transition duration-300 ease-in-out hover:bg-[#467AA1] transform hover:-translate-y-1"
-            >
-                Add Course
-            </button>
+                <button
+                    onClick={handleArchive}
+                    className="bg-[#8ABBD9] mr-10 text-white py-2 px-6 rounded-full transition duration-300 ease-in-out hover:bg-[#72A5C9] transform hover:-translate-y-1"
+                >
+                    Archive
+                </button>
+                <button
+                    onClick={() => setIsAddingCourse(true)}
+                    className="bg-[#5A8BB8] text-white py-2 px-6 rounded-full transition duration-300 ease-in-out hover:bg-[#467AA1] transform hover:-translate-y-1"
+                >
+                    Add Course
+                </button>
             </div>
             {isAddingCourse && (
                 <div>
                     <AddCourse
                         onAddCourse={handleAddCourse}
-                        nextCourseCode={getNextCourseCode()}
-                        onCancel={handleCancelAddCourse}
+                        onCancel={() => setIsAddingCourse(false)}
                     />
                 </div>
             )}
             {isEditingCourse && editingCourse && (
                 <div>
                     <EditCourse
-                        courseCode={editingCourse.courseCode}
+                        id={editingCourse.id}
                         courseName={editingCourse.courseName}
                         semester={editingCourse.semester}
-                        courseFrontpage={editingCourse.courseFrontpage}
+                        courseFrontpage={editingCourse.frontpage}
                         onSaveCourse={handleSaveCourse}
-                        onCancel={handleCancelEditCourse}
+                        onCancel={() => setIsEditingCourse(false)}
                     />
                 </div>
             )}
@@ -224,7 +231,7 @@ const ResourcePageContent: React.FC = () => {
                     courses={courses}
                     selectedCourses={selectedCourses}
                     onArchive={handleArchiveConfirm}
-                    onCancel={handleArchiveCancel}
+                    onCancel={() => setIsArchiving(false)}
                 />
             )}
         </div>

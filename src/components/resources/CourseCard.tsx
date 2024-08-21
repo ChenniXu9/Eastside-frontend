@@ -2,31 +2,40 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image'; 
 
 interface CourseCardProps {
-  courseCode: string;
+  id: number; 
   courseName: string;
   semester: string;
   courseFrontpage: string;
-  onEditCourse: (courseCode: string) => void;
+  onEditCourse: (id: number) => void; 
 }
 
-const CourseCard: React.FC<CourseCardProps> = ({ courseCode, courseName, semester, courseFrontpage, onEditCourse }) => {
+const CourseCard: React.FC<CourseCardProps> = ({ id, courseName, semester, courseFrontpage, onEditCourse }) => {
   const router = useRouter();
 
   const handleFilesClick = () => {
-    router.push(`resources/${encodeURIComponent(courseCode)}`);
+    router.push(`resources/${id}`);
   };
 
   const handleEditClick = () => {
-    onEditCourse(courseCode);
+    onEditCourse(id); 
   };
 
   return (
     <div className="border border-gray-300 rounded-lg shadow-lg overflow-hidden mb-4 w-full max-w-xs bg-white">
-      <img src={courseFrontpage} alt={`${courseName} frontpage`} className="h-40 w-full object-cover" />
+      <div className="relative w-full h-40">
+        <Image
+          src={courseFrontpage}
+          alt={`${courseName} frontpage`}
+          layout="fill"
+          objectFit="cover"
+          className="rounded-t-lg"
+          unoptimized
+        />
+      </div>
       <div className="p-4">
-        <div className={courseCode}></div>
         <p className="font-bold text-lg mb-2">{courseName}</p>
         <p className="text-gray-500 mb-2">{semester}</p>
       </div>
@@ -39,4 +48,3 @@ const CourseCard: React.FC<CourseCardProps> = ({ courseCode, courseName, semeste
 };
 
 export default CourseCard;
-
