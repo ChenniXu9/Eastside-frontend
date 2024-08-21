@@ -1,27 +1,11 @@
 "use server";
 
+import { User } from "@/types";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import prisma from "./client";
-
 // Following are Channels page actions, please not modify them
-type User = {
-  id: string;
-  username: string;
-  profile_image: string | null;
-  first_name: string | null;
-  last_name: string | null;
-  organization: string | null;
-  title: string | null;
-  phone: string | null; 
-  description: string | null;
-  password: string | null;
-  personal_email: string | null;
-  graduation_year: string | null;
-  work_email: string | null;
-  createdAt: Date;
-};
 
 type Comment = {
   id: number;

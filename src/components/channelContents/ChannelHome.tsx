@@ -51,19 +51,25 @@ const ChannelHome = ({ userId }: { userId: string }) => {
         const parts = path.split("/");
         console.log("parts", parts);
         return parts[-2];
-
-        // const lastWord = parts[parts.length - 1];
-        // return lastWord.charAt(0).toUpperCase() + lastWord.slice(1);
     };
 
     const isRequestPending = (channelId: number) => {
+        console.log(
+            "oending",
+            requests.some(
+                (request) =>
+                    request.channelId === channelId &&
+                    request.status === "Pending"
+            )
+        );
         return requests.some(
             (request) =>
-                request.channelId === channelId && request.status === "Pending"
+                request.channelId === channelId && request.status === "pending"
         );
     };
 
     const isRequestSent = (channelId: number) => {
+        console.log("sent", requests);
         return requests.some((request) => request.channelId === channelId);
     };
 
@@ -73,7 +79,7 @@ const ChannelHome = ({ userId }: { userId: string }) => {
     useEffect(() => {
         const fetchChannels = async () => {
             try {
-                console.log("Fetching channels for user home:", userId);
+                console.log("Fetching channels for user:", userId);
 
                 const response = await fetch(
                     `/api/channel/fetchChannels?userId=${userId}`
@@ -93,9 +99,6 @@ const ChannelHome = ({ userId }: { userId: string }) => {
                 setUsername(data.username);
                 setJoinedChannels(data.joinedChannels);
                 setNotJoinedChannels(data.notJoinedChannels);
-
-                console.log("User Channels:", data.joinedChannels);
-                console.log("Not Joined Channels:", data.notJoinedChannels);
             } catch (error) {
                 console.error("Error fetching channels:", error);
             }

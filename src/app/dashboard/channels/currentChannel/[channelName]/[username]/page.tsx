@@ -5,25 +5,9 @@ import ChannelRightMenu from "@/components/channelContents/ChannelRightMenu";
 import Feed from "@/components/channelContents/Feed";
 import GroupHeader from "@/components/channelContents/GroupHeader";
 import { fetchPosts } from "@/lib/actions";
+import { User } from "@/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-type User = {
-    id: string;
-    username: string;
-    profile_image: string | null;
-    first_name: string | null;
-    last_name: string | null;
-    organization: string | null;
-    title: string | null;
-    phone: string | null;
-    description: string | null;
-    password: string | null;
-    personal_email: string | null;
-    graduation_year: string | null;
-    work_email: string | null;
-    createdAt: Date;
-};
 
 type Comment = {
     id: number;

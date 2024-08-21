@@ -3,27 +3,11 @@
 import React, { useState } from "react";
 
 import { addPost } from "@/lib/actions";
+import { User } from "@/types";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useFormStatus } from "react-dom";
 import AddPostButton from "./AddPostButton";
-
-type User = {
-    id: string;
-    username: string;
-    profile_image: string | null;
-    first_name: string | null;
-    last_name: string | null;
-    organization: string | null;
-    title: string | null;
-    phone: string | null;
-    description: string | null;
-    password: string | null;
-    personal_email: string | null;
-    graduation_year: string | null;
-    work_email: string | null;
-    createdAt: Date;
-};
 
 type Comment = {
     id: number;
