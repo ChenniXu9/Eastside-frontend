@@ -6,25 +6,25 @@ import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-// import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import UpdateButton from "./rightMenu/UpdateButton";
 
+// Component that updates the user information on the profile page
 const UpdateUser = ({ user }: { user: User }) => {
+    // data storage
     const [open, setOpen] = useState(false);
     const [profile, setProfile] = useState<any>(false);
     const [cover, setCover] = useState<any>(false);
-
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [responseMessage, setResponseMessage] = useState<string>("");
-
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const router = useRouter();
 
+    // function to handle closing the update modal
     const handleClose = () => {
         setOpen(false);
         setLoading(true);
@@ -33,6 +33,7 @@ const UpdateUser = ({ user }: { user: User }) => {
         router.refresh();
     };
 
+    // Function to handle updating the user information
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
@@ -68,6 +69,7 @@ const UpdateUser = ({ user }: { user: User }) => {
         }
     };
 
+    // Function to adjust modal formatting
     useEffect(() => {
         if (open) {
             // Scroll to the top of the page when the popup is opened
@@ -76,15 +78,17 @@ const UpdateUser = ({ user }: { user: User }) => {
     }, [open]);
 
     return (
-        <div className="">
+        <div className="flex justify-center">
+            {/* Button to open the updating user info */}
             <span
-                className="text-md cursor-pointer text-white bg-[#438bb4] py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-[#224c6b] transform hover:-translate-y-1"
+                className="text-center text-md cursor-pointer text-white bg-[#438bb4] py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-[#224c6b] transform hover:-translate-y-1"
                 onClick={() => setOpen(true)}
             >
                 Update your Information
             </span>
             {open && (
                 <div className="absolute w-screen h-screen top-0 left-0 bg-black bg-opacity-65 flex items-center justify-center z-50 ">
+                    {/* Form for user information update */}
                     <form
                         onSubmit={handleSubmit}
                         className="p-3 m-2 md:p-12 bg-white rounded-lg shadow-md flex flex-col gap-2 w-full md:w-1/2 xl:w-1/3 relative text-center"
@@ -375,7 +379,11 @@ const UpdateUser = ({ user }: { user: User }) => {
                                 )}
                             </div>
                         </div>
+
+                        {/* Button to update the user info */}
                         <UpdateButton />
+
+                        {/* Info displayed based on request status */}
                         {success && (
                             <span className="text-green-500">
                                 Profile has been updated!

@@ -2,11 +2,10 @@
 
 import React, { useState } from "react";
 
+import { addPost } from "@/lib/actions";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useFormStatus } from "react-dom";
-// import { useRouter } from 'next/router';
-import { addPost } from "@/lib/actions";
 import AddPostButton from "./AddPostButton";
 
 type User = {
@@ -128,7 +127,6 @@ const AddPost: React.FC<AddPostProps> = ({
                         />
                         <AddPostButton />
                     </div>
-                    {/* <button className="bg-blue-500 p-2 mt-8 rounded-md text-white disabled:bg-blue-300 disabled:cursor-not-allowed">Send</button> */}
                 </form>
                 {/* Post options */}
                 <div className="flex items-center gap-4 mt-4 text-gray-400 flex-wrap">
@@ -161,14 +159,6 @@ const AddPost: React.FC<AddPostProps> = ({
                             );
                         }}
                     </CldUploadWidget>
-                    {/* <div className="flex items-center gap-2 cursor-pointer">
-                        <Image src="/addVideo.png" 
-                            alt="" 
-                            width={20} 
-                            height={20} 
-                        />
-                        Video
-                    </div> */}
                 </div>
             </div>
         </div>

@@ -1,43 +1,21 @@
-// import Feed from "@/components/feed/Feed";
-// import LeftMenu from "@/components/leftMenu/LeftMenu";
-// import prisma from "@/lib/client";
 import UpdateUser from "@/components/UpdateUser";
+import { User } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { MdEmail, MdOutlineWork, MdPhone, MdSchool } from "react-icons/md";
-import { User } from "../../../../types"; // Adjust the path as necessary
+import { MdEmail, MdPhone, MdSchool } from "react-icons/md";
 
+// Type of the data being passed through the prop
 interface ProfileAboutMeProps {
     user: User;
 }
 
-// Sidebar item lists
-const menuItems = [
-    {
-        title: "Pages",
-        list: [
-            {
-                title: "Dashboard",
-                path: "/dashboard",
-                icon: <MdEmail />,
-            },
-            {
-                title: "Resource Library",
-                path: "/dashboard/resources",
-                icon: <MdSchool />,
-            },
-            {
-                title: "Channels",
-                path: "/dashboard/channels",
-                icon: <MdOutlineWork />,
-            },
-        ],
-    },
-];
-
+// About me component on profile page.
+// Displayes info about the user
 const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
+    // Extract and store user id from clerk
     const { userId } = auth();
     const currentUserId = userId;
+
     return (
         <div className="md:mx-5 w-full">
             <div className="flex flex-col md:flex-row">
@@ -90,13 +68,6 @@ const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
                                     <b>Phone Number:</b>
                                     {user.phone}
                                 </span>
-                                {/* {user.phone_is_visible ? (
-                                <span>
-                                    Phone Number: <b>{user.phone}</b>
-                                </span>
-                            ) : (
-                                ""
-                            )} */}
                             </div>
                         )}
                         {user.personal_email && (
@@ -125,7 +96,7 @@ const ProfileAboutMe: React.FC<ProfileAboutMeProps> = ({ user }) => {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-between items-center font-medium mt-5">
+            <div className="flex justify-center items-center font-medium mt-16 mx-auto">
                 {currentUserId === user.id && <UpdateUser user={user} />}
             </div>
         </div>

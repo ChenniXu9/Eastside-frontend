@@ -1,45 +1,8 @@
 import ContactUs from "./ContactUs/contactUs";
 type Props = {};
 
+// Main homepage that is displayed when the user initially signs up
 const HompageScreen = (props: Props) => {
-    const pageContent = [
-        {
-            title: "1",
-            desc: "Presents the mathematical techniques used for the design and analysis of computer algorithms. Focuses on algorithmic design paradigms and techniques for analyzing the correctness, time, and space complexity of algorithms. Topics may include asymptotic notation, recurrences, loop invariants, Hoare triples, sorting and searching, advanced data structures, lower bounds, hashing, greedy algorithms, dynamic programming, graph algorithms, and NP-completeness.",
-        },
-        {
-            courseCode: "2",
-            courseName: "Adaptive Leadership program",
-            semester: "Class of 2024",
-            courseFrontpage:
-                "https://media.tacdn.com/media/attractions-splice-spp-674x446/06/71/21/da.jpg",
-            archived: false,
-        },
-        {
-            courseCode: "3",
-            courseName: "Executive Insight",
-            semester: "Spring 2024",
-            courseFrontpage:
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV2-qJuHx3GgYorwKuGrRaqz-GNgB8MMWkhg&s",
-            archived: false,
-        },
-        {
-            courseCode: "4",
-            courseName: "Executive Insight",
-            semester: "Fall 2023",
-            courseFrontpage:
-                "https://media.tacdn.com/media/attractions-splice-spp-674x446/06/71/21/da.jpg",
-            archived: false,
-        },
-        {
-            courseCode: "5",
-            courseName: "Executive Insight",
-            semester: "Spring 2023",
-            courseFrontpage:
-                "https://uploads.visitseattle.org/2023/01/11122537/Banner_rachael-jones-media_aerial-destination-photos-24_3.jpg",
-            archived: false,
-        },
-    ];
     return (
         <div className="md:m-10 m-2">
             <div className="" id="app-description ">

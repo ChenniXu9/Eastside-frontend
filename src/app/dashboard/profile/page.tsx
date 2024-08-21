@@ -1,16 +1,18 @@
-// import Feed from "@/components/feed/Feed";
-// import LeftMenu from "@/components/leftMenu/LeftMenu";
 import ProfileAboutMe from "@/components/dashboard/profile/singleUser/ProfileAboutMe";
 import prisma from "@/lib/client";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+// Profile Page of the logged in User
 const ProfilePage = async () => {
+    // Extract log in id from Clerk
     const { userId } = auth();
 
-    if (!userId) return null;
+    // If user is not found, show error page
+    if (!userId) return notFound;
 
+    // Extract user based on user id
     const user = await prisma.user.findFirst({
         where: {
             id: userId,
@@ -25,8 +27,7 @@ const ProfilePage = async () => {
         },
     });
 
-    console.log(user);
-
+    // If user is not found, show error page
     if (!user) return notFound();
 
     return (
@@ -74,11 +75,10 @@ const ProfilePage = async () => {
                             </div>
                         </div>
                     </div>
+                    {/* About me content */}
                     <div className="flex flex-row justify-center">
                         <ProfileAboutMe user={user} />
                     </div>
-                    {/* <Feed username={user.username} /> */}
-                    {/* <ProfilePosts /> */}
                 </div>
             </div>
         </div>

@@ -1,19 +1,29 @@
-// import Feed from "@/components/feed/Feed";
-// import LeftMenu from "@/components/leftMenu/LeftMenu";
 import ProfileAboutMe from "@/components/dashboard/profile/singleUser/ProfileAboutMe";
 import prisma from "@/lib/client";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+// Main profile page when a user visits a page that is not theirs
 const ProfilePage = async ({ params }: { params: { username: string } }) => {
+    // Extract the username from the url
     const username = params.username;
 
+    // Find the user data within the database
     const user = await prisma.user.findFirst({
         where: {
             username,
         },
+        include: {
+            _count: {
+                select: {
+                    channels: true,
+                    posts: true,
+                },
+            },
+        },
     });
 
+    // Display the not found page if user does not exist
     if (!user) return notFound();
 
     return (
@@ -45,9 +55,17 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
                                 <div className="flex items-center justify-center gap-14">
                                     <div className="flex flex-col items-center flex-1">
                                         <span className="font-medium">
-                                            {10}
+                                            {user._count.posts}
                                         </span>
                                         <span className="text-sm">Posts</span>
+                                    </div>
+                                    <div className="flex flex-col items-center flex-1">
+                                        <span className="font-medium">
+                                            {user._count.channels}
+                                        </span>
+                                        <span className="text-sm text-center">
+                                            Channels Joined
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -56,8 +74,6 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
                     <div className="flex flex-row justify-center">
                         <ProfileAboutMe user={user} />
                     </div>
-                    {/* <Feed username={user.username} /> */}
-                    {/* <ProfilePosts /> */}
                 </div>
             </div>
         </div>

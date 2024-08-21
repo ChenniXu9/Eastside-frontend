@@ -5,13 +5,15 @@ import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// Form data type for sending an email
 export type FormData = {
     name: string;
     email: string;
     message: string;
 };
 
-const contactUs: FC = () => {
+// Contact us form utilizing NodeMailer
+const ContactUs: FC = () => {
     const {
         register,
         handleSubmit,
@@ -20,6 +22,7 @@ const contactUs: FC = () => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
     } = useForm<FormData>();
 
+    // Function the handle sending the email
     async function onSubmit(data: FormData) {
         try {
             sendEmail(data);
@@ -74,9 +77,10 @@ const contactUs: FC = () => {
                     )}
                 </form>
             </div>
+            {/* Displays info on whether the email sent or if there was an error */}
             <ToastContainer />
         </section>
     );
 };
 
-export default contactUs;
+export default ContactUs;
