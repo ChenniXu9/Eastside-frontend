@@ -1,10 +1,3 @@
-export interface FileItem {
-    name: string;
-    type: "file" | "directory";
-    url?: string;
-    uploadTime?: string;
-}
-
 export interface User {
     id: string;
     username: string;
@@ -21,4 +14,26 @@ export interface User {
     graduation_year: string | null; // Updated to allow null
     work_email: string | null; // Updated to allow null
     admin: number | null;
+}
+
+export interface FileItem {
+    id: number;
+    fileName: string;
+    filePath: string;
+    createdAt: Date;
+    authorId?: number;
+    type: string;
+    folderId: number;
+    downloadable: boolean;
+    displayName: string;
+    key?: string;
+    url?: string;
+}
+  
+export interface FolderItem {
+    id: number;
+    courseId: number;
+    folderName: string;
+    createdAt: Date;
+    files: FileItem[];
 }

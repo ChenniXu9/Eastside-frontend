@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,50 +8,53 @@ datasource db {
 }
 
 model User {
-  id            String      @id
-  username      String      @unique
-  profile_image String?
-  cover_image   String?
-  first_name    String?
-  last_name     String? 
-  organization  String?
-  title         String? 
-  phone         String?  
-  description   String?
-  password      String?
-  personal_email String?
-  graduation_year String?
-  work_email    String?
-  admin          Boolean     @default(false)
-  createdAt     DateTime @default(now())
-  channels      UserToChannel[]
-  posts         Post[]
-  comments      Comment[]
-  sentChannelRequests    ChannelRequest[] @relation("SentChannelRequests")
+  id                  String           @id
+  username            String           @unique
+  profile_image       String?
+  cover_image         String?
+  first_name          String?
+  last_name           String?
+  organization        String?
+  title               String?
+  phone               String?
+  description         String?
+  password            String?
+  personal_email      String?
+  graduation_year     String?
+  work_email          String?
+  admin               Boolean          @default(false)
+  createdAt           DateTime         @default(now())
+  sentChannelRequests ChannelRequest[] @relation("SentChannelRequests")
+  comments            Comment[]
+  posts               Post[]
+  channels            UserToChannel[]
 }
 
 model Channel {
-  id                  Int      @id @default(autoincrement())
-  channel_name        String   @unique
+  id                  Int              @id @default(autoincrement())
+  channel_name        String           @unique
   channel_image       String?
   channel_description String?
-  users               UserToChannel[]
-  posts               Post[]
   channelRequests     ChannelRequest[] @relation("ChannelRequests")
+  posts               Post[]
+  users               UserToChannel[]
 }
 
 model Post {
-  id          Int       @id @default(autoincrement())
-  desc        String
-  img         String?
-  video       String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  user        User      @relation(fields: [userId], references: [id])
-  userId      String
-  channel     Channel   @relation(fields: [channelId], references: [id])
-  channelId   Int
-  comments    Comment[]
+  id        Int       @id @default(autoincrement())
+  desc      String
+  img       String?
+  video     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  userId    String
+  channelId Int
+  comments  Comment[]
+  channel   Channel   @relation(fields: [channelId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@index([channelId], map: "Post_channelId_fkey")
+  @@index([userId], map: "Post_userId_fkey")
 }
 
 model Comment {
@@ -65,30 +62,72 @@ model Comment {
   desc      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([postId], map: "Comment_postId_fkey")
+  @@index([userId], map: "Comment_userId_fkey")
 }
 
 model UserToChannel {
-  id          Int       @id  @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  user        User      @relation(fields: [userId], references: [id])
-  userId      String
-  channel     Channel   @relation(fields: [channelId], references: [id])
-  channelId   Int     
+  userId    String
+  channelId Int
+  channel   Channel  @relation(fields: [channelId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([channelId], map: "UserToChannel_channelId_fkey")
+  @@index([userId], map: "UserToChannel_userId_fkey")
 }
 
 model ChannelRequest {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  sender      User     @relation("SentChannelRequests", fields: [senderId], references: [id], onDelete: Cascade)
-  senderId    String
-  channel     Channel  @relation("ChannelRequests", fields: [channelId], references: [id], onDelete: Cascade)
-  channelId   Int
-  status      String    @default("pending") // You can use 'pending', 'accepted', 'rejected'
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  senderId  String
+  channelId Int
+  status    String   @default("pending")
+  channel   Channel  @relation("ChannelRequests", fields: [channelId], references: [id], onDelete: Cascade)
+  sender    User     @relation("SentChannelRequests", fields: [senderId], references: [id], onDelete: Cascade)
 
   @@unique([senderId, channelId])
+  @@index([channelId], map: "ChannelRequest_channelId_fkey")
 }
 
+model Course {
+  id         Int      @id @default(autoincrement())
+  courseName String
+  semester   String?
+  createdAt  DateTime @default(now())
+  frontpage  String?
+  archived   Boolean  @default(false)
+  folders    Folder[]
+}
+
+model File {
+  id           Int      @id @default(autoincrement())
+  fileName     String
+  filePath     String
+  createdAt    DateTime @default(now())
+  authorId     Int?
+  type         String
+  folderId     Int
+  downloadable Boolean  @default(false)
+  displayName  String
+  folder       Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  @@index([folderId], map: "File_folderId_fkey")
+}
+
+model Folder {
+  id         Int      @id @default(autoincrement())
+  courseId   Int
+  folderName String
+  createdAt  DateTime @default(now())
+  files      File[]
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@index([courseId], map: "Folder_courseId_fkey")
+}

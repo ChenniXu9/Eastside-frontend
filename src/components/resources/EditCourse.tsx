@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 
 interface EditCourseProps {
-  courseCode: string;
+  id: number; 
   courseName: string;
   semester: string;
   courseFrontpage: string;
@@ -11,7 +11,7 @@ interface EditCourseProps {
   onCancel: () => void;
 }
 
-const EditCourse: React.FC<EditCourseProps> = ({ courseCode, courseName, semester, courseFrontpage, onSaveCourse, onCancel }) => {
+const EditCourse: React.FC<EditCourseProps> = ({ id, courseName, semester, courseFrontpage, onSaveCourse, onCancel }) => {
   const [editedCourseName, setEditedCourseName] = useState(courseName);
   const [editedSemester, setEditedSemester] = useState(semester);
   const [editedCourseFrontpage, setEditedCourseFrontpage] = useState(courseFrontpage);
@@ -19,12 +19,12 @@ const EditCourse: React.FC<EditCourseProps> = ({ courseCode, courseName, semeste
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const updatedCourse = {
-      courseCode,
+      id, 
       courseName: editedCourseName,
       semester: editedSemester,
       courseFrontpage: editedCourseFrontpage,
     };
-    onSaveCourse(updatedCourse);
+    onSaveCourse(updatedCourse); 
   };
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const EditCourse: React.FC<EditCourseProps> = ({ courseCode, courseName, semeste
           </button>
           <button
             type="submit"
-            className="bg-[#8ABBD9] text-white py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-blue-600 transform hover:bg-[#72A5C9]"
+            className="bg-[#8ABBD9] text-white py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-[#72A5C9] transform hover:bg-[#72A5C9]"
           >
             Save Course
           </button>
@@ -88,4 +88,3 @@ const EditCourse: React.FC<EditCourseProps> = ({ courseCode, courseName, semeste
 };
 
 export default EditCourse;
-
