@@ -52,21 +52,19 @@ const menuItems = [
 
 // Sidebar component for the dashboard
 const Sidebar = () => {
+    // Signout function from clerk
     const { signOut } = useClerk();
     const router = useRouter();
 
+    // Function to handle signing out
     const handleSignOut = async () => {
         await signOut();
         router.push("/login");
     };
 
-    const user = {
-        img: "/noavatar.png",
-        username: "testing",
-    };
     return (
         <div className="sticky top-10 flex flex-col justify-between items-stretch">
-            <div className="md:flex flex items-center gap-5 my-5">
+            <div className="md:flex items-center gap-5 my-5">
                 <Image
                     src={"/companyLogo.png"}
                     alt=""
@@ -80,22 +78,24 @@ const Sidebar = () => {
                 />
             </div>
             {/* CENTER */}
-            <div className="md:flex h-[70%] text-sm justify-between flex-col">
-                <ul className="list-none">
-                    {menuItems.map((cat) => (
-                        <li key={cat.title}>
-                            <span className="font-bold text-xs mx-2.5 ">
-                                {cat.title}
-                            </span>
-                            {cat.list.map((item) => (
-                                <MenuLink item={item} key={item.title} />
-                            ))}
-                        </li>
-                    ))}
-                </ul>
+            <div className="flex flex-col justify-between flex-1">
+                <div className="md:flex text-sm justify-between flex-col">
+                    <ul className="list-none">
+                        {menuItems.map((cat) => (
+                            <li key={cat.title}>
+                                <span className="font-bold text-xs mx-2.5 ">
+                                    {cat.title}
+                                </span>
+                                {cat.list.map((item) => (
+                                    <MenuLink item={item} key={item.title} />
+                                ))}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
             {/* BOTTOM */}
-            <div className="md:flex h-[10%] text-md justify-between flex-col">
+            <div className="mt-auto">
                 <button
                     type="button"
                     onClick={handleSignOut}

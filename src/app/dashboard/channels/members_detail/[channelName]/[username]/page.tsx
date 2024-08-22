@@ -71,8 +71,9 @@ const GroupDetail = () => {
                     const channelData = await channelResponse.json();
                     setChannel(channelData);
 
+                    console.log("username for fetch request", userName);
                     const userResponse = await fetch(
-                        `/api/channel/fetchUserById?userId=${userName}`
+                        `/api/channel/fetchUser?userName=${userName}`
                     );
                     const userData = await userResponse.json();
                     setCurrentUser(userData);

@@ -1,5 +1,6 @@
 import { FormData } from '@/components/dashboard/ContactUs/contactUs';
 
+// Endpoint for nodemailer to send an email
 export function sendEmail(data: FormData) {
     const apiEndpoint = '/api/email';
 

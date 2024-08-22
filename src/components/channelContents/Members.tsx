@@ -60,6 +60,9 @@ interface MembersProps {
 }
 
 const Members: React.FC<MembersProps> = ({ channel, currentUser }) => {
+    console.log(
+        `/dashboard/channels/currentChannel/${channel.channel_name}/${currentUser}`
+    );
     return (
         <div className="flex flex-col gap-6">
             <div className="p-4 bg-white rounded-lg shadow-md text-lg flex flex-col gap-4">
@@ -107,7 +110,10 @@ const Members: React.FC<MembersProps> = ({ channel, currentUser }) => {
                                     className="flex items-center gap-4 p-2 rounded-lg hover:bg-slate-100 w-full"
                                 >
                                     <Image
-                                        src={user.user.profile_image || "/noavatar.png"}
+                                        src={
+                                            user.user.profile_image ||
+                                            "/noavatar.png"
+                                        }
                                         alt={user.user.description || ""}
                                         width={20}
                                         height={20}

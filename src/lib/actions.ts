@@ -1,264 +1,12 @@
 "use server";
 
+import { User } from "@/types";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import prisma from "./client";
 
-// export const switchFollow = async (userId: string) => {
-//   const { userId: currentUserId } = auth();
-
-//   if (!currentUserId) {
-//     throw new Error("User is not authenticated!");
-//   }
-
-//   try {
-//     const existingFollow = await prisma.follower.findFirst({
-//       where: {
-//         followerId: currentUserId,
-//         followingId: userId,
-//       },
-//     });
-
-//     if (existingFollow) {
-//       await prisma.follower.delete({
-//         where: {
-//           id: existingFollow.id,
-//         },
-//       });
-//     } else {
-//       const existingFollowRequest = await prisma.followRequest.findFirst({
-//         where: {
-//           senderId: currentUserId,
-//           receiverId: userId,
-//         },
-//       });
-
-//       if (existingFollowRequest) {
-//         await prisma.followRequest.delete({
-//           where: {
-//             id: existingFollowRequest.id,
-//           },
-//         });
-//       } else {
-//         await prisma.followRequest.create({
-//           data: {
-//             senderId: currentUserId,
-//             receiverId: userId,
-//           },
-//         });
-//       }
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     throw new Error("Something went wrong!");
-//   }
-// };
-
-// export const switchBlock = async (userId: string) => {
-//   const { userId: currentUserId } = auth();
-
-//   if (!currentUserId) {
-//     throw new Error("User is not Authenticated!!");
-//   }
-
-//   try {
-//     const existingBlock = await prisma.block.findFirst({
-//       where: {
-//         blockerId: currentUserId,
-//         blockedId: userId,
-//       },
-//     });
-
-//     if (existingBlock) {
-//       await prisma.block.delete({
-//         where: {
-//           id: existingBlock.id,
-//         },
-//       });
-//     } else {
-//       await prisma.block.create({
-//         data: {
-//           blockerId: currentUserId,
-//           blockedId: userId,
-//         },
-//       });
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     throw new Error("Something went wrong!");
-//   }
-// };
-
-// export const acceptFollowRequest = async (userId: string) => {
-//   const { userId: currentUserId } = auth();
-
-//   if (!currentUserId) {
-//     throw new Error("User is not Authenticated!!");
-//   }
-
-//   try {
-//     const existingFollowRequest = await prisma.followRequest.findFirst({
-//       where: {
-//         senderId: userId,
-//         receiverId: currentUserId,
-//       },
-//     });
-
-//     if (existingFollowRequest) {
-//       await prisma.followRequest.delete({
-//         where: {
-//           id: existingFollowRequest.id,
-//         },
-//       });
-
-//       await prisma.follower.create({
-//         data: {
-//           followerId: userId,
-//           followingId: currentUserId,
-//         },
-//       });
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     throw new Error("Something went wrong!");
-//   }
-// };
-
-// export const declineFollowRequest = async (userId: string) => {
-//   const { userId: currentUserId } = auth();
-
-//   if (!currentUserId) {
-//     throw new Error("User is not Authenticated!!");
-//   }
-
-//   try {
-//     const existingFollowRequest = await prisma.followRequest.findFirst({
-//       where: {
-//         senderId: userId,
-//         receiverId: currentUserId,
-//       },
-//     });
-
-//     if (existingFollowRequest) {
-//       await prisma.followRequest.delete({
-//         where: {
-//           id: existingFollowRequest.id,
-//         },
-//       });
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     throw new Error("Something went wrong!");
-//   }
-// };
-
-
-export const updateProfile = async(formData: FormData, cover: string, profile: string) => {
-  const fields = Object.fromEntries(formData);
-  console.log("fields", fields)
-
-  // Separate password fields from the rest of the fields
-  const { password, confirm_password, ...restFields } = fields;
-  console.log(password, confirm_password)
-
-  const filteredFields = Object.fromEntries(
-    Object.entries(fields).filter(([_, value]) => value !== "")
-  );
-
-  const Profile = z.object({
-    cover_image: z.string().optional(),
-    profile_image: z.string().optional(),
-    first_name: z.string().max(60).optional(),
-    last_name: z.string().max(60).optional(),
-    description: z.string().max(255).optional(),
-    organization: z.string().max(60).optional(),
-    title: z.string().max(60).optional(),
-    phone: z.string().max(60).optional(),
-    personal_email: z.string().max(60).optional(),
-    work_email: z.string().max(60).optional(),
-    graduation_year: z.string().max(60).optional(),
-    password: z.string().max(60).optional(),
-  });
-
-  const validatedFields = Profile.safeParse({ cover_image: cover,profile_image: profile, ...filteredFields });
-
-  if (!validatedFields.success) {
-    console.log(validatedFields.error.flatten().fieldErrors);
-    return { status: 'error', message: 'Internal Server Error' };
-  }
-
-  // Validate password and confirm_password
-  if (password || confirm_password) {
-    const passwordSchema = z.object({
-      password: z.string().min(6, "Password must be at least 6 characters long"),
-      confirm_password: z.string(),
-    }).refine(
-      (data) => data.password === data.confirm_password,
-      {
-        message: "Passwords must match!",
-        path: ["confirm_password"],
-      }
-    );
-
-    const passwordResult = passwordSchema.safeParse({ password, confirm_password });
-
-    if (!passwordResult.success) {
-      console.log(passwordResult.error.flatten().fieldErrors);
-      return { status: 'error', message: passwordResult.error.flatten().fieldErrors.confirm_password?.[0] || 'Invalid password input' };
-    }
-  }
-
-  const { userId } = auth();
-
-  if (!userId) {
-    return { status: 'error', message: 'Internal Server Error' };
-  }
-
-  try {
-    // Primsa update
-    await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: validatedFields.data,
-    });
-
-    if (password) {
-      try {
-        await clerkClient.users.updateUser(userId, {
-          password: password as string, // Ensure it's cast to a string
-        });
-      } catch (error) {
-        console.error("Failed to update password:", error);
-        return { status: 'error', message: 'Password update failed. Please ensure it meets the required criteria.' };
-      }
-    }
-
-    return { status: 'success', message: 'Profile updated successfully' };
-  } catch (err) {
-    console.log(err);
-    return { status: 'error', message: 'Internal Server Error' };
-  }
-}
-
 // Following are Channels page actions, please not modify them
-type User = {
-  id: string;
-  username: string;
-  profile_image: string | null;
-  first_name: string | null;
-  last_name: string | null;
-  organization: string | null;
-  title: string | null;
-  phone: string | null; 
-  description: string | null;
-  password: string | null;
-  personal_email: string | null;
-  graduation_year: string | null;
-  work_email: string | null;
-  createdAt: Date;
-};
 
 type Comment = {
   id: number;
@@ -281,17 +29,103 @@ type Post = {
   comments: Comment[];
 };
 
-type Channel = {
-  id: number;
-  channel_name: string;
-  channel_image: string | null;
-  channel_description: string | null;
-  users: {
-    user: User;
-  }[];
-  posts: Post[];
-};
+// Action to update the user profile
+export const updateProfile = async(formData: FormData, cover: string, profile: string) => {
+  // extract info from form data
+  const fields = Object.fromEntries(formData);
 
+  // Separate password fields from the rest of the fields
+  const { password, confirm_password, ...restFields } = fields;
+  console.log(password, confirm_password)
+
+  // Grab the filtered data making sure to only get data that has been changed
+  const filteredFields = Object.fromEntries(
+    Object.entries(fields).filter(([_, value]) => value !== "")
+  );
+
+  // Verify data passed through 
+  const Profile = z.object({
+    cover_image: z.string().optional(),
+    profile_image: z.string().optional(),
+    first_name: z.string().max(60).optional(),
+    last_name: z.string().max(60).optional(),
+    description: z.string().max(255).optional(),
+    organization: z.string().max(60).optional(),
+    title: z.string().max(60).optional(),
+    phone: z.string().max(60).optional(),
+    personal_email: z.string().max(60).optional(),
+    work_email: z.string().max(60).optional(),
+    graduation_year: z.string().max(60).optional(),
+    password: z.string().max(60).optional(),
+  });
+
+  // Add the cover image and profile image to the verified data
+  const validatedFields = Profile.safeParse({ cover_image: cover,profile_image: profile, ...filteredFields });
+
+  // Check if the validation succeeded
+  if (!validatedFields.success) {
+    console.log(validatedFields.error.flatten().fieldErrors);
+    return { status: 'error', message: 'Internal Server Error' };
+  }
+
+  // Validate password and confirm_password
+  if (password || confirm_password) {
+    const passwordSchema = z.object({
+      password: z.string().min(6, "Password must be at least 6 characters long"),
+      confirm_password: z.string(),
+    }).refine(
+      (data) => data.password === data.confirm_password,
+      {
+        message: "Passwords must match!",
+        path: ["confirm_password"],
+      }
+    );
+
+    // Confirm password verification
+    const passwordResult = passwordSchema.safeParse({ password, confirm_password });
+
+    if (!passwordResult.success) {
+      console.log(passwordResult.error.flatten().fieldErrors);
+      return { status: 'error', message: passwordResult.error.flatten().fieldErrors.confirm_password?.[0] || 'Invalid password input' };
+    }
+  }
+
+  // grab user data and verify
+  const { userId } = auth();
+
+  if (!userId) {
+    return { status: 'error', message: 'Internal Server Error' };
+  }
+
+  try {
+    // Primsa update
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: validatedFields.data,
+    });
+
+    // Update password in clerk
+    if (password) {
+      try {
+        await clerkClient.users.updateUser(userId, {
+          password: password as string, // Ensure it's cast to a string
+        });
+      } catch (error) {
+        console.error("Failed to update password:", error);
+        return { status: 'error', message: 'Password update failed. Please ensure it meets the required criteria.' };
+      }
+    }
+
+    return { status: 'success', message: 'Profile updated successfully' };
+  } catch (err) {
+    console.log(err);
+    return { status: 'error', message: 'Internal Server Error' };
+  }
+}
+
+// Action to grab user data by the id
 export const fetchUserById = async (userId: string):  Promise<User | null>=> {
   try {
     const user = await prisma.user.findUnique({
@@ -305,6 +139,7 @@ export const fetchUserById = async (userId: string):  Promise<User | null>=> {
   }
 };
 
+// Action to grab all posts of a certain channel
 export const fetchPosts = async (channelId: number): Promise<Post[]> => {
   try {
     const posts = await prisma.post.findMany({
@@ -349,8 +184,9 @@ export const fetchPosts = async (channelId: number): Promise<Post[]> => {
     console.error('Failed to fetch posts:', error);
     return [];
   }
-};
+};  
 
+// Action to grab all the User's Posts
 export const fetchUserPosts = async (channelId: number, userId: string): Promise<Post[]> => {
   try {
     const posts = await prisma.post.findMany({
@@ -398,9 +234,9 @@ export const fetchUserPosts = async (channelId: number, userId: string): Promise
 };
 
 
+// Action to create and add a new Channel
 export const addChannel = async (formData: FormData, img: string | null) => {
   const fields = Object.fromEntries(formData);
-  console.log("channel fields", fields)
   const desc = fields.desc
   const channel_name = fields.channel_name
 
@@ -432,6 +268,7 @@ export const addChannel = async (formData: FormData, img: string | null) => {
   }
 };
 
+// Action to delete posts 
 export const deletePost = async (postId: number, channelId: number) => {
   const { userId } = auth();
 
@@ -452,6 +289,7 @@ export const deletePost = async (postId: number, channelId: number) => {
   }
 };
 
+// Action to update posts
 export const updatePost = async (postId: number, desc: string, img: string | null, channelId: number) => {
   const { userId } = auth();
 
@@ -491,7 +329,7 @@ export const updatePost = async (postId: number, desc: string, img: string | nul
   }
 };
 
-
+// Action to add a comment 
 export const addComment = async (desc: string, postId: number) => {
   const { userId } = auth();
 
@@ -524,7 +362,6 @@ export const addPost = async (formData: FormData, img: string | null, channelId:
   const validatedDesc = Desc.safeParse(desc);
 
   if (!validatedDesc.success) {
-    //TODO
     console.log("description is not valid");
     return;
   }
@@ -562,9 +399,8 @@ export const addPost = async (formData: FormData, img: string | null, channelId:
   }
 };
 
-// Join Channel request 
+// Action to decline a channel request
 export const declineChannelRequest = async (userId: string, channelId: number) => {
-  //TODO: Need to make sure that the user is an admin but we are just not showing the option for now
   const { userId: currentUserId } = auth();
 
   if (!currentUserId) {
@@ -586,12 +422,14 @@ export const declineChannelRequest = async (userId: string, channelId: number) =
         },
       });
     }
+    revalidatePath("/");
   } catch (err) {
     console.log(err);
     throw new Error("Something went wrong!");
   }
 };
 
+// Action to accept a request to join a channel
 export const acceptChannelRequest = async (userId: string, channelId: number) => {
   const { userId: currentUserId } = auth();
 
@@ -621,12 +459,14 @@ export const acceptChannelRequest = async (userId: string, channelId: number) =>
         },
       });
     }
+    revalidatePath("/");
   } catch (err) {
     console.log(err);
     throw new Error("Something went wrong!");
   }
 };
 
+// Action to create a new request to join a channel
 export const newRequest = async (channelId: number) => {
   const { userId: currentUserId } = auth();
 
@@ -652,6 +492,7 @@ export const newRequest = async (channelId: number) => {
         },
       });
     }
+    revalidatePath("/");
   } catch (err) {
     console.log(err);
     throw new Error("Something went wrong!");

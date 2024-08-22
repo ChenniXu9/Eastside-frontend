@@ -1,36 +1,12 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ChannelRequestList from "./ChannelRequestList";
 
 const ManageChannelRequests = ({ channelId }: { channelId: number }) => {
     const { userId } = useAuth();
     const [requests, setRequests] = useState([]);
-
-    useEffect(() => {
-        const fetchRequests = async () => {
-            try {
-                console.log("Fetching requests for channnel:", channelId);
-
-                const response = await fetch(
-                    `/api/channel/fetchRequestsByChannel?channelId=${channelId}`
-                );
-                if (!response.ok) {
-                    throw new Error("Failed to fetch channels");
-                }
-
-                const data = await response.json();
-
-                console.log("isadmin ", data);
-                setRequests(data);
-            } catch (error) {
-                console.error("Error fetching channels:", error);
-            }
-        };
-
-        fetchRequests();
-    }, [channelId]);
 
     if (!userId) return null;
 
@@ -44,7 +20,7 @@ const ManageChannelRequests = ({ channelId }: { channelId: number }) => {
                 </Link> */}
             </div>
             {/* USER */}
-            <ChannelRequestList requests={requests} />
+            <ChannelRequestList channelId={channelId} />
         </div>
     );
 };
