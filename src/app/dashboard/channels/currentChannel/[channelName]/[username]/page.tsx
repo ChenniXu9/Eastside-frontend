@@ -65,7 +65,6 @@ const Homepage = () => {
                         `/api/channel/fetchUser?userName=${userName}`
                     );
                     const userData = await userResponse.json();
-                    console.log("username", userData.username);
                     setCurrentUser(userData);
                 } catch (error) {
                     console.error("Error fetching data:", error);

@@ -5,6 +5,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import prisma from "./client";
+
 // Following are Channels page actions, please not modify them
 
 type Comment = {
@@ -28,18 +29,21 @@ type Post = {
   comments: Comment[];
 };
 
+// Action to update the user profile
 export const updateProfile = async(formData: FormData, cover: string, profile: string) => {
+  // extract info from form data
   const fields = Object.fromEntries(formData);
-  console.log("fields", fields)
 
   // Separate password fields from the rest of the fields
   const { password, confirm_password, ...restFields } = fields;
   console.log(password, confirm_password)
 
+  // Grab the filtered data making sure to only get data that has been changed
   const filteredFields = Object.fromEntries(
     Object.entries(fields).filter(([_, value]) => value !== "")
   );
 
+  // Verify data passed through 
   const Profile = z.object({
     cover_image: z.string().optional(),
     profile_image: z.string().optional(),
@@ -55,8 +59,10 @@ export const updateProfile = async(formData: FormData, cover: string, profile: s
     password: z.string().max(60).optional(),
   });
 
+  // Add the cover image and profile image to the verified data
   const validatedFields = Profile.safeParse({ cover_image: cover,profile_image: profile, ...filteredFields });
 
+  // Check if the validation succeeded
   if (!validatedFields.success) {
     console.log(validatedFields.error.flatten().fieldErrors);
     return { status: 'error', message: 'Internal Server Error' };
@@ -75,6 +81,7 @@ export const updateProfile = async(formData: FormData, cover: string, profile: s
       }
     );
 
+    // Confirm password verification
     const passwordResult = passwordSchema.safeParse({ password, confirm_password });
 
     if (!passwordResult.success) {
@@ -83,6 +90,7 @@ export const updateProfile = async(formData: FormData, cover: string, profile: s
     }
   }
 
+  // grab user data and verify
   const { userId } = auth();
 
   if (!userId) {
@@ -98,6 +106,7 @@ export const updateProfile = async(formData: FormData, cover: string, profile: s
       data: validatedFields.data,
     });
 
+    // Update password in clerk
     if (password) {
       try {
         await clerkClient.users.updateUser(userId, {
@@ -116,6 +125,7 @@ export const updateProfile = async(formData: FormData, cover: string, profile: s
   }
 }
 
+// Action to grab user data by the id
 export const fetchUserById = async (userId: string):  Promise<User | null>=> {
   try {
     const user = await prisma.user.findUnique({
@@ -129,6 +139,7 @@ export const fetchUserById = async (userId: string):  Promise<User | null>=> {
   }
 };
 
+// Action to grab all posts of a certain channel
 export const fetchPosts = async (channelId: number): Promise<Post[]> => {
   try {
     const posts = await prisma.post.findMany({
@@ -173,8 +184,9 @@ export const fetchPosts = async (channelId: number): Promise<Post[]> => {
     console.error('Failed to fetch posts:', error);
     return [];
   }
-};
+};  
 
+// Action to grab all the User's Posts
 export const fetchUserPosts = async (channelId: number, userId: string): Promise<Post[]> => {
   try {
     const posts = await prisma.post.findMany({
@@ -222,9 +234,9 @@ export const fetchUserPosts = async (channelId: number, userId: string): Promise
 };
 
 
+// Action to create and add a new Channel
 export const addChannel = async (formData: FormData, img: string | null) => {
   const fields = Object.fromEntries(formData);
-  console.log("channel fields", fields)
   const desc = fields.desc
   const channel_name = fields.channel_name
 
@@ -256,6 +268,7 @@ export const addChannel = async (formData: FormData, img: string | null) => {
   }
 };
 
+// Action to delete posts 
 export const deletePost = async (postId: number, channelId: number) => {
   const { userId } = auth();
 
@@ -276,6 +289,7 @@ export const deletePost = async (postId: number, channelId: number) => {
   }
 };
 
+// Action to update posts
 export const updatePost = async (postId: number, desc: string, img: string | null, channelId: number) => {
   const { userId } = auth();
 
@@ -315,7 +329,7 @@ export const updatePost = async (postId: number, desc: string, img: string | nul
   }
 };
 
-
+// Action to add a comment 
 export const addComment = async (desc: string, postId: number) => {
   const { userId } = auth();
 
@@ -348,7 +362,6 @@ export const addPost = async (formData: FormData, img: string | null, channelId:
   const validatedDesc = Desc.safeParse(desc);
 
   if (!validatedDesc.success) {
-    //TODO
     console.log("description is not valid");
     return;
   }
@@ -386,9 +399,8 @@ export const addPost = async (formData: FormData, img: string | null, channelId:
   }
 };
 
-// Join Channel request 
+// Action to decline a channel request
 export const declineChannelRequest = async (userId: string, channelId: number) => {
-  //TODO: Need to make sure that the user is an admin but we are just not showing the option for now
   const { userId: currentUserId } = auth();
 
   if (!currentUserId) {
@@ -417,6 +429,7 @@ export const declineChannelRequest = async (userId: string, channelId: number) =
   }
 };
 
+// Action to accept a request to join a channel
 export const acceptChannelRequest = async (userId: string, channelId: number) => {
   const { userId: currentUserId } = auth();
 
@@ -453,6 +466,7 @@ export const acceptChannelRequest = async (userId: string, channelId: number) =>
   }
 };
 
+// Action to create a new request to join a channel
 export const newRequest = async (channelId: number) => {
   const { userId: currentUserId } = auth();
 
